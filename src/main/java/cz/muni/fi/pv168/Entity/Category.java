@@ -2,5 +2,5 @@ package cz.muni.fi.pv168.Entity;
 
 public class Category extends Identifiable {
     private String name;
-    private RGB color;
+    private CategoryColour color;
 }
