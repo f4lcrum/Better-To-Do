@@ -1,7 +1,7 @@
-package cz.muni.fi.pv168.Entity.ui.panels;
+package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
-import cz.muni.fi.pv168.Entity.ui.model.EntityTableModel;
-import cz.muni.fi.pv168.Entity.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.EntityTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 
 import javax.swing.*;
 import java.awt.*;

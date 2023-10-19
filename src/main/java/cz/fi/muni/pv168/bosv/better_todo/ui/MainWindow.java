@@ -1,11 +1,11 @@
 package cz.muni.fi.pv168.Entity.ui;
 
-import cz.muni.fi.pv168.Entity.ui.model.EntityTableModel;
-import cz.muni.fi.pv168.Entity.ui.model.TodoTableModel;
-import cz.muni.fi.pv168.Entity.ui.panels.EventTablePanel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
+import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
+
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MainWindow {
 
@@ -14,10 +14,11 @@ public class MainWindow {
     private final TodoTableModel todoTableModel;
 
     public MainWindow() {
+        var testDataGenerator = new TestDataGenerator();
+
         frame = createFrame();
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
-
         todoTableModel = new TodoTableModel();
         var eventTablePanel = new EventTablePanel(todoTableModel);
         frame.add(eventTablePanel);

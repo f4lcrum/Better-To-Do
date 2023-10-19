@@ -1,7 +1,7 @@
-package cz.muni.fi.pv168.Entity.ui.model;
+package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
-import cz.muni.fi.pv168.Entity.Category;
-import cz.muni.fi.pv168.Entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
