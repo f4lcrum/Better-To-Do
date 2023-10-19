@@ -6,6 +6,8 @@ import java.util.UUID;
 public class Event extends Identifiable {
     private String name;
     private Status status;
+
+    private Category category;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String description;
