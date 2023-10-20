@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 
 import javax.swing.table.AbstractTableModel;
@@ -9,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class TodoTableModel extends AbstractTableModel implements EntityTableModel<Event> {
 
     private List<Event> events;

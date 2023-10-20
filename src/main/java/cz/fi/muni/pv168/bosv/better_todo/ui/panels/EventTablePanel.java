@@ -1,11 +1,11 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.EntityTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class EventTablePanel extends JPanel {
 
     private final JTable table;
