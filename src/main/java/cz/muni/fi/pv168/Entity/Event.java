@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.Entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Event extends Identifiable {
     private String name;
@@ -9,5 +9,5 @@ public class Event extends Identifiable {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String description;
-    private int userId;
+    private UUID userId;
 }
