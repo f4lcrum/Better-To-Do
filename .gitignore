@@ -1,0 +1,11 @@
+# Build files
+**/target
+**/out
+
+# IDEA files
+.idea
+*.iml
+
+# Production files
+.env
+docker-compose.yml
