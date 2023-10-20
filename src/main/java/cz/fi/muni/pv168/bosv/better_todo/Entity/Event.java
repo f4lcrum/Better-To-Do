@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.Entity;
+package cz.fi.muni.pv168.bosv.better_todo.Entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

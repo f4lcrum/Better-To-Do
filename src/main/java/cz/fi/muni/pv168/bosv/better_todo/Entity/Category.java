@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.Entity;
+package cz.fi.muni.pv168.bosv.better_todo.Entity;
 
 public class Category extends Identifiable {
     private String name;
