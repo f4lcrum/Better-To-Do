@@ -1,12 +1,17 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @SuppressWarnings("serial")
 public class TodoTableModel extends AbstractTableModel implements EntityTableModel<Event> {
@@ -16,39 +21,45 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     private final List<Column<Event, ?>> columns = List.of(
             Column.readonly("Name", String.class, this::getName),
             Column.readonly("Date", LocalDate.class, this::getDate),
-            Column.readonly("Category", String.class, this::getCategory),
-            Column.readonly("Status", String.class, this::getStatus),
-            Column.readonly("Duration", LocalDateTime.class, this::getDuration),
+            Column.readonly("Category", Category.class, this::getCategory),
+            Column.readonly("Status", Status.class, this::getStatus),
+            Column.readonly("Duration", Long.class, this::getDuration),
             Column.readonly("Description", String.class, this::getDescription)
     );
 
 
-    private String getStatus(Event event) {
-        return "Status fajnovy";
+    private Status getStatus(Event event) {
+        return event.getStatus();
     }
 
     private String getDescription(Event event) {
-        return "Popis fajnovy";
+        return event.getDescription();
     }
-    private LocalDateTime getDuration(Event event) {
-        return LocalDateTime.now();
+
+    private long getDuration(Event event) {
+        return MINUTES.between(event.getStartTime(), event.getEndTime());
     }
 
     private String getName(Event event) {
-        return "NAME";
+        return event.getName();
     }
 
-    private String getCategory(Event event) {
-        return "nice category";
+    private Category getCategory(Event event) {
+        return event.getCategory();
     }
 
     private LocalDate getDate(Event event) {
-        return LocalDate.now();
+        return event.getDate();
     }
 
     public TodoTableModel() {
         this.events = new ArrayList<>();
     }
+
+    public TodoTableModel(List<Event> events) {
+        this.events = events;
+    }
+
     @Override
     public int getRowCount() {
         return events.size();
@@ -90,6 +101,7 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
             updateRow(event);
         }*/
     }
+
     @Override
     public Event getEntity(int rowIndex) {
         return events.get(rowIndex);

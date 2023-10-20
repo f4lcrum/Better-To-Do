@@ -1,82 +1,34 @@
 package cz.fi.muni.pv168.bosv.better_todo.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
-import java.util.Objects;
 
-public class Event extends Identifiable {
-    private String name;
-    private Status status;
+@Getter
+@AllArgsConstructor
+@NonNull
+public class Event implements Entity {
+    private final UUID id;
+    private final UUID userId;
 
-    private Category category;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String description;
-    private UUID userId;
-    private boolean isTemplate;
+    private final String name;
+    private final Status status;
 
-    public Event(
-            String name,
-            Status status,
-            Category category,
-            LocalDateTime eventStart,
-            LocalDateTime eventEnd,
-            String description) {
-        super();
-    }
+    private final Category category;
 
+    private final LocalDate date;
+    private final LocalTime startTime;
+    private final LocalTime endTime;
 
-    public String getName() {
-        return name;
-    }
+    private final String description;
 
-    public void setName(String name) {
-        this.name = Objects.requireNonNull(name, "name must not be null");
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = Objects.requireNonNull(status, "status must not be null");
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = Objects.requireNonNull(category, "category must not be null");
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = Objects.requireNonNull(startTime, "startime must not be null");
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = Objects.requireNonNull(endTime, "endTime must not be null");
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = Objects.requireNonNull(description, "description must not be null");
-    }
-
-
-     /* @Override */
-    public String getGuid() {
-        return name;
+    @Override
+    public UUID getGuid() {
+        return this.id;
     }
 }

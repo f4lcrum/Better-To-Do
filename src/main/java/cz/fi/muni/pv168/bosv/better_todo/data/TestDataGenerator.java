@@ -1,16 +1,10 @@
 package cz.fi.muni.pv168.bosv.better_todo.data;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour.GREEN;
@@ -27,16 +21,19 @@ import static java.time.Month.OCTOBER;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public final class TestDataGenerator {
+    private static final Random RAND_GEN = new Random();
+
+    private static final User LUCY = new User(UUID.randomUUID(), "Lucy", String.format("%d", RAND_GEN.nextInt()));
 
     private static final List<String> EVENT_NAMES = List.of("Meeting", "Exam", "Doctor", "Walk the dog", "Cook", "Clean the dishes", "Bank", "Party", "Clean shoes");
 
-    private static final List<String> DESCRIPTION = List.of("", "Dress-code", "Buy groceries beforehand", "", "", "", "", "", "");
+    private static final List<String> DESCRIPTION = List.of("Dress-code", "Buy groceries beforehand");
 
     private static final List<Category> CATEGORIES = List.of(
-            new Category("Work", GREEN),
-            new Category("Chores", BLUE),
-            new Category("School", RED),
-            new Category("Social events", PINK)
+            new Category(UUID.randomUUID(), "Work", GREEN),
+            new Category(UUID.randomUUID(), "Chores", BLUE),
+            new Category(UUID.randomUUID(), "School", RED),
+            new Category(UUID.randomUUID(), "Social events", PINK)
     );
 
     private static final List<Status> STATUSES = List.of(PLANNED, IN_PROGRESS, DONE);
@@ -54,7 +51,7 @@ public final class TestDataGenerator {
         String description = selectRandom(DESCRIPTION);
         Status status = selectRandom(STATUSES);
         Category category = selectRandom(CATEGORIES);
-        return new Event(name, status, category, EVENT_START, EVENT_END, description);
+        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, EVENT_START.toLocalDate(), EVENT_START.toLocalTime(), EVENT_END.toLocalTime(), description);
     }
 
     public List<Event> createTestEvents(int count) {

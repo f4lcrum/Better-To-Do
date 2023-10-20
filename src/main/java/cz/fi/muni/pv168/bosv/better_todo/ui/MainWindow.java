@@ -1,28 +1,44 @@
 package cz.muni.fi.pv168.Entity.ui;
 
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
 
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 public class MainWindow {
 
     private final JFrame frame;
+    private final JTable table;
 
-    private final TodoTableModel todoTableModel;
+//    private final TodoTableModel todoTableModel;
 
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
 
+        table = createEventTable(testDataGenerator.createTestEvents(10));
         frame = createFrame();
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
-        todoTableModel = new TodoTableModel();
-        var eventTablePanel = new EventTablePanel(todoTableModel);
-        frame.add(eventTablePanel);
+        frame.add(new JScrollPane(table), BorderLayout.CENTER);
+//        todoTableModel = new TodoTableModel();
+//        var eventTablePanel = new EventTablePanel(todoTableModel);
+//        frame.add(eventTablePanel);
+
+        frame.pack();
     }
+
+    private JTable createEventTable(List<Event> employees) {
+        var model = new TodoTableModel(employees);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        return table;
+    }
+
 
     public void show() {
         frame.setVisible(true);

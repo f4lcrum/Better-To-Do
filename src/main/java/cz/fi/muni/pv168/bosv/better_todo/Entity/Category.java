@@ -1,33 +1,21 @@
 package cz.fi.muni.pv168.bosv.better_todo.Entity;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
 
-public class Category extends Identifiable {
-    private String name;
-    private CategoryColour colour;
+import java.util.UUID;
 
-    public Category(String name, CategoryColour colour) {
-        setName(name);
-        setColour(colour);
-    }
+@AllArgsConstructor
+@Getter
+@NonNull
+public class Category implements Entity {
+    private final UUID id;
+    private final String name;
+    private final CategoryColour colour;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = Objects.requireNonNull(name, "name must not be null");
-    }
-
-    public CategoryColour getColour() {
-        return colour;
-    }
-
-    public void setColour(CategoryColour colour) {
-        this.colour = Objects.requireNonNull(colour, "colour must not be null");
-    }
-
-    public String getGuid() {
-        return name + " " + colour;
+    @Override
+    public UUID getGuid() {
+        return this.id;
     }
 }
