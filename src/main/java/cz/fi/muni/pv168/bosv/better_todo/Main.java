@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         initNimbusLookAndFeel();
-        EventQueue.invokeLater(() -> new cz.muni.fi.pv168.Entity.ui.MainWindow().show());
+        EventQueue.invokeLater(() -> new cz.fi.muni.pv168.bosv.better_todo.ui.MainWindow().show());
     }
 
     private static void initNimbusLookAndFeel() {

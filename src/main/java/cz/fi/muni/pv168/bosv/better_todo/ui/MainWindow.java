@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.Entity.ui;
+package cz.fi.muni.pv168.bosv.better_todo.ui;
 
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
@@ -9,6 +9,7 @@ import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import javax.swing.JButton;
 
 public class MainWindow {
 
@@ -30,6 +31,7 @@ public class MainWindow {
 //        frame.add(eventTablePanel);
 
         frame.pack();
+        frame.add(createToolbar(), BorderLayout.BEFORE_FIRST_LINE);
     }
 
     private JTable createEventTable(List<Event> employees) {
@@ -62,6 +64,12 @@ public class MainWindow {
 
     private JToolBar createToolbar() {
         var toolbar = new JToolBar();
+
+        var button = new JButton("Events");
+        button.setPreferredSize(new Dimension(50, 50));
+        // TODO: change view: button.setActionCommand();
+        toolbar.add(button);
+        toolbar.addSeparator();
         return toolbar;
     }
 
