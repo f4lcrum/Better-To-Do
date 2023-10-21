@@ -93,14 +93,7 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        /* Commented out for test purposes
-        if (value != null) {
-            var event = getEntity(rowIndex);
-            columns.get(columnIndex).setValue(value, event);
-            updateRow(event);
-        }*/
-    }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) { return; }
 
     @Override
     public Event getEntity(int rowIndex) {

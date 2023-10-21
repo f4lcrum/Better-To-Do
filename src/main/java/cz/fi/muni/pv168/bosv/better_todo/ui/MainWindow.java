@@ -15,9 +15,7 @@ public class MainWindow {
 
     private final JFrame frame;
     private final JTable table;
-
-//    private final TodoTableModel todoTableModel;
-
+    
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
 
@@ -26,9 +24,6 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
         frame.add(new JScrollPane(table), BorderLayout.CENTER);
-//        todoTableModel = new TodoTableModel();
-//        var eventTablePanel = new EventTablePanel(todoTableModel);
-//        frame.add(eventTablePanel);
 
         frame.pack();
         frame.add(createToolbar(), BorderLayout.BEFORE_FIRST_LINE);
