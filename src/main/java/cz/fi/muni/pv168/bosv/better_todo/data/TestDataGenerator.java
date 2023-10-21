@@ -61,6 +61,19 @@ public final class TestDataGenerator {
                 .toList();
     }
 
+    public Template createTestTemplate() {
+        String name = selectRandom(EVENT_NAMES);
+        String description = selectRandom(DESCRIPTION);
+        Category category = selectRandom(CATEGORIES);
+        return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, EVENT_START.toLocalTime(), EVENT_END.toLocalTime());
+    }
+
+    public List<Template> createTestTemplates(int count) {
+        return Stream
+                .generate(this::createTestTemplate)
+                .limit(count)
+                .toList();
+    }
     public List<Category> getCategories() {
         return CATEGORIES;
     }

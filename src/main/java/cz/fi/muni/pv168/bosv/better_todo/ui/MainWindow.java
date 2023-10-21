@@ -1,8 +1,9 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui;
 
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
 
 
@@ -14,16 +15,18 @@ import javax.swing.JButton;
 public class MainWindow {
 
     private final JFrame frame;
-    private final JTable table;
-    
+    private final JTable eventTable;
+    private final JTable templateTable;
+
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
 
-        table = createEventTable(testDataGenerator.createTestEvents(10));
+        eventTable = createEventTable(testDataGenerator.createTestEvents(10));
+        templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
         frame = createFrame();
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
-        frame.add(new JScrollPane(table), BorderLayout.CENTER);
+        frame.add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
         frame.pack();
         frame.add(createToolbar(), BorderLayout.BEFORE_FIRST_LINE);
@@ -36,6 +39,12 @@ public class MainWindow {
         return table;
     }
 
+    private JTable createTemplateTable(List<Template> templates) {
+        var model = new TemplateTableModel(templates);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        return table;
+    }
 
     public void show() {
         frame.setVisible(true);

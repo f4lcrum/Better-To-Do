@@ -1,70 +1,56 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 @SuppressWarnings("serial")
-public class TodoTableModel extends AbstractTableModel implements EntityTableModel<Event> {
+public class TemplateTableModel extends AbstractTableModel implements EntityTableModel<Template> {
 
-    private List<Event> events;
+    private List<Template> templates;
 
-    private final List<Column<Event, ?>> columns = List.of(
+    private final List<Column<Template, ?>> columns = List.of(
             Column.readonly("Name", String.class, this::getName),
-            Column.readonly("Date", LocalDate.class, this::getDate),
             Column.readonly("Category", Category.class, this::getCategory),
-            Column.readonly("Status", Status.class, this::getStatus),
             Column.readonly("Duration", Long.class, this::getDuration),
             Column.readonly("Description", String.class, this::getDescription)
     );
 
-
-    private Status getStatus(Event event) {
-        return event.getStatus();
+    private String getDescription(Template template) {
+        return template.getDescription();
     }
 
-    private String getDescription(Event event) {
-        return event.getDescription();
+    private long getDuration(Template template) {
+        return MINUTES.between(template.getStartTime(), template.getEndTime());
     }
 
-    private long getDuration(Event event) {
-        return MINUTES.between(event.getStartTime(), event.getEndTime());
+    private String getName(Template template) {
+        return template.getName();
     }
 
-    private String getName(Event event) {
-        return event.getName();
+    private Category getCategory(Template template) {
+        return template.getCategory();
     }
 
-    private Category getCategory(Event event) {
-        return event.getCategory();
+    public TemplateTableModel() {
+        this.templates = new ArrayList<>();
     }
 
-    private LocalDate getDate(Event event) {
-        return event.getDate();
-    }
-
-    public TodoTableModel() {
-        this.events = new ArrayList<>();
-    }
-
-    public TodoTableModel(List<Event> events) {
-        this.events = events;
+    public TemplateTableModel(List<Template> templates) {
+        this.templates = templates;
     }
 
     @Override
     public int getRowCount() {
-        return events.size();
+        return templates.size();
     }
-
 
     @Override
     public int getColumnCount() {
@@ -96,8 +82,8 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     public void setValueAt(Object value, int rowIndex, int columnIndex) { return; }
 
     @Override
-    public Event getEntity(int rowIndex) {
-        return events.get(rowIndex);
+    public Template getEntity(int rowIndex) {
+        return templates.get(rowIndex);
     }
 
 }

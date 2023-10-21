@@ -11,7 +11,6 @@ abstract class Column<E, T> {
     private final Class<T> columnType;
 
     private Column(String name, Class<T> columnClass, Function<E, T> valueGetter) {
-        // see Item 49: Check parameters for validity
         this.name = Objects.requireNonNull(name, "name cannot be null");
         this.columnType = Objects.requireNonNull(columnClass, "column class cannot be null");
         this.valueGetter = Objects.requireNonNull(valueGetter, "value getter cannot be null");
