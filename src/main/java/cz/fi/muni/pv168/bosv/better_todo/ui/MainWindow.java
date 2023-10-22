@@ -4,7 +4,9 @@ import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
+
 
 
 import javax.swing.*;
@@ -26,8 +28,15 @@ public class MainWindow {
         frame = createFrame();
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
-        frame.add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
+        var eventTablePanel = new JScrollPane(eventTable);
+        var templateTablePanel = new JScrollPane(templateTable);
+
+        var tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Events", eventTablePanel);
+        tabbedPane.addTab("Templates", templateTablePanel);
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
         frame.pack();
         frame.add(createToolbar(), BorderLayout.BEFORE_FIRST_LINE);
     }
