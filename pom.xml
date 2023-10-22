@@ -17,6 +17,7 @@
 
         <lombok.version>1.18.30</lombok.version>
         <jackson.version>2.15.3</jackson.version>
+        <jfreechart.version>1.5.4</jfreechart.version>
     </properties>
 
     <dependencies>
@@ -44,7 +45,7 @@
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
-            <version>1.5.4</version>
+            <version>${jfreechart.version}</version>
         </dependency>
     </dependencies>
 
