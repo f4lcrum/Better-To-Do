@@ -61,10 +61,7 @@
                     <compilerArgs>
                         <arg>-Xlint:all</arg>
                         <arg>-Xlint:-processing</arg>
-<<<<<<< HEAD
                         <arg>-Xlint:-serial</arg>
-=======
->>>>>>> c3bbcec (TASK-16: Introduce Jackson, Annotate databind fields)
                         <arg>-Werror</arg>
                     </compilerArgs>
                 </configuration>
