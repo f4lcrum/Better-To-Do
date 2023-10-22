@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -32,6 +32,7 @@ public class StatisticsPanel extends JPanel {
         add(createPieChart(65, 5, 10));
     }
 
+    @SuppressWarnings("unchecked")
     private JPanel createPieChart(int planned, int inProgress, int done) {
         DefaultPieDataset<Status> data = new DefaultPieDataset<>();
         data.setValue(Status.PLANNED, planned);

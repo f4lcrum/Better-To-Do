@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
-
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 
 
 import javax.swing.*;
@@ -18,22 +18,26 @@ public class MainWindow {
     private final JFrame frame;
     private final JTable eventTable;
     private final JTable templateTable;
+    private final JPanel statistics;
 
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
 
         eventTable = createEventTable(testDataGenerator.createTestEvents(10));
         templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
+        statistics = new StatisticsPanel();
         frame = createFrame();
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar());
 
         var eventTablePanel = new JScrollPane(eventTable);
         var templateTablePanel = new JScrollPane(templateTable);
+        var statisticsPanel = new JScrollPane(statistics);
 
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
+        tabbedPane.addTab("Statistics", statisticsPanel);
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.pack();
