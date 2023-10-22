@@ -17,7 +17,6 @@ import static cz.fi.muni.pv168.bosv.better_todo.Entity.Status.IN_PROGRESS;
 import static cz.fi.muni.pv168.bosv.better_todo.Entity.Status.PLANNED;
 
 import static java.time.Month.SEPTEMBER;
-import static java.time.Month.OCTOBER;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public final class TestDataGenerator {
