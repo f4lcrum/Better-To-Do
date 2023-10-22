@@ -3,17 +3,13 @@ package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
-
-@SuppressWarnings("serial")
 public class TodoTableModel extends AbstractTableModel implements EntityTableModel<Event> {
 
     private List<Event> events;
