@@ -1,10 +1,10 @@
 package cz.fi.muni.pv168.bosv.better_todo.io;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.User;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
+import cz.fi.muni.pv168.bosv.better_todo.entity.User;
 import lombok.NonNull;
 
 import java.util.Collection;

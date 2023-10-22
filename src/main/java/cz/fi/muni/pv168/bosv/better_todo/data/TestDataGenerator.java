@@ -1,20 +1,20 @@
 package cz.fi.muni.pv168.bosv.better_todo.data;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.*;
+import cz.fi.muni.pv168.bosv.better_todo.entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour.GREEN;
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour.BLUE;
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour.RED;
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.CategoryColour.PINK;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.GREEN;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.BLUE;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.RED;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.PINK;
 
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.Status.DONE;
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.Status.IN_PROGRESS;
-import static cz.fi.muni.pv168.bosv.better_todo.Entity.Status.PLANNED;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.DONE;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.IN_PROGRESS;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.PLANNED;
 
 import static java.time.Month.SEPTEMBER;
 import static java.time.temporal.ChronoUnit.DAYS;
