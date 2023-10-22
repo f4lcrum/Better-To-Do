@@ -15,37 +15,16 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     private List<Event> events;
 
     private final List<Column<Event, ?>> columns = List.of(
-            Column.readonly("Name", String.class, this::getName),
-            Column.readonly("Date", LocalDate.class, this::getDate),
-            Column.readonly("Category", Category.class, this::getCategory),
-            Column.readonly("Status", Status.class, this::getStatus),
+            Column.readonly("Name", String.class, Event::getName),
+            Column.readonly("Date", LocalDate.class, Event::getDate),
+            Column.readonly("Category", Category.class, Event::getCategory),
+            Column.readonly("Status", Status.class, Event::getStatus),
             Column.readonly("Duration", Long.class, this::getDuration),
-            Column.readonly("Description", String.class, this::getDescription)
+            Column.readonly("Description", String.class, Event::getDescription)
     );
-
-
-    private Status getStatus(Event event) {
-        return event.getStatus();
-    }
-
-    private String getDescription(Event event) {
-        return event.getDescription();
-    }
 
     private long getDuration(Event event) {
         return MINUTES.between(event.getStartTime(), event.getEndTime());
-    }
-
-    private String getName(Event event) {
-        return event.getName();
-    }
-
-    private Category getCategory(Event event) {
-        return event.getCategory();
-    }
-
-    private LocalDate getDate(Event event) {
-        return event.getDate();
     }
 
     public TodoTableModel() {
@@ -89,7 +68,9 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) { return; }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        return;
+    }
 
     @Override
     public Event getEntity(int rowIndex) {

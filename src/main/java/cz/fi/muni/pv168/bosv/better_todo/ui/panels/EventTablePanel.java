@@ -7,14 +7,14 @@ import java.awt.*;
 
 public class EventTablePanel extends JPanel {
 
-    private final JTable table;
+    private final JTable eventTable;
 
     private final TodoTableModel todoTableModel;
 
     public EventTablePanel(TodoTableModel todoTableModel) {
         setLayout(new BorderLayout());
-        table = setUpTable(todoTableModel);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        eventTable = setUpTable(todoTableModel);
+        add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
         this.todoTableModel = todoTableModel;
     }

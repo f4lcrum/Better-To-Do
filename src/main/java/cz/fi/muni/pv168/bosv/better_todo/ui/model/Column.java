@@ -1,27 +1,31 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NonNull
 abstract class Column<E, T> {
-
+    @Getter
     private final String name;
-    private final Function<E, T> valueGetter;
     private final Class<T> columnType;
+    private final Function<E, T> valueGetter;
 
-    private Column(String name, Class<T> columnClass, Function<E, T> valueGetter) {
-        this.name = Objects.requireNonNull(name, "name cannot be null");
-        this.columnType = Objects.requireNonNull(columnClass, "column class cannot be null");
-        this.valueGetter = Objects.requireNonNull(valueGetter, "value getter cannot be null");
-    }
-
-    public static <E, T> Column<E, T> editable(String name, Class<T> columnClass, Function<E, T> valueGetter,
+    public static <E, T> Column<E, T> editable(String name, Class<T> columnClass,
+                                               Function<E, T> valueGetter,
                                                BiConsumer<E, T> valueSetter) {
         return new Editable<>(name, columnClass, valueGetter, valueSetter);
     }
 
-    public static <E, T> Column<E, T> readonly(String name, Class<T> columnClass, Function<E, T> valueGetter) {
+    public static <E, T> Column<E, T> readonly(String name,
+                                               Class<T> columnClass,
+                                               Function<E, T> valueGetter) {
         return new ReadOnly<>(name, columnClass, valueGetter);
     }
 
@@ -33,9 +37,6 @@ abstract class Column<E, T> {
         return valueGetter.apply(entity);
     }
 
-    String getName() {
-        return name;
-    }
 
     Class<T> getColumnType() {
         return columnType;
