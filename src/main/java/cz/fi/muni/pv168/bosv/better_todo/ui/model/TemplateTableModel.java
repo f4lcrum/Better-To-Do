@@ -2,39 +2,26 @@ package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
 
-@SuppressWarnings("serial")
 public class TemplateTableModel extends AbstractTableModel implements EntityTableModel<Template> {
 
     private List<Template> templates;
 
     private final List<Column<Template, ?>> columns = List.of(
-            Column.readonly("Name", String.class, this::getName),
-            Column.readonly("Category", Category.class, this::getCategory),
+            Column.readonly("Name", String.class, Template::getName),
+            Column.readonly("Category", Category.class, Template::getCategory),
             Column.readonly("Duration", Long.class, this::getDuration),
-            Column.readonly("Description", String.class, this::getDescription)
+            Column.readonly("Description", String.class, Template::getDescription)
     );
-
-    private String getDescription(Template template) {
-        return template.getDescription();
-    }
 
     private long getDuration(Template template) {
         return MINUTES.between(template.getStartTime(), template.getEndTime());
-    }
-
-    private String getName(Template template) {
-        return template.getName();
-    }
-
-    private Category getCategory(Template template) {
-        return template.getCategory();
     }
 
     public TemplateTableModel() {
@@ -77,7 +64,9 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) { return; }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        return;
+    }
 
     @Override
     public Template getEntity(int rowIndex) {
