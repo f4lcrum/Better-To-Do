@@ -1,4 +1,4 @@
-package cz.fi.muni.pv168.bosv.better_todo.Entity;
+package cz.fi.muni.pv168.bosv.better_todo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,8 +1,8 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;

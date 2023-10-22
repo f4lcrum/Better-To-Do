@@ -1,10 +1,9 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Event;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.data.TestDataGenerator;
 
 

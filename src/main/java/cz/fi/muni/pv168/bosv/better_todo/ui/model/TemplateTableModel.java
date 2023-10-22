@@ -1,11 +1,9 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Category;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Template;
-import cz.fi.muni.pv168.bosv.better_todo.Entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
 
 import javax.swing.table.AbstractTableModel;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
