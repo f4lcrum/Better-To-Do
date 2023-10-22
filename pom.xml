@@ -17,6 +17,7 @@
 
         <lombok.version>1.18.30</lombok.version>
         <jackson.version>2.15.3</jackson.version>
+        <jfreechart.version>1.5.4</jfreechart.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,11 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>${jfreechart.version}</version>
         </dependency>
     </dependencies>
 
