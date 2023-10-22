@@ -18,7 +18,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-@SuppressWarnings("all")
 public class StatisticsPanel extends JPanel {
 
     public StatisticsPanel() {
@@ -47,8 +46,7 @@ public class StatisticsPanel extends JPanel {
         plot.setSectionPaint(Status.PLANNED, Color.CYAN);
         plot.setSectionPaint(Status.IN_PROGRESS, Color.GREEN);
         plot.setSectionPaint(Status.DONE, Color.RED);
-        JPanel panel = new ChartPanel(pieChart);
-        return panel;
+        return new ChartPanel(pieChart);
     }
 
     private JPanel createCountBarChart(int total, int filtered, int today) {
@@ -65,8 +63,7 @@ public class StatisticsPanel extends JPanel {
         renderer.setDefaultItemLabelsVisible(true);
         plot.setRenderer(renderer);
 
-        JPanel panel = new ChartPanel(countBarChart);
-        return panel;
+        return new ChartPanel(countBarChart);
     }
 
     private JPanel createDurationBarChart(int total, int filtered, int today) {
@@ -83,7 +80,6 @@ public class StatisticsPanel extends JPanel {
         renderer.setDefaultItemLabelsVisible(true);
         plot.setRenderer(renderer);
 
-        JPanel panel = new ChartPanel(durationBarChart);
-        return panel;
+        return new ChartPanel(durationBarChart);
     }
 }
