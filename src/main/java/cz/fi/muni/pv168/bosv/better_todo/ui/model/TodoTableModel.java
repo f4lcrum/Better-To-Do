@@ -1,9 +1,9 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import java.awt.Color;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
-import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
@@ -15,17 +15,14 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     private List<Event> events;
 
     private final List<Column<Event, ?>> columns = List.of(
+            Column.readonly(" ", Color.class, Event::getColour),
             Column.readonly("Name", String.class, Event::getName),
             Column.readonly("Date", LocalDate.class, Event::getDate),
             Column.readonly("Category", Category.class, Event::getCategory),
             Column.readonly("Status", Status.class, Event::getStatus),
-            Column.readonly("Duration", Long.class, this::getDuration),
+            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration),
             Column.readonly("Description", String.class, Event::getDescription)
     );
-
-    private long getDuration(Event event) {
-        return MINUTES.between(event.getStartTime(), event.getEndTime());
-    }
 
     public TodoTableModel() {
         this.events = new ArrayList<>();
@@ -56,6 +53,8 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();
     }
+
+    public void getColumnModel() { return; }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {

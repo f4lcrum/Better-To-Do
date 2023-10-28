@@ -1,10 +1,12 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +16,10 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
     private List<Template> templates;
 
     private final List<Column<Template, ?>> columns = List.of(
+            Column.readonly(" ", Color.class, Template::getColour),
             Column.readonly("Name", String.class, Template::getName),
             Column.readonly("Category", Category.class, Template::getCategory),
-            Column.readonly("Duration", Long.class, this::getDuration),
+            Column.readonly("Duration (minutes)", Long.class, this::getDuration),
             Column.readonly("Description", String.class, Template::getDescription)
     );
 

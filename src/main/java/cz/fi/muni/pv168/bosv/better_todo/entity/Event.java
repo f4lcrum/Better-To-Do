@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.jackson.Jacksonized;
 
+import java.awt.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -40,8 +42,17 @@ public class Event implements Entity {
     @JsonProperty("description")
     private final String description;
 
+    public long getEventDuration() {
+        Duration duration = Duration.between(startTime, endTime);
+        return duration.toMinutes();
+    }
+
     @Override
     public UUID getGuid() {
         return this.id;
+    }
+
+    public Color getColour() {
+        return this.category.getColour();
     }
 }
