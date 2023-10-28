@@ -1,23 +1,17 @@
 package cz.fi.muni.pv168.bosv.better_todo.data;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.*;
+import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.*;
+import static java.time.Month.SEPTEMBER;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
-
-import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.GREEN;
-import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.BLUE;
-import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.RED;
-import static cz.fi.muni.pv168.bosv.better_todo.entity.CategoryColour.PINK;
-
-import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.DONE;
-import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.IN_PROGRESS;
-import static cz.fi.muni.pv168.bosv.better_todo.entity.Status.PLANNED;
-
-import static java.time.Month.SEPTEMBER;
-import static java.time.temporal.ChronoUnit.DAYS;
+import java.awt.Color;
 
 public final class TestDataGenerator {
     private static final Random RAND_GEN = new Random();
@@ -29,18 +23,18 @@ public final class TestDataGenerator {
     private static final List<String> DESCRIPTION = List.of("Dress-code", "Buy groceries beforehand");
 
     private static final List<Category> CATEGORIES = List.of(
-            new Category(UUID.randomUUID(), "Work", GREEN),
-            new Category(UUID.randomUUID(), "Chores", BLUE),
-            new Category(UUID.randomUUID(), "School", RED),
-            new Category(UUID.randomUUID(), "Social events", PINK)
+            new Category(UUID.randomUUID(), "Work", Color.GREEN),
+            new Category(UUID.randomUUID(), "Chores", Color.BLUE),
+            new Category(UUID.randomUUID(), "School", Color.RED),
+            new Category(UUID.randomUUID(), "Social events", Color.PINK)
     );
 
     private static final List<Status> STATUSES = List.of(PLANNED, IN_PROGRESS, DONE);
 
 
-    private static final LocalDateTime EVENT_START = LocalDate.of(2023, SEPTEMBER, 28).atStartOfDay();
+    private static final LocalDate EVENT_START = LocalDate.of(2023, SEPTEMBER, 27);
 
-    private static final LocalDateTime EVENT_END = LocalDate.of(2023, SEPTEMBER, 29).atStartOfDay();
+    private static final LocalDate EVENT_END = LocalDate.of(2023, SEPTEMBER, 29);
 
 
     private final Random random = new Random(2L);
@@ -50,7 +44,9 @@ public final class TestDataGenerator {
         String description = selectRandom(DESCRIPTION);
         Status status = selectRandom(STATUSES);
         Category category = selectRandom(CATEGORIES);
-        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, EVENT_START.toLocalDate(), EVENT_START.toLocalTime(), EVENT_END.toLocalTime(), description);
+        LocalDateTime startDateTime = EVENT_START.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
+        LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
+        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, EVENT_START, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
     }
 
     public List<Event> createTestEvents(int count) {
@@ -64,7 +60,9 @@ public final class TestDataGenerator {
         String name = selectRandom(EVENT_NAMES);
         String description = selectRandom(DESCRIPTION);
         Category category = selectRandom(CATEGORIES);
-        return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, EVENT_START.toLocalTime(), EVENT_END.toLocalTime());
+        LocalDateTime startDateTime = EVENT_START.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
+        LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
+        return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, startDateTime.toLocalTime(), endDateTime.toLocalTime());
     }
 
     public List<Template> createTestTemplates(int count) {
@@ -73,6 +71,7 @@ public final class TestDataGenerator {
                 .limit(count)
                 .toList();
     }
+
     public List<Category> getCategories() {
         return CATEGORIES;
     }

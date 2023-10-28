@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.jackson.Jacksonized;
 
+import java.awt.*;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -38,4 +39,8 @@ public class Template implements Entity {
     public UUID getGuid() {
         return this.id;
     }
+    public Color getColour() {
+        return this.category.getColour();
+    }
+
 }
