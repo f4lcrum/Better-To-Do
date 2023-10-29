@@ -17,7 +17,7 @@ public class SpecialFilterDurationValuesRenderer extends AbstractRenderer<Specia
     }
 
     private static void renderAll(JLabel label) {
-        label.setText("(ALL)");
+        label.setText("ALL DURATIONS");
         label.setFont(label.getFont().deriveFont(Font.ITALIC));
         label.setForeground(Color.GRAY);
     }
