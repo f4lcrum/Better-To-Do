@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NonNull
-abstract class Column<E, T> {
+public abstract class Column<E, T> {
     @Getter
     private final String name;
     private final Class<T> columnType;

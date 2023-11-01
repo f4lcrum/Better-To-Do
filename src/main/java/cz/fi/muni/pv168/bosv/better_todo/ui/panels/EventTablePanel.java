@@ -7,7 +7,6 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.LocalDateRenderer;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.StatusRenderer;
-import lombok.Getter;
 import lombok.NonNull;
 
 import javax.swing.*;
@@ -15,22 +14,17 @@ import java.awt.*;
 import java.time.LocalDate;
 
 @NonNull
-public class EventTablePanel extends JPanel {
-    @Getter
-    private final JTable eventTable;
-
-    private final TodoTableModel todoTableModel;
+public class EventTablePanel extends AbstractEntityResizeableJPanel {
 
     public EventTablePanel(TodoTableModel todoTableModel) {
+        super(todoTableModel);
+        setUpTable();
         setLayout(new BorderLayout());
-        eventTable = setUpTable(todoTableModel);
-        add(new JScrollPane(eventTable), BorderLayout.CENTER);
-
-        this.todoTableModel = todoTableModel;
+        add(new JScrollPane(getTable()), BorderLayout.CENTER);
     }
 
-    private JTable setUpTable(TodoTableModel todoTableModel) {
-        var table = new JTable(todoTableModel);
+    private void setUpTable() {
+        JTable table = getTable();
 
         // Renderers bind
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
@@ -39,7 +33,5 @@ public class EventTablePanel extends JPanel {
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
 
         table.setAutoCreateRowSorter(true);
-
-        return table;
     }
 }
