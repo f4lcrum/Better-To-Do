@@ -14,10 +14,10 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
 import cz.fi.muni.pv168.bosv.better_todo.util.Either;
-import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -39,6 +39,27 @@ public class MainWindow {
     private final CategoryListModel categoryListModel;
     private final JPanel statistics;
 
+
+    // Represents % of the max screen width to scale columns to
+    private final List<Integer> templateTableColumnWidth = List.of(
+            1, // Color
+            20, // Category
+            9 // Duration
+            // Rest - Description
+
+    );
+
+    // Represents % of the max screen width to scale columns to
+    private final List<Integer> eventTableColumnWidth = List.of(
+            1, // Color
+            20, // Event name
+            9, // Start date
+            10, // Category,
+            10, // Status
+            10 // Duration
+            // Rest - Description
+    );
+
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
         var eventTableModel = new TodoTableModel(testDataGenerator.createTestEvents(10));
@@ -50,10 +71,10 @@ public class MainWindow {
         statusListModel = new StatusListModel();
         eventTable = createEventTable(events);
         templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
-        addAction = new AddAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        addAction = new AddAction(eventTablePanel.getTable(), categoryListModel, statusListModel);
         quitAction = new QuitAction();
-        editAction = new EditAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
-        deleteAction = new DeleteAction(eventTablePanel.getEventTable());
+        editAction = new EditAction(eventTablePanel.getTable(), categoryListModel, statusListModel);
+        deleteAction = new DeleteAction(eventTablePanel.getTable());
         exportAction = new ExportAction(eventTablePanel);
         importAction = new ImportAction(eventTablePanel);
         statistics = new StatisticsPanel();
@@ -61,7 +82,7 @@ public class MainWindow {
 
         var rowSorter = new TableRowSorter<>(eventTableModel);
         var eventTableFilter = new EventTableFilter(rowSorter);
-        eventTablePanel.getEventTable().setRowSorter(rowSorter);
+        eventTablePanel.getTable().setRowSorter(rowSorter);
 
         var statisticsPanel = new JScrollPane(statistics);
 
@@ -80,6 +101,10 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.pack();
         frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+
+        // Initial rescale
+        eventTablePanel.rescale(eventTableColumnWidth);
+        templateTablePanel.rescale(templateTableColumnWidth);
     }
 
     private JTable createEventTable(List<Event> employees) {
