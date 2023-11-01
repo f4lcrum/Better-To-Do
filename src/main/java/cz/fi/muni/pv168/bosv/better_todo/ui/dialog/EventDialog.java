@@ -49,8 +49,8 @@ public final class EventDialog extends EntityDialog<Event> {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
 
-        add("Name of event: ", nameField);
-        add("Date of event: ", new JDatePicker(dateModel));
+        add("Name of the event: ", nameField);
+        add("Start date: ", new JDatePicker(dateModel));
         add("Category: ", categoryComboBox);
         add("Status: ", statusComboBox);
         add("Duration: ", duration);
