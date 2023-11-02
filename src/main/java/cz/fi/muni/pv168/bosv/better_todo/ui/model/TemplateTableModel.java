@@ -19,8 +19,7 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
             Column.readonly(" ", Color.class, Template::getColour),
             Column.readonly("Name", String.class, Template::getName),
             Column.readonly("Category", Category.class, Template::getCategory),
-            Column.readonly("Duration (minutes)", Long.class, this::getDuration),
-            Column.readonly("Description", String.class, Template::getDescription)
+            Column.readonly("Duration (minutes)", Long.class, this::getDuration)
     );
 
     private long getDuration(Template template) {
