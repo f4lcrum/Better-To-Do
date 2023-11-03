@@ -44,13 +44,13 @@ public final class AddCategoryAction extends AbstractAction {
         return new Event(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "Fajnový event",
+                "Dinner",
                 Status.PLANNED,
-                new Category(UUID.randomUUID(), "DnB Session", Color.BLACK),
+                new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalDate.now(),
                 LocalTime.now(),
                 LocalTime.now(),
-                "Kalba na Duchonke"
+                "Dinner with friends"
         );
     }
 }

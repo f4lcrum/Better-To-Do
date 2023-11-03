@@ -46,9 +46,9 @@ public final class AddTemplateAction extends AbstractAction {
         return new Template(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "Fajnový event",
-                "Fakt dost hustej even",
-                new Category(UUID.randomUUID(), "DnB Session", Color.BLACK),
+                "Restaurant",
+                "",
+                new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalTime.now(),
                 LocalTime.now()
         );
