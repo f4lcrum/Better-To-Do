@@ -20,8 +20,7 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
             Column.readonly("Date", LocalDate.class, Event::getDate),
             Column.readonly("Category", Category.class, Event::getCategory),
             Column.readonly("Status", Status.class, Event::getStatus),
-            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration),
-            Column.readonly("Description", String.class, Event::getDescription)
+            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration)
     );
 
     public TodoTableModel() {
