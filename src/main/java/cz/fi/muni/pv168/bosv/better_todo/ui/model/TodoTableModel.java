@@ -1,11 +1,11 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.model;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
-import java.awt.Color;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
 
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +17,11 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
 
     private final List<Column<Event, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Event::getColour),
-            Column.readonly("Name", String.class, Event::getName),
-            Column.readonly("Date and Time", LocalDateTime.class, Event::calculateStart),
+            Column.readonly("Name of the event", String.class, Event::getName),
+            Column.readonly("Start date and Time", LocalDateTime.class, Event::calculateStart),
             Column.readonly("Category", Category.class, Event::getCategory),
-            Column.readonly("Status", Status.class, Event::calculateStatus),
-            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration),
-            Column.readonly("Description", String.class, Event::getDescription)
+            Column.readonly("Status", Status.class, Event::getStatus),
+            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration)
     );
 
     public TodoTableModel() {
