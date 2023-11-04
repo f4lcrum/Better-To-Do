@@ -18,6 +18,7 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
 import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
+import org.jfree.chart.plot.PlotRenderingInfo;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class MainWindow {
 
+    private final int STARTDATECOL = 2;
     private final JFrame frame;
     private final JTable eventTable;
     private final JTable templateTable;
@@ -60,7 +62,7 @@ public class MainWindow {
         frame = createFrame();
 
         var rowSorter = new TableRowSorter<>(eventTableModel);
-        rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
+        rowSorter.toggleSortOrder(STARTDATECOL); // 2 == 3rd column is start date, automatically sorts 3rd column
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
         var statisticsPanel = new JScrollPane(statistics);
