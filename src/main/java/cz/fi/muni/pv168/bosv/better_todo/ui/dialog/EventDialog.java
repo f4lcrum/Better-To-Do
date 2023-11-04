@@ -12,6 +12,8 @@ import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
 import javax.swing.*;
+import java.awt.*;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 
 public final class EventDialog extends EntityDialog<Event> {
@@ -20,15 +22,15 @@ public final class EventDialog extends EntityDialog<Event> {
     private final JTextField duration = new JTextField();
     private final JTextField description = new JTextField();
     private final ComboBoxModel<Category> categoryModel;
-    private final ComboBoxModel<Status> statusModel;
+    private final JTextField hourField = new JTextField();
+    private final JTextField minuteField = new JTextField();
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
 
     private final Event event;
 
-    public EventDialog(Event event, ListModel<Category> categoryModel, ListModel<Status> statusModel) {
+    public EventDialog(Event event, ListModel<Category> categoryModel) {
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
-        this.statusModel = new ComboBoxModelAdapter<>(statusModel);
         setValues();
         addFields();
     }
@@ -37,24 +39,23 @@ public final class EventDialog extends EntityDialog<Event> {
         nameField.setText(event.getName());
         duration.setText(String.valueOf(event.getEventDuration()));
         description.setText(event.getDescription());
-        statusModel.setSelectedItem(event.getStatus());
         categoryModel.setSelectedItem(event.getCategory());
         dateModel.setValue(event.getDate());
+        hourField.setText(Integer.toString(event.getStartTime().getHour()));
+        minuteField.setText(Integer.toString(event.getStartTime().getMinute()));
     }
 
     private void addFields() {
-        var statusComboBox = new JComboBox<>(statusModel);
-        statusComboBox.setSelectedItem(new StatusRenderer());
 
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
-
         add("Name of event: ", nameField);
         add("Date of event: ", new JDatePicker(dateModel));
+        add("Start time of event: ", hourField, minuteField);
         add("Category: ", categoryComboBox);
-        add("Status: ", statusComboBox);
         add("Duration: ", duration);
         add("Description: ", description);
+
     }
 
     @Override

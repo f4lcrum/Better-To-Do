@@ -20,6 +20,13 @@ abstract class EntityDialog<E> {
         panel.add(component, "wmin 250lp, grow");
     }
 
+    void add(String labelText, JComponent component1, JComponent component2) {
+        var label = new JLabel(labelText);
+        panel.add(label);
+        panel.add(component1, "wmin 125lp, grow, split 2");
+        panel.add(component2, "wmin 125lp, grow");
+    }
+
     abstract E getEntity();
 
     public Optional<E> show(JComponent parentComponent, String title) {
