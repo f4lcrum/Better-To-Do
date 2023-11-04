@@ -60,9 +60,9 @@ public class MainWindow {
         frame = createFrame();
 
         var rowSorter = new TableRowSorter<>(eventTableModel);
+        rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
-
         var statisticsPanel = new JScrollPane(statistics);
 
         var tabbedPane = new JTabbedPane();
