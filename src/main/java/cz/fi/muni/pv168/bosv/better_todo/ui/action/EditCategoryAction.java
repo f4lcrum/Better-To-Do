@@ -10,35 +10,35 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class EditAction extends AbstractAction {
+public class EditCategoryAction extends AbstractAction {
 
-    private final JTable todoTable;
+    private final JTable categoryTable;
 
     private final ListModel<Category> categoryListModel;
     private final ListModel<Status> statusListModel;
 
-    public EditAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public EditCategoryAction(JTable categoryTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
         super("Edit", Icons.EDIT_ICON);
-        this.todoTable = todoTable;
+        this.categoryTable = categoryTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
-        putValue(SHORT_DESCRIPTION, "Edits selected employee");
+        putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        int[] selectedRows = todoTable.getSelectedRows();
+        int[] selectedRows = categoryTable.getSelectedRows();
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
         }
-        if (todoTable.isEditing()) {
-            todoTable.getCellEditor().cancelCellEditing();
+        if (categoryTable.isEditing()) {
+            categoryTable.getCellEditor().cancelCellEditing();
         }
-        var employeeTableModel = (TodoTableModel) todoTable.getModel();
-        int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
+        var employeeTableModel = (TodoTableModel) categoryTable.getModel();
+        int modelRow = categoryTable.convertRowIndexToModel(selectedRows[0]);
         var employee = employeeTableModel.getEntity(modelRow);
         var dialog = new EventDialog(employee, categoryListModel, statusListModel);
-        dialog.show(todoTable, "Edit Event");
+        dialog.show(categoryTable, "Edit Category");
     }
 }

@@ -16,13 +16,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public final class AddAction extends AbstractAction {
+public final class AddEventAction extends AbstractAction {
     private final JTable todoTable;
 
     private final ListModel<Category> categoryListModel;
     private final ListModel<Status> statusListModel;
 
-    public AddAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
         super("Add", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
@@ -44,13 +44,13 @@ public final class AddAction extends AbstractAction {
         return new Event(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "Fajnový event",
+                "Dinner",
                 Status.PLANNED,
-                new Category(UUID.randomUUID(), "DnB Session", Color.BLACK),
+                new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalDate.now(),
                 LocalTime.now(),
                 LocalTime.now(),
-                "Kalba na Duchonke"
+                "Dinner with parents"
         );
     }
 }

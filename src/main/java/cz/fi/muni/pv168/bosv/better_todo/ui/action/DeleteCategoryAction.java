@@ -9,13 +9,13 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class DeleteAction extends AbstractAction {
+public class DeleteCategoryAction extends AbstractAction {
     private final JTable todoTable;
 
-    public DeleteAction(JTable todoTable) {
+    public DeleteCategoryAction(JTable todoTable) {
         super("Delete", Icons.DELETE_ICON);
         this.todoTable = todoTable;
-        putValue(SHORT_DESCRIPTION, "Deletes selected employees");
+        putValue(SHORT_DESCRIPTION, "Deletes selected category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
     }
