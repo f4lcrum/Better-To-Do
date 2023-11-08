@@ -1,5 +1,6 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.filter.components;
 
+import cz.fi.muni.pv168.bosv.better_todo.ui.filter.matcher.EntityMatcher;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.CustomValuesModelDecorator;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.AbstractRenderer;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.EitherRenderer;
@@ -8,6 +9,10 @@ import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import javax.swing.*;
 import java.util.List;
 import java.util.function.Consumer;
+
+/**
+ * @author Vojtěch Sassmann
+ */
 
 public class FilterListModelBuilder<L extends Enum<L>, R> {
 
