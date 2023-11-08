@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public final class CategoryDialog extends EntityDialog<Event> {
 
     private final JTextField nameField = new JTextField();
-    // private final Color color = new LocalDateModel();
+    private final JColorChooser color = new JColorChooser(Color.BLACK);;
 
 
     private final Category category;
@@ -36,7 +36,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
     private void addFields() {
 
         add("Name of category: ", nameField);
-        // add("Color: ", description);
+        add("Color: ", color);
     }
 
     @Override
