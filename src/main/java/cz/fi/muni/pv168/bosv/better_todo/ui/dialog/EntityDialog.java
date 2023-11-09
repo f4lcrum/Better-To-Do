@@ -20,11 +20,16 @@ abstract class EntityDialog<E> {
         panel.add(component, "wmin 250lp, grow");
     }
 
-    void add(String labelText, JComponent component1, JComponent component2) {
+    void addTime(String labelText, JComponent component1, JComponent component2) {
         var label = new JLabel(labelText);
+        var hours = new JLabel("h");
+        var minutes = new JLabel("m");
         panel.add(label);
-        panel.add(component1, "wmin 125lp, grow, split 2");
-        panel.add(component2, "wmin 125lp, grow");
+        panel.add(component1, "wmin 30, split 4");
+        panel.add(hours);
+        panel.add(component2, "wmin 30");
+        panel.add(minutes);
+
     }
 
     abstract E getEntity();
