@@ -25,8 +25,15 @@ public final class CategoryDialog extends EntityDialog<Event> {
 
     public CategoryDialog(Category category) {
         this.category = category;
-        setValues();
+        // setValues();
         addFields();
+        setHints();
+    }
+
+    private void setHints() {
+        var nameHint = new TextPrompt(String.format("i.e. %s", category.getName()), nameField, TextPrompt.Show.FOCUS_LOST);
+        nameHint.changeAlpha(0.5f);
+        nameHint.changeStyle(Font.ITALIC);
     }
 
     private void setValues() {
@@ -35,7 +42,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
 
     private void addFields() {
 
-        add("Name of category: ", nameField);
+        add("Name of category", nameField, true);
         // add("Color: ", description);
     }
 

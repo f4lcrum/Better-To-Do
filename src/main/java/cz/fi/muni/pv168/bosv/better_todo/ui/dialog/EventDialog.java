@@ -10,15 +10,17 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.StatusRenderer;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
+import org.w3c.dom.Text;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 
 public final class EventDialog extends EntityDialog<Event> {
 
     private final JTextField nameField = new JTextField();
     private final JTextField duration = new JTextField();
-    private final JTextField description = new JTextField();
+    private final JTextArea description = new JTextArea();
     private final ComboBoxModel<Category> categoryModel;
     private final ComboBoxModel<Status> statusModel;
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
@@ -29,8 +31,21 @@ public final class EventDialog extends EntityDialog<Event> {
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.statusModel = new ComboBoxModelAdapter<>(statusModel);
-        setValues();
+        // setValues();
         addFields();
+        setHints();
+    }
+
+    private void setHints() {
+        var nameHint = new TextPrompt(String.format("i.e. %s", event.getName()), nameField, TextPrompt.Show.FOCUS_LOST);
+        var durationHint = new TextPrompt(String.format("i.e. %s", event.getEventDuration()), duration, TextPrompt.Show.FOCUS_LOST);
+        var descriptionHint = new TextPrompt(String.format("i.e. %s", event.getDescription()), description, TextPrompt.Show.FOCUS_LOST);
+        nameHint.changeAlpha(0.5f);
+        durationHint.changeAlpha(0.5f);
+        descriptionHint.changeAlpha(0.5f);
+        nameHint.changeStyle(Font.ITALIC);
+        durationHint.changeStyle(Font.ITALIC);
+        descriptionHint.changeStyle(Font.ITALIC);
     }
 
     private void setValues() {
@@ -45,16 +60,17 @@ public final class EventDialog extends EntityDialog<Event> {
     private void addFields() {
         var statusComboBox = new JComboBox<>(statusModel);
         statusComboBox.setSelectedItem(new StatusRenderer());
-
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
 
-        add("Name of the event: ", nameField);
-        add("Start date: ", new JDatePicker(dateModel));
-        add("Category: ", categoryComboBox);
-        add("Status: ", statusComboBox);
-        add("Duration: ", duration);
-        add("Description: ", description);
+        add("Name of the event", nameField, true);
+        add("Start date", new JDatePicker(dateModel), true);
+        add("Category", categoryComboBox, false);
+        add("Status", statusComboBox, false);
+        add("Duration", duration, true);
+        description.setLineWrap(true);
+        JScrollPane descriptionPane = new JScrollPane(description);
+        addDescritpion("Description", descriptionPane);
     }
 
     @Override
