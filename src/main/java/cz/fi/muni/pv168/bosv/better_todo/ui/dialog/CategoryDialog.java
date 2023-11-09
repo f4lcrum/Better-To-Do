@@ -31,7 +31,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(String.format("i.e. %s", category.getName()), nameField, TextPrompt.Show.FOCUS_LOST);
+        var nameHint = new TextPrompt(category.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
         nameHint.changeAlpha(0.5f);
         nameHint.changeStyle(Font.ITALIC);
     }

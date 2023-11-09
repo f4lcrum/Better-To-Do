@@ -39,9 +39,9 @@ public final class TemplateDialog extends EntityDialog<Event> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(String.format("i.e. %s", template.getName()), nameField, TextPrompt.Show.FOCUS_LOST);
-        var durationHint = new TextPrompt(String.format("i.e. %s", template.getTemplateDuration()), duration, TextPrompt.Show.FOCUS_LOST);
-        var descriptionHint = new TextPrompt(String.format("i.e. %s", template.getDescription()), description, TextPrompt.Show.FOCUS_LOST);
+        var nameHint = new TextPrompt(template.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
+        var durationHint = new TextPrompt(String.format("%s minutes", template.getTemplateDuration()), duration, TextPrompt.Show.FOCUS_LOST);
+        var descriptionHint = new TextPrompt(template.getDescription(), description, TextPrompt.Show.FOCUS_LOST);
         nameHint.changeAlpha(0.5f);
         durationHint.changeAlpha(0.5f);
         descriptionHint.changeAlpha(0.5f);

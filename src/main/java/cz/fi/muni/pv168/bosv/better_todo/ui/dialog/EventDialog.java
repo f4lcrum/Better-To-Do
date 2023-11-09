@@ -37,9 +37,9 @@ public final class EventDialog extends EntityDialog<Event> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(String.format("i.e. %s", event.getName()), nameField, TextPrompt.Show.FOCUS_LOST);
-        var durationHint = new TextPrompt(String.format("i.e. %s", event.getEventDuration()), duration, TextPrompt.Show.FOCUS_LOST);
-        var descriptionHint = new TextPrompt(String.format("i.e. %s", event.getDescription()), description, TextPrompt.Show.FOCUS_LOST);
+        var nameHint = new TextPrompt(event.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
+        var durationHint = new TextPrompt(String.format("%s minutes", event.getEventDuration()), duration, TextPrompt.Show.FOCUS_LOST);
+        var descriptionHint = new TextPrompt(event.getDescription(), description, TextPrompt.Show.FOCUS_LOST);
         nameHint.changeAlpha(0.5f);
         durationHint.changeAlpha(0.5f);
         descriptionHint.changeAlpha(0.5f);
