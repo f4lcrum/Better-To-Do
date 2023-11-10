@@ -27,7 +27,7 @@ import java.util.List;
 
 public class MainWindow {
 
-    private final int STARTDATECOL = 2;
+    private final int START_DATE_COL = 2;
     private final JFrame frame;
     private final JTable eventTable;
     private final JTable templateTable;
@@ -62,7 +62,7 @@ public class MainWindow {
         frame = createFrame();
 
         var rowSorter = new TableRowSorter<>(eventTableModel);
-        rowSorter.toggleSortOrder(STARTDATECOL); // 2 == 3rd column is start date, automatically sorts 3rd column
+        rowSorter.toggleSortOrder(START_DATE_COL); // 2 == 3rd column is start date, automatically sorts 3rd column
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
         var statisticsPanel = new JScrollPane(statistics);
