@@ -9,10 +9,8 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterDurationValues;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterStatusValues;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.StatusListModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.*;
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
@@ -53,6 +51,8 @@ public class MainWindow {
         var eventTablePanel = new EventTablePanel(eventTableModel);
         var templateTableModel = new TemplateTableModel(testDataGenerator.createTestTemplates(10));
         var templateTablePanel = new TemplateTablePanel(templateTableModel);
+        var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
+        var categoryTablePanel = new CategoryTablePanel(categoryTableModel);
         var events = testDataGenerator.createTestEvents(10);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();
@@ -64,8 +64,8 @@ public class MainWindow {
         editAction = new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
         deleteAction = new DeleteEventAction(eventTablePanel.getEventTable());
 
-        addCategoryAction = new AddCategoryAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
-        editCategoryAction = new EditCategoryAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        addCategoryAction = new AddCategoryAction(categoryTablePanel.getEventTable());
+        editCategoryAction = new EditCategoryAction(categoryTablePanel.getEventTable());
         deleteCategoryAction = new DeleteCategoryAction(eventTablePanel.getEventTable());
 
         addTemplateAction = new AddTemplateAction(templateTablePanel.getEventTable(), categoryListModel, statusListModel);
@@ -85,6 +85,7 @@ public class MainWindow {
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
+        tabbedPane.addTab("Categories", categoryTablePanel);
 
         // Filters
         var statusFilter = createStatusFilter(eventTableFilter);
