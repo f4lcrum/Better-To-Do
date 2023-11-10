@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.entity.*;
 import cz.fi.muni.pv168.bosv.better_todo.ui.action.*;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.components.FilterComboboxBuilder;
+import cz.fi.muni.pv168.bosv.better_todo.ui.filter.components.FilterListModelBuilder;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterDurationValues;
@@ -19,6 +20,7 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 import org.jfree.chart.plot.PlotRenderingInfo;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
@@ -91,15 +93,15 @@ public class MainWindow {
         tabbedPane.addTab("Statistics", statisticsPanel);
 
         // Filters
-        var statusFilter = createStatusFilter(eventTableFilter);
-        var durationFilter = createDurationFilter(eventTableFilter);
-        var categoryFilter = createCategoryFilter(eventTableFilter, categoryListModel);
+        var statusFilter = createFilterPanel(createStatusFilter(eventTableFilter, statusListModel), "Status: ");
+        var durationFilter = createFilterPanel(createDurationFilter(eventTableFilter), "Duration: ");
+        var categoryFilter = createFilterPanel(createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
 
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
-        frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(statusFilter, categoryFilter, durationFilter), BorderLayout.BEFORE_FIRST_LINE);
     }
 
     private JTable createEventTable(List<Event> employees) {
@@ -155,14 +157,9 @@ public class MainWindow {
     private JToolBar createToolbar(Component... components) {
         var toolbar = new JToolBar();
 
-        var button = new JButton("Events");
-        button.setPreferredSize(new Dimension(50, 50));
-        // TODO: change view: button.setActionCommand();
-        toolbar.add(button);
-        toolbar.addSeparator();
-
         for (var component : components) {
             toolbar.add(component);
+            toolbar.addSeparator(new Dimension(50,10));
         }
         return toolbar;
     }
@@ -173,6 +170,13 @@ public class MainWindow {
         return frame;
     }
 
+    private static JPanel createFilterPanel( Component filter, String label) {
+        JPanel statusPanel = new JPanel(new BorderLayout());
+        JLabel filterLabel = new JLabel(label);
+        statusPanel.add(filterLabel, BorderLayout.NORTH);
+        statusPanel.add(filter, BorderLayout.SOUTH);
+        return statusPanel;
+    }
     private static JComboBox<Either<SpecialFilterDurationValues, EventDuration>> createDurationFilter(
             EventTableFilter eventTableFilter) {
         return FilterComboboxBuilder.create(SpecialFilterDurationValues.class, EventDuration.values())
@@ -183,20 +187,22 @@ public class MainWindow {
                 .build();
     }
 
-    private static JComboBox<Either<SpecialFilterStatusValues, Status>> createStatusFilter(
-            EventTableFilter eventTableFilter) {
-        return FilterComboboxBuilder.create(SpecialFilterStatusValues.class, Status.values())
-                .setSelectedItem(SpecialFilterStatusValues.ALL)
+    private static JList<Either<SpecialFilterStatusValues, Status>> createStatusFilter(
+            EventTableFilter eventTableFilter, StatusListModel statusListModel) {
+        return FilterListModelBuilder.create(SpecialFilterStatusValues.class, statusListModel, "Status")
+                .setSelectedIndex(0)
+                .setVisibleRowsCount(3)
                 .setSpecialValuesRenderer(new SpecialFilterStatusRenderer())
                 .setValuesRenderer(new StatusRenderer())
                 .setFilter(eventTableFilter::filterStatus)
                 .build();
     }
 
-    private static JComboBox<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
+    private static JList<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
             EventTableFilter eventTableFilter, CategoryListModel categoryListModel) {
-        return FilterComboboxBuilder.create(SpecialFilterCategoryValues.class, categoryListModel)
-                .setSelectedItem(SpecialFilterCategoryValues.ALL)
+        return FilterListModelBuilder.create(SpecialFilterCategoryValues.class, categoryListModel, "Category")
+                .setSelectedIndex(0)
+                .setVisibleRowsCount(3)
                 .setSpecialValuesRenderer(new SpecialFilterCategoryRenderer())
                 .setValuesRenderer(new CategoryRenderer())
                 .setFilter(eventTableFilter::filterCategory)
