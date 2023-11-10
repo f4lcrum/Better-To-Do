@@ -9,10 +9,8 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterDurationValues;
 import cz.fi.muni.pv168.bosv.better_todo.ui.filter.values.SpecialFilterStatusValues;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.StatusListModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
-import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.*;
+import cz.fi.muni.pv168.bosv.better_todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
@@ -35,6 +33,13 @@ public class MainWindow {
     private final Action quitAction;
     private final Action editAction;
     private final Action deleteAction;
+    private final Action addTemplateAction;
+    private final Action editTemplateAction;
+    private final Action deleteTemplateAction;
+    private final Action addCategoryAction;
+    private final Action editCategoryAction;
+    private final Action deleteCategoryAction;
+
     private final Action exportAction;
     private final Action importAction;
     private final StatusListModel statusListModel;
@@ -47,15 +52,27 @@ public class MainWindow {
         var eventTablePanel = new EventTablePanel(eventTableModel);
         var templateTableModel = new TemplateTableModel(testDataGenerator.createTestTemplates(10));
         var templateTablePanel = new TemplateTablePanel(templateTableModel);
+        var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
+        var categoryTablePanel = new CategoryTablePanel(categoryTableModel);
         var events = testDataGenerator.createTestEvents(10);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();
         eventTable = createEventTable(events);
         templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
-        addAction = new AddAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+
+        addAction = new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
         quitAction = new QuitAction();
-        editAction = new EditAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
-        deleteAction = new DeleteAction(eventTablePanel.getEventTable());
+        editAction = new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        deleteAction = new DeleteEventAction(eventTablePanel.getEventTable());
+
+        addCategoryAction = new AddCategoryAction(categoryTablePanel.getEventTable());
+        editCategoryAction = new EditCategoryAction(categoryTablePanel.getEventTable());
+        deleteCategoryAction = new DeleteCategoryAction(eventTablePanel.getEventTable());
+
+        addTemplateAction = new AddTemplateAction(templateTablePanel.getEventTable(), categoryListModel, statusListModel);
+        editTemplateAction = new EditTemplateAction(templateTablePanel.getEventTable(), categoryListModel, statusListModel);
+        deleteTemplateAction = new DeleteTemplateAction(templateTablePanel.getEventTable());
+
         exportAction = new ExportAction(eventTablePanel);
         importAction = new ImportAction(eventTablePanel);
         statistics = new StatisticsPanel();
@@ -70,6 +87,7 @@ public class MainWindow {
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
+        tabbedPane.addTab("Categories", categoryTablePanel);
         tabbedPane.addTab("Statistics", statisticsPanel);
 
         // Filters
@@ -115,14 +133,14 @@ public class MainWindow {
         eventMenu.add(deleteAction);
 
         var categoryMenu = new JMenu("Category");
-        categoryMenu.add(addAction);
-        categoryMenu.add(editAction);
-        categoryMenu.add(deleteAction);
+        categoryMenu.add(addCategoryAction);
+        categoryMenu.add(editCategoryAction);
+        categoryMenu.add(deleteCategoryAction);
 
         var templateMenu = new JMenu("Template");
-        templateMenu.add(addAction);
-        templateMenu.add(editAction);
-        templateMenu.add(deleteAction);
+        templateMenu.add(addTemplateAction);
+        templateMenu.add(editTemplateAction);
+        templateMenu.add(deleteTemplateAction);
 
         // var statisticsMenu = new JMenu("Statistics");
 

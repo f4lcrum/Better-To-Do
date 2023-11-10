@@ -10,19 +10,19 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class EditAction extends AbstractAction {
+public class EditEventAction extends AbstractAction {
 
     private final JTable todoTable;
 
     private final ListModel<Category> categoryListModel;
     private final ListModel<Status> statusListModel;
 
-    public EditAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
         super("Edit", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
-        putValue(SHORT_DESCRIPTION, "Edits selected employee");
+        putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
     }
@@ -38,7 +38,7 @@ public class EditAction extends AbstractAction {
         var employeeTableModel = (TodoTableModel) todoTable.getModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var employee = employeeTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel, statusListModel);
+        var dialog = new EventDialog(employee, categoryListModel);
         dialog.show(todoTable, "Edit Event");
     }
 }
