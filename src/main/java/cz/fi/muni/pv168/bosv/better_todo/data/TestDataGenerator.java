@@ -36,6 +36,9 @@ public final class TestDataGenerator {
 
     private static final LocalDate EVENT_END = LocalDate.of(2023, SEPTEMBER, 29);
 
+    private static final List<String> CATEGORY_NAMES = List.of("Social", "Chores", "Shopping", "Work", "School");
+
+    private static final List<Color> CATEGORY_COLORS = List.of(Color.BLUE, Color.RED, Color.GREEN, Color.PINK);
 
     private final Random random = new Random(2L);
 
@@ -63,6 +66,18 @@ public final class TestDataGenerator {
         LocalDateTime startDateTime = EVENT_START.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
         return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, startDateTime.toLocalTime(), endDateTime.toLocalTime());
+    }
+
+    public Category createTestCategory() {
+        Color color = selectRandom(CATEGORY_COLORS);
+        String name = selectRandom(CATEGORY_NAMES);
+        return new Category(UUID.randomUUID(), name, color);
+    }
+    public List<Category> createTestCategories(int count) {
+        return Stream
+                .generate(this::createTestCategory)
+                .limit(count)
+                .toList();
     }
 
     public List<Template> createTestTemplates(int count) {
