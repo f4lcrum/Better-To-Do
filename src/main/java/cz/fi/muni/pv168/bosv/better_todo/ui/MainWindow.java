@@ -20,6 +20,7 @@ import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
@@ -80,12 +81,10 @@ public class MainWindow {
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
 
-        var statisticsPanel = new JScrollPane(statistics);
 
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
-        tabbedPane.addTab("Statistics", statisticsPanel);
 
         // Filters
         var statusFilter = createStatusFilter(eventTableFilter);
@@ -97,6 +96,7 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.pack();
         frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(statistics, BorderLayout.SOUTH);
     }
 
     private JTable createEventTable(List<Event> employees) {
