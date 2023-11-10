@@ -36,7 +36,7 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var todoTableModel = (TodoTableModel) todoTable.getModel();
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, statusListModel);
+        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel);
         dialog.show(todoTable, "Add Event");
     }
 

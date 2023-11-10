@@ -2,7 +2,9 @@ package cz.fi.muni.pv168.bosv.better_todo.ui.action;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.bosv.better_todo.ui.dialog.EventDialog;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.resources.Icons;
 
@@ -14,14 +16,10 @@ public class EditCategoryAction extends AbstractAction {
 
     private final JTable categoryTable;
 
-    private final ListModel<Category> categoryListModel;
-    private final ListModel<Status> statusListModel;
 
     public EditCategoryAction(JTable categoryTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
         super("Edit category", Icons.EDIT_ICON);
         this.categoryTable = categoryTable;
-        this.categoryListModel = categoryListModel;
-        this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -36,10 +34,10 @@ public class EditCategoryAction extends AbstractAction {
         if (categoryTable.isEditing()) {
             categoryTable.getCellEditor().cancelCellEditing();
         }
-        var employeeTableModel = (TodoTableModel) categoryTable.getModel();
+        var categoryTableModel = (CategoryTableModel) categoryTable.getModel();
         int modelRow = categoryTable.convertRowIndexToModel(selectedRows[0]);
-        var employee = employeeTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel, statusListModel);
+        var category = categoryTableModel.getEntity(modelRow);
+        var dialog = new CategoryDialog(category);
         dialog.show(categoryTable, "Edit Category");
     }
 }

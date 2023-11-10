@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class DeleteCategoryAction extends AbstractAction {
-    private final JTable todoTable;
+    private final JTable categoryTable;
 
     public DeleteCategoryAction(JTable todoTable) {
         super("Delete category", Icons.DELETE_ICON);
@@ -23,10 +23,11 @@ public class DeleteCategoryAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (TodoTableModel) todoTable.getModel();
-        Arrays.stream(todoTable.getSelectedRows())
+        // Check if there is no existing model of such category
+        var categoryTableModel = (TodoTableModel) categoryTable.getModel();
+        Arrays.stream(categoryTable.getSelectedRows())
                 // view row index must be converted to model row index
-                .map(todoTable::convertRowIndexToModel)
+                .map(categoryTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
