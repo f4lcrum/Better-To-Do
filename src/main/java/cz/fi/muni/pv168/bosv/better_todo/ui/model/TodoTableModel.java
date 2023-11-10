@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
     private final List<Column<Event, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Event::getColour),
             Column.readonly("Name of the event", String.class, Event::getName),
-            Column.readonly("Start date", LocalDate.class, Event::getDate),
+            Column.readonly("Start date and Time", LocalDateTime.class, Event::calculateStart),
             Column.readonly("Category", Category.class, Event::getCategory),
             Column.readonly("Status", Status.class, Event::getStatus),
             Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration)
