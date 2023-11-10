@@ -31,6 +31,16 @@ abstract class EntityDialog<E> {
         var label = new JLabel(String.format("%s: ", labelText));
         panel.add(label);
         panel.add(component, "wmin 250lp, hmin 100lp, grow");
+
+    void addTime(String labelText, JComponent component1, JComponent component2) {
+        var label = new JLabel(labelText);
+        var hours = new JLabel("h");
+        var minutes = new JLabel("m");
+        panel.add(label);
+        panel.add(component1, "wmin 30, split 4");
+        panel.add(hours);
+        panel.add(component2, "wmin 30");
+        panel.add(minutes);
     }
 
     abstract E getEntity();

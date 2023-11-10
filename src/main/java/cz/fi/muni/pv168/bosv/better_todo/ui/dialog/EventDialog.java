@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 
 public final class EventDialog extends EntityDialog<Event> {
@@ -22,15 +23,15 @@ public final class EventDialog extends EntityDialog<Event> {
     private final JTextField duration = new JTextField();
     private final JTextArea description = new JTextArea();
     private final ComboBoxModel<Category> categoryModel;
-    private final ComboBoxModel<Status> statusModel;
+    private final JTextField hourField = new JTextField();
+    private final JTextField minuteField = new JTextField();
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
 
     private final Event event;
 
-    public EventDialog(Event event, ListModel<Category> categoryModel, ListModel<Status> statusModel) {
+    public EventDialog(Event event, ListModel<Category> categoryModel) {
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
-        this.statusModel = new ComboBoxModelAdapter<>(statusModel);
         // setValues();
         addFields();
         setHints();
@@ -52,21 +53,20 @@ public final class EventDialog extends EntityDialog<Event> {
         nameField.setText(event.getName());
         duration.setText(String.valueOf(event.getEventDuration()));
         description.setText(event.getDescription());
-        statusModel.setSelectedItem(event.getStatus());
         categoryModel.setSelectedItem(event.getCategory());
         dateModel.setValue(event.getDate());
+        hourField.setText(Integer.toString(event.getStartTime().getHour()));
+        minuteField.setText(Integer.toString(event.getStartTime().getMinute()));
     }
 
     private void addFields() {
-        var statusComboBox = new JComboBox<>(statusModel);
-        statusComboBox.setSelectedItem(new StatusRenderer());
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
 
         add("Name of the event", nameField, true);
-        add("Start date", new JDatePicker(dateModel), true);
+        add("Start date of the event", new JDatePicker(dateModel), true);
+        addTime("Start time of event: ", hourField, minuteField);
         add("Category", categoryComboBox, false);
-        add("Status", statusComboBox, false);
         add("Duration", duration, true);
         description.setLineWrap(true);
         JScrollPane descriptionPane = new JScrollPane(description);

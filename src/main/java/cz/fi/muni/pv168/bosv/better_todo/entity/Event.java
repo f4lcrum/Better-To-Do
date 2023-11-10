@@ -10,6 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -45,6 +46,22 @@ public class Event implements Entity {
     public long getEventDuration() {
         Duration duration = Duration.between(startTime, endTime);
         return duration.toMinutes();
+    }
+
+    public LocalDateTime calculateStart() {
+        return LocalDateTime.of(date, startTime);
+    }
+
+    public Status calculateStatus() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startDateTime = calculateStart();
+        if (now.isBefore(startDateTime)) {
+            return Status.PLANNED;
+        }
+        if (now.isBefore(startDateTime.plusMinutes(getEventDuration()))) {
+            return Status.IN_PROGRESS;
+        }
+        return Status.DONE;
     }
 
     @Override

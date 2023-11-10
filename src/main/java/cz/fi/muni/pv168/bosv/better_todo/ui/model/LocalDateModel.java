@@ -20,3 +20,4 @@ public class LocalDateModel extends AbstractDateModel<LocalDate> implements Date
         return from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 }
+
