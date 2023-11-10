@@ -18,13 +18,14 @@ public class EditCategoryAction extends AbstractAction {
     private final ListModel<Status> statusListModel;
 
     public EditCategoryAction(JTable categoryTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit category", Icons.EDIT_ICON);
         this.categoryTable = categoryTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

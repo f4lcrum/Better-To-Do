@@ -23,13 +23,14 @@ public final class AddCategoryAction extends AbstractAction {
     private final ListModel<Status> statusListModel;
 
     public AddCategoryAction(JTable categoryTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
-        super("Add", Icons.ADD_ICON);
+        super("Add category", Icons.ADD_ICON);
         this.categoryTable = categoryTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Adds new category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+        putValue(Action.SMALL_ICON, Icons.ADD_ICON);
     }
 
     @Override

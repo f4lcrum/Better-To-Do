@@ -16,16 +16,22 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
+import cz.fi.muni.pv168.bosv.better_todo.ui.resources.Icons;
 import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
 public class MainWindow {
 
+    private final int EVENT_TAB = 0;
+    private final int TEMPLATE_TAB = 1;
+    private final int CATEGORY_TAB = 2;
     private final JFrame frame;
     private final JTable eventTable;
     private final JTable templateTable;
@@ -82,10 +88,41 @@ public class MainWindow {
 
         var statisticsPanel = new JScrollPane(statistics);
 
+        var addButton = new JButton(Icons.ADD_ICON);
+        var editButton = new JButton(Icons.EDIT_ICON);
+        var deleteButton = new JButton(Icons.DELETE_ICON);
+        addButton.setAction(addAction);
+        editButton.setAction(editAction);
+        deleteButton.setAction(deleteAction);
+
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Statistics", statisticsPanel);
+        tabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                switch (tabbedPane.getSelectedIndex()) {
+                    case EVENT_TAB:
+                        addButton.setAction(addAction);
+                        editButton.setAction(editAction);
+                        deleteButton.setAction(deleteAction);
+                        break;
+                    case TEMPLATE_TAB:
+                        addButton.setAction(addTemplateAction);
+                        editButton.setAction(editTemplateAction);
+                        deleteButton.setAction(deleteTemplateAction);
+                        break;
+                    case CATEGORY_TAB:
+                        addButton.setAction(addCategoryAction);
+                        editButton.setAction(editCategoryAction);
+                        deleteButton.setAction(deleteCategoryAction);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
 
         // Filters
         var statusFilter = createStatusFilter(eventTableFilter);
@@ -93,10 +130,11 @@ public class MainWindow {
         var categoryFilter = createCategoryFilter(eventTableFilter, categoryListModel);
 
 
+
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
-        frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
     }
 
     private JTable createEventTable(List<Event> employees) {
@@ -149,15 +187,13 @@ public class MainWindow {
         return menuBar;
     }
 
-    private JToolBar createToolbar(Component... components) {
+    private JToolBar createToolbar(JButton addButton, JButton editButton,
+                                   JButton deleteButton, Component... components) {
         var toolbar = new JToolBar();
-
-        var button = new JButton("Events");
-        button.setPreferredSize(new Dimension(50, 50));
-        // TODO: change view: button.setActionCommand();
-        toolbar.add(button);
+        toolbar.add(addButton);
+        toolbar.add(editButton);
+        toolbar.add(deleteButton);
         toolbar.addSeparator();
-
         for (var component : components) {
             toolbar.add(component);
         }

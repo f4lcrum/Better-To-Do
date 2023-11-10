@@ -18,13 +18,14 @@ public class EditEventAction extends AbstractAction {
     private final ListModel<Status> statusListModel;
 
     public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -25,13 +25,14 @@ public final class AddTemplateAction extends AbstractAction {
     private final ListModel<Status> statusListModel;
 
     public AddTemplateAction(JTable templateTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
-        super("Add", Icons.ADD_ICON);
+        super("Add template", Icons.ADD_ICON);
         this.templateTable = templateTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Adds new template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+        putValue(Action.SMALL_ICON, Icons.ADD_ICON);
     }
 
     @Override
