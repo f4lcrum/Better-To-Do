@@ -13,6 +13,7 @@ import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
@@ -21,7 +22,7 @@ public final class TemplateDialog extends EntityDialog<Event> {
 
     private final JTextField nameField = new JTextField();
     private final JTextField duration = new JTextField();
-    private final JTextField description = new JTextField();
+    private final JTextArea description = new JTextArea();
     private final ComboBoxModel<Category> categoryModel;
     private final ComboBoxModel<Status> statusModel;
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
@@ -32,8 +33,21 @@ public final class TemplateDialog extends EntityDialog<Event> {
         this.template = template;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.statusModel = new ComboBoxModelAdapter<>(statusModel);
-        setValues();
+        // setValues();
         addFields();
+        setHints();
+    }
+
+    private void setHints() {
+        var nameHint = new TextPrompt(template.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
+        var durationHint = new TextPrompt(String.format("%s minutes", template.getTemplateDuration()), duration, TextPrompt.Show.FOCUS_LOST);
+        var descriptionHint = new TextPrompt(template.getDescription(), description, TextPrompt.Show.FOCUS_LOST);
+        nameHint.changeAlpha(0.5f);
+        durationHint.changeAlpha(0.5f);
+        descriptionHint.changeAlpha(0.5f);
+        nameHint.changeStyle(Font.ITALIC);
+        durationHint.changeStyle(Font.ITALIC);
+        descriptionHint.changeStyle(Font.ITALIC);
     }
 
     private void setValues() {
@@ -50,12 +64,14 @@ public final class TemplateDialog extends EntityDialog<Event> {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
 
-        add("Name of template: ", nameField);
-        add("Date of event: ", new JDatePicker(dateModel));
-        add("Category: ", categoryComboBox);
-        add("Status: ", statusComboBox);
-        add("Duration: ", duration);
-        add("Description: ", description);
+        add("Name of template", nameField, true);
+        add("Date of event", new JDatePicker(dateModel), true);
+        add("Category", categoryComboBox, false);
+        add("Status", statusComboBox, false);
+        add("Duration", duration, true);
+        description.setLineWrap(true);
+        JScrollPane descriptionPane = new JScrollPane(description);
+        addDescritpion("Description", descriptionPane);
     }
 
     @Override

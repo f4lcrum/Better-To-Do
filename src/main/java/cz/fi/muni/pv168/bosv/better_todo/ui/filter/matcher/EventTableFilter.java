@@ -15,6 +15,8 @@ import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import javax.swing.table.TableRowSorter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -38,11 +40,13 @@ public final class EventTableFilter {
         employeeCompoundMatcher.setInBetweenTimeMatcher(new EventInBetweenTimeMatcher(from, to));
     }
 
-    public void filterStatus(Either<SpecialFilterStatusValues, Status> selectedItems) {
-        selectedItems.apply(
-                l -> employeeCompoundMatcher.setStatusMatcher(l.getMatcher()),
-                r -> employeeCompoundMatcher.setStatusMatcher(new EventStatusMatcher(r))
-        );
+    public void filterStatus(List<Either<SpecialFilterStatusValues, Status>> selectedItems) {
+        List<EntityMatcher<Event>> matchers = new ArrayList<>();
+        selectedItems.forEach(either -> either.apply(
+                l -> matchers.add(l.getMatcher()),
+                r -> matchers.add(new EventStatusMatcher(r))
+        ));
+        employeeCompoundMatcher.setStatusMatcher(new EventStatusCompoundMatcher(matchers));
     }
 
     public void filterDuration(Either<SpecialFilterDurationValues, EventDuration> selectedItems) {
@@ -52,11 +56,13 @@ public final class EventTableFilter {
         );
     }
 
-    public void filterCategory(Either<SpecialFilterCategoryValues, Category> selectedItems) {
-        selectedItems.apply(
-                l -> employeeCompoundMatcher.setCategoryMatcher(l.getMatcher()),
-                r -> employeeCompoundMatcher.setCategoryMatcher(new EventCategoryMatcher(r))
-        );
+    public void filterCategory(List<Either<SpecialFilterCategoryValues, Category>> selectedItems) {
+        List<EntityMatcher<Event>> matchers = new ArrayList<>();
+        selectedItems.forEach(either -> either.apply(
+                l -> matchers.add(l.getMatcher()),
+                r -> matchers.add(new EventCategoryMatcher(r))
+        ));
+        employeeCompoundMatcher.setCategoryMatcher(new EventCategoryCompoundMatcher(matchers));
     }
 
     /**

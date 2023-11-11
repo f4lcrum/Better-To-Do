@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.extern.jackson.Jacksonized;
 
 import java.awt.*;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -34,6 +35,11 @@ public class Template implements Entity {
     private final LocalTime startTime;
     @JsonProperty("endTime")
     private final LocalTime endTime;
+
+    public long getTemplateDuration() {
+        Duration duration = Duration.between(startTime, endTime);
+        return duration.toMinutes();
+    }
 
     @Override
     public UUID getGuid() {
