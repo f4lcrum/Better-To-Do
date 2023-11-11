@@ -12,9 +12,9 @@ import java.util.Comparator;
 public class DeleteCategoryAction extends AbstractAction {
     private final JTable categoryTable;
 
-    public DeleteCategoryAction(JTable todoTable) {
+    public DeleteCategoryAction(JTable categoryTable) {
         super("Delete category", Icons.DELETE_ICON);
-        this.todoTable = todoTable;
+        this.categoryTable = categoryTable;
         putValue(SHORT_DESCRIPTION, "Deletes selected category");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
