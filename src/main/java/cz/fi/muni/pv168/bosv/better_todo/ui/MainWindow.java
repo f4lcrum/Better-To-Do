@@ -89,7 +89,6 @@ public class MainWindow {
         rowSorter.toggleSortOrder(START_DATE_COL); // 2 == 3rd column is start date, automatically sorts 3rd column
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
-        var statisticsPanel = new JScrollPane(statistics);
 
         var addButton = new JButton(Icons.ADD_ICON);
         var editButton = new JButton(Icons.EDIT_ICON);
@@ -102,7 +101,6 @@ public class MainWindow {
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
-        tabbedPane.addTab("Statistics", statisticsPanel);
         tabbedPane.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 switch (tabbedPane.getSelectedIndex()) {
@@ -127,7 +125,6 @@ public class MainWindow {
             }
         });
 
-
         // Filters
         var statusFilter = createFilterPanel(createStatusFilter(eventTableFilter, statusListModel), "Status: ");
         var durationFilter = createFilterPanel(createDurationFilter(eventTableFilter), "Duration: ");
@@ -139,6 +136,7 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.pack();
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(statistics, BorderLayout.SOUTH);
     }
 
     private JTable createEventTable(List<Event> employees) {
