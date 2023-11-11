@@ -28,6 +28,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
+import static cz.fi.muni.pv168.bosv.better_todo.ui.filter.components.FilterPanel.*;
+
 public class MainWindow {
     private final int EVENT_TAB = 0;
     private final int TEMPLATE_TAB = 1;
@@ -101,20 +103,35 @@ public class MainWindow {
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
+
+        // Filters
+        var statusFilter = createFilterPanel(createStatusFilter(eventTableFilter, statusListModel), "Status: ");
+        var durationFilter = createFilterPanel(createDurationFilter(eventTableFilter), "Duration: ");
+        var categoryFilter = createFilterPanel(createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
+
         tabbedPane.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 switch (tabbedPane.getSelectedIndex()) {
                     case EVENT_TAB:
+                        setPanelEnabled(statusFilter, true);
+                        setPanelEnabled(durationFilter, true);
+                        setPanelEnabled(categoryFilter, true);
                         addButton.setAction(addAction);
                         editButton.setAction(editAction);
                         deleteButton.setAction(deleteAction);
                         break;
                     case TEMPLATE_TAB:
+                        setPanelEnabled(statusFilter, false);
+                        setPanelEnabled(durationFilter, false);
+                        setPanelEnabled(categoryFilter, false);
                         addButton.setAction(addTemplateAction);
                         editButton.setAction(editTemplateAction);
                         deleteButton.setAction(deleteTemplateAction);
                         break;
                     case CATEGORY_TAB:
+                        setPanelEnabled(statusFilter, false);
+                        setPanelEnabled(durationFilter, false);
+                        setPanelEnabled(categoryFilter, false);
                         addButton.setAction(addCategoryAction);
                         editButton.setAction(editCategoryAction);
                         deleteButton.setAction(deleteCategoryAction);
@@ -125,18 +142,23 @@ public class MainWindow {
             }
         });
 
-        // Filters
-        var statusFilter = createFilterPanel(createStatusFilter(eventTableFilter, statusListModel), "Status: ");
-        var durationFilter = createFilterPanel(createDurationFilter(eventTableFilter), "Duration: ");
-        var categoryFilter = createFilterPanel(createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
-
-
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(statistics, BorderLayout.SOUTH);
+    }
+
+    void setPanelEnabled(JPanel panel, Boolean isEnabled) {
+        panel.setEnabled(isEnabled);
+        Component[] components = panel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                setPanelEnabled((JPanel) component, isEnabled);
+            }
+            component.setEnabled(isEnabled);
+        }
     }
 
     private JTable createEventTable(List<Event> employees) {
@@ -179,8 +201,6 @@ public class MainWindow {
         templateMenu.add(editTemplateAction);
         templateMenu.add(deleteTemplateAction);
 
-        // var statisticsMenu = new JMenu("Statistics");
-
         menuBar.add(fileMenu);
         menuBar.add(eventMenu);
         menuBar.add(categoryMenu);
@@ -206,45 +226,7 @@ public class MainWindow {
     private JFrame createFrame() {
         var frame = new JFrame("TO-DO");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         return frame;
-    }
-
-    private static JPanel createFilterPanel( Component filter, String label) {
-        JPanel statusPanel = new JPanel(new BorderLayout());
-        JLabel filterLabel = new JLabel(label);
-        statusPanel.add(filterLabel, BorderLayout.NORTH);
-        statusPanel.add(filter, BorderLayout.SOUTH);
-        return statusPanel;
-    }
-    private static JComboBox<Either<SpecialFilterDurationValues, EventDuration>> createDurationFilter(
-            EventTableFilter eventTableFilter) {
-        return FilterComboboxBuilder.create(SpecialFilterDurationValues.class, EventDuration.values())
-                .setSelectedItem(SpecialFilterDurationValues.ALL)
-                .setSpecialValuesRenderer(new SpecialFilterDurationValuesRenderer())
-                .setValuesRenderer(new DurationRenderer())
-                .setFilter(eventTableFilter::filterDuration)
-                .build();
-    }
-
-    private static JList<Either<SpecialFilterStatusValues, Status>> createStatusFilter(
-            EventTableFilter eventTableFilter, StatusListModel statusListModel) {
-        return FilterListModelBuilder.create(SpecialFilterStatusValues.class, statusListModel, "Status")
-                .setSelectedIndex(0)
-                .setVisibleRowsCount(3)
-                .setSpecialValuesRenderer(new SpecialFilterStatusRenderer())
-                .setValuesRenderer(new StatusRenderer())
-                .setFilter(eventTableFilter::filterStatus)
-                .build();
-    }
-
-    private static JList<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
-            EventTableFilter eventTableFilter, CategoryListModel categoryListModel) {
-        return FilterListModelBuilder.create(SpecialFilterCategoryValues.class, categoryListModel, "Category")
-                .setSelectedIndex(0)
-                .setVisibleRowsCount(3)
-                .setSpecialValuesRenderer(new SpecialFilterCategoryRenderer())
-                .setValuesRenderer(new CategoryRenderer())
-                .setFilter(eventTableFilter::filterCategory)
-                .build();
     }
 }
