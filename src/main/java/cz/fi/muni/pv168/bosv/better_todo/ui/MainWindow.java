@@ -84,13 +84,11 @@ public class MainWindow {
         rowSorter.toggleSortOrder(START_DATE_COL); // 2 == 3rd column is start date, automatically sorts 3rd column
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
-        var statisticsPanel = new JScrollPane(statistics);
 
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
-        tabbedPane.addTab("Statistics", statisticsPanel);
 
         // Filters
         var statusFilter = createFilterPanel(createStatusFilter(eventTableFilter, statusListModel), "Status: ");
@@ -101,6 +99,8 @@ public class MainWindow {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
+        frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(statistics, BorderLayout.SOUTH);
         frame.add(createToolbar(statusFilter, categoryFilter, durationFilter), BorderLayout.BEFORE_FIRST_LINE);
     }
 
