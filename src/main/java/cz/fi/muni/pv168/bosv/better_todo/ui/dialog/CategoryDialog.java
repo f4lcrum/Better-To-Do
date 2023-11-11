@@ -42,8 +42,8 @@ public final class CategoryDialog extends EntityDialog<Event> {
 
     private void addFields() {
 
-        add("Name of category: ", nameField);
-        add("Color: ", color);
+        add("Name of category: ", nameField, true);
+        add("Color: ", color, true);
     }
 
     @Override
