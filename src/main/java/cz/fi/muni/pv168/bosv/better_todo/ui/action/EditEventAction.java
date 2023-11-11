@@ -38,7 +38,7 @@ public class EditEventAction extends AbstractAction {
         var employeeTableModel = (TodoTableModel) todoTable.getModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var employee = employeeTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel, statusListModel);
+        var dialog = new EventDialog(employee, categoryListModel);
         dialog.show(todoTable, "Edit Event");
     }
 }

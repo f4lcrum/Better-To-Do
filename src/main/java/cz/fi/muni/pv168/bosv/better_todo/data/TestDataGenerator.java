@@ -47,9 +47,14 @@ public final class TestDataGenerator {
         String description = selectRandom(DESCRIPTION);
         Status status = selectRandom(STATUSES);
         Category category = selectRandom(CATEGORIES);
-        LocalDateTime startDateTime = EVENT_START.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
+        LocalDate eventStart = createRandomDate();
+        LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, EVENT_START, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
+        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, eventStart, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
+    }
+
+    public LocalDate createRandomDate() {
+        return LocalDate.of(RAND_GEN.nextInt(1900, 2024), RAND_GEN.nextInt(1, 12), RAND_GEN.nextInt(1, 28));
     }
 
     public List<Event> createTestEvents(int count) {
@@ -63,7 +68,8 @@ public final class TestDataGenerator {
         String name = selectRandom(EVENT_NAMES);
         String description = selectRandom(DESCRIPTION);
         Category category = selectRandom(CATEGORIES);
-        LocalDateTime startDateTime = EVENT_START.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
+        LocalDate eventStart = createRandomDate();
+        LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
         return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, startDateTime.toLocalTime(), endDateTime.toLocalTime());
     }
