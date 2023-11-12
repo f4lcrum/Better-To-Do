@@ -18,11 +18,10 @@ public class EditCategoryAction extends AbstractAction {
 
 
     public EditCategoryAction(JTable categoryTable) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit category", Icons.EDIT_ICON);
         this.categoryTable = categoryTable;
         putValue(SHORT_DESCRIPTION, "Edits selected category");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_E);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

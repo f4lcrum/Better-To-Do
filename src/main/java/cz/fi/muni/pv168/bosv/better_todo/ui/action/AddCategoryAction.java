@@ -22,26 +22,25 @@ public final class AddCategoryAction extends AbstractAction {
 
 
     public AddCategoryAction(JTable categoryTable) {
-        super("Add", Icons.ADD_ICON);
+        super("Add category", Icons.ADD_ICON);
         this.categoryTable = categoryTable;
         putValue(SHORT_DESCRIPTION, "Adds new category");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var todoTableModel = (TodoTableModel) categoryTable.getModel();
+        var categoryTableModel = (TodoTableModel) categoryTable.getModel();
         var dialog = new CategoryDialog(createPrefilledCategory());
         dialog.show(categoryTable, "Add Category");
     }
 
+
     private Category createPrefilledCategory()
     {
-        return new Category(
-                UUID.randomUUID(),
-                "Dinner with friends",
-                Color.RED
-        );
+    return new Category(
+            UUID.randomUUID(),
+            "Dinner with friends",
+            Color.RED
+    );
     }
 }
