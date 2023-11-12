@@ -3,9 +3,15 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
+import cz.fi.muni.pv168.todo.ui.renderer.EitherRenderer;
+import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateRenderer;
+import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateValues;
+import cz.fi.muni.pv168.todo.ui.renderer.TemplateRenderer;
+import cz.fi.muni.pv168.todo.util.Either;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
@@ -17,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import java.awt.Font;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public final class EventDialog extends EntityDialog<Event> {
 
@@ -27,12 +34,14 @@ public final class EventDialog extends EntityDialog<Event> {
     private final JTextField hourField = new JTextField();
     private final JTextField minuteField = new JTextField();
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
+    private final ComboBoxModel<Either<Template, SpecialTemplateValues>> templateModel;
 
     private final Event event;
 
-    public EventDialog(Event event, ListModel<Category> categoryModel) {
+    public EventDialog(Event event, ListModel<Category> categoryModel, ListModel<Either<Template, SpecialTemplateValues>> templateModel) {
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
+        this.templateModel = new ComboBoxModelAdapter<>(templateModel);
         // setValues();
         addFields();
         setHints();
@@ -63,10 +72,34 @@ public final class EventDialog extends EntityDialog<Event> {
     private void addFields() {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
+        var templateComboBox = new JComboBox<>(templateModel);
+        templateComboBox.setSelectedItem(EitherRenderer.create(new TemplateRenderer(), new SpecialTemplateRenderer()));
+        templateComboBox.setRenderer(EitherRenderer.create(new TemplateRenderer(), new SpecialTemplateRenderer()));
+        templateComboBox.addItemListener(e -> {
+            if (templateComboBox.getSelectedIndex() == 0) {
+                return;
+            }
+            Object selectedItem = templateComboBox.getSelectedItem();
+            if (selectedItem instanceof Either) {
+                var left = ((Either<?, ?>) selectedItem).getLeft();
+                if (left.isEmpty()) {
+                    return;
+                }
+                Object template = left.get();
+                if (!(template instanceof Template)) {
+                    return;
+                }
+                hourField.setText(Integer.toString(((Template) template).getStartTime().getHour()));
+                minuteField.setText(Integer.toString(((Template) template).getStartTime().getMinute()));
+                categoryComboBox.setSelectedItem(((Template) template).getCategory());
+                duration.setText(Long.toString((((Template) template).getTemplateDuration())));
+            }
+        });
 
         add("Name of the event", nameField, true);
+        add("Template to use: ", templateComboBox, false);
         add("Start date of the event", new JDatePicker(dateModel), true);
-        addTime("Start time of event: ", hourField, minuteField);
+        addTime("Start time of event", hourField, minuteField);
         add("Category", categoryComboBox, false);
         add("Duration", duration, true);
         description.setLineWrap(true);

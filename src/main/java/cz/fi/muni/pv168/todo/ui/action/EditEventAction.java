@@ -1,9 +1,13 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
+
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
+import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateValues;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -16,17 +20,14 @@ import java.awt.event.KeyEvent;
 public class EditEventAction extends AbstractAction {
 
     private final JTable todoTable;
-
     private final ListModel<Category> categoryListModel;
+    private final ListModel<Either<Template, SpecialTemplateValues>> templateList;
 
-    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
+    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Either<Template, SpecialTemplateValues>> templateList) {
         super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
-        putValue(SHORT_DESCRIPTION, "Edits selected event");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_E);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
-        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
+        this.templateList = templateList;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class EditEventAction extends AbstractAction {
         var employeeTableModel = (EventTableModel) todoTable.getModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var employee = employeeTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel);
+        var dialog = new EventDialog(employee, categoryListModel, templateList);
         dialog.show(todoTable, "Edit Event");
     }
 }

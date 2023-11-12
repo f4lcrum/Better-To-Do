@@ -1,5 +1,6 @@
 package cz.fi.muni.pv168.todo.ui;
 
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.data.TestDataGenerator;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
@@ -22,6 +23,7 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
+import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
@@ -29,7 +31,10 @@ import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
+import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateValues;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.util.Either;
+
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
@@ -40,6 +45,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
@@ -59,6 +65,7 @@ public class MainWindow {
     private final Action importAction;
     private final StatusListModel statusListModel;
     private final CategoryListModel categoryListModel;
+    private final TemplateListModel templateListModel;
     private final JTabbedPane tabbedPane;
     private final EventTablePanel eventTablePanel;
     private final CategoryTablePanel categoryTablePanel;
@@ -98,11 +105,19 @@ public class MainWindow {
         tabbedPane.addTab("Categories", categoryTablePanel);
         tabbedPane.addTab("Units", timeUnitTablePanel);
 
+        var templates = testDataGenerator.createTestTemplates(10);
+        var eitherTemplates = new ArrayList<Either<Template, SpecialTemplateValues>>();
+        eitherTemplates.add(Either.right(SpecialTemplateValues.NONE));
+        for (Template template : templates) {
+            eitherTemplates.add(Either.left(template));
+        }
+        this.templateListModel = new TemplateListModel(eitherTemplates);
+
         // Filters
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
         this.categoryFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
 
-        this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, statusListModel, templateListModel);
 
         this.addButton = new JButton(Icons.ADD_ICON);
         this.editButton = new JButton(Icons.EDIT_ICON);
@@ -154,8 +169,8 @@ public class MainWindow {
         fileMenu.add(quitAction);
 
         var eventMenu = new JMenu("Event");
-        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel));
-        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel));
+        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, templateListModel));
+        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, templateListModel));
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
 
         var categoryMenu = new JMenu("Category");
@@ -205,6 +220,9 @@ public class MainWindow {
 
     public CategoryListModel getCategoryListModel() {
         return categoryListModel;
+    }
+    public TemplateListModel getTemplateListModel() {
+        return templateListModel;
     }
 
     public JPanel getStatusFilterPanel() {

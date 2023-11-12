@@ -2,43 +2,42 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
-import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
+import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateValues;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
 import javax.swing.ListModel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
 public final class AddEventAction extends AbstractAction {
 
-    private final JTable todoTable;
+    private final JTable eventTable;
 
     private final ListModel<Category> categoryListModel;
+    private final ListModel<Either<Template, SpecialTemplateValues>> templateList;
 
-    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
+    public AddEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<Either<Template, SpecialTemplateValues>> templateList) {
         super("Add event", Icons.ADD_ICON);
-        this.todoTable = todoTable;
+        this.eventTable = eventTable;
         this.categoryListModel = categoryListModel;
-        putValue(SHORT_DESCRIPTION, "Adds new event");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
-        putValue(Action.SMALL_ICON, Icons.ADD_ICON);
+        this.templateList = templateList;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel);
-        dialog.show(todoTable, "Add Event");
+        var eventTableModel = (EventTableModel) eventTable.getModel();
+        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, templateList);
+        dialog.show(eventTable, "Add Event");
     }
 
     private Event createPrefilledEvent() {
