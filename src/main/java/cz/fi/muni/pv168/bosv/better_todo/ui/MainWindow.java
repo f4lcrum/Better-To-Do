@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindow {
@@ -52,7 +53,8 @@ public class MainWindow {
         var testDataGenerator = new TestDataGenerator();
         var eventTableModel = new TodoTableModel(testDataGenerator.createTestEvents(10));
         var eventTablePanel = new EventTablePanel(eventTableModel);
-        var templateTableModel = new TemplateTableModel(testDataGenerator.createTestTemplates(10));
+        var templates = testDataGenerator.createTestTemplates(10);
+        var templateTableModel = new TemplateTableModel(templates);
         var templateTablePanel = new TemplateTablePanel(templateTableModel);
         var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
         var categoryTablePanel = new CategoryTablePanel(categoryTableModel);
@@ -62,9 +64,15 @@ public class MainWindow {
         eventTable = createEventTable(events);
         templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
 
-        addAction = new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        var eitherTemplates = new ArrayList<Either<Template, SpecialTemplateValues>>();
+        eitherTemplates.add(Either.right(SpecialTemplateValues.NONE));
+        for (Template template : templates) {
+            eitherTemplates.add(Either.left(template));
+        }
+        var templateListModel = new TemplateListModel(eitherTemplates);
+        addAction = new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel, templateListModel);
         quitAction = new QuitAction();
-        editAction = new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        editAction = new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel, templateListModel);
         deleteAction = new DeleteEventAction(eventTablePanel.getEventTable());
 
         addCategoryAction = new AddCategoryAction(categoryTablePanel.getEventTable());
