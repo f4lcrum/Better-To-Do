@@ -22,7 +22,7 @@ public class EditEventAction extends AbstractAction {
     private final ListModel<Either<Template, SpecialTemplateValues>> templateList;
 
     public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel, ListModel<Either<Template, SpecialTemplateValues>> templateList) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
@@ -30,6 +30,7 @@ public class EditEventAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -28,7 +28,7 @@ public final class AddEventAction extends AbstractAction {
     private final ListModel<Either<Template, SpecialTemplateValues>> templateList;
 
     public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel, ListModel<Either<Template, SpecialTemplateValues>> templateList) {
-        super("Add", Icons.ADD_ICON);
+        super("Add event", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
@@ -36,6 +36,7 @@ public final class AddEventAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+        putValue(Action.SMALL_ICON, Icons.ADD_ICON);
     }
 
     @Override

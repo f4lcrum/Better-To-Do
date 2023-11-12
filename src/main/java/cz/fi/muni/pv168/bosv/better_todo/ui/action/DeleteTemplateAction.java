@@ -13,11 +13,12 @@ public class DeleteTemplateAction extends AbstractAction {
     private final JTable todoTable;
 
     public DeleteTemplateAction(JTable todoTable) {
-        super("Delete", Icons.DELETE_ICON);
+        super("Delete template", Icons.DELETE_ICON);
         this.todoTable = todoTable;
         putValue(SHORT_DESCRIPTION, "Deletes selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
+        putValue(Action.SMALL_ICON, Icons.DELETE_ICON);
     }
 
     @Override
