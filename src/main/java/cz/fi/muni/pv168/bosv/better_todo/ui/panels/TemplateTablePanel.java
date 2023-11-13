@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Template;
 import cz.fi.muni.pv168.bosv.better_todo.ui.action.mouseClick.TableRow;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.CategoryColourRenderer;
@@ -33,7 +34,7 @@ public class TemplateTablePanel extends JPanel {
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(LocalDate.class, new LocalDateRenderer());
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
-        table.addMouseListener(new TableRow("Template detail"));
+        table.addMouseListener(new TableRow<>(templateTableModel, Template::getName, "Template detail"));
         return table;
     }
 }

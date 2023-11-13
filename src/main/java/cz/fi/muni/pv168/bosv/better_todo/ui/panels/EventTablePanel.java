@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.entity.Event;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
 import cz.fi.muni.pv168.bosv.better_todo.ui.action.mouseClick.TableRow;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
@@ -23,10 +24,14 @@ public class EventTablePanel extends JPanel {
     public EventTablePanel(TodoTableModel todoTableModel) {
         setLayout(new BorderLayout());
         eventTable = setUpTable(todoTableModel);
-        eventTable.addMouseListener(new TableRow("Event detail"));
+        eventTable.addMouseListener(new TableRow<>(todoTableModel, this::formatEvent, "Event detail"));
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
         this.todoTableModel = todoTableModel;
+    }
+
+    private String formatEvent(Event event) {
+        return event.getName() + " " + event.getCategory() + " " + event.getStartTime();
     }
 
     private JTable setUpTable(TodoTableModel todoTableModel) {

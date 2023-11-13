@@ -1,16 +1,22 @@
 package cz.fi.muni.pv168.bosv.better_todo.ui.action.mouseClick;
 
-import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
+import cz.fi.muni.pv168.bosv.better_todo.ui.model.EntityTableModel;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDateTime;
+import java.util.function.Function;
 
-public class TableRow extends MouseAdapter {
+public class TableRow<T> extends MouseAdapter {
+
+    private final EntityTableModel<T> tableModel;
+    private final Function<T, String> formatter;
     private final String title;
 
-    public TableRow(String title) {
+    public TableRow(EntityTableModel<T> tableModel, Function<T, String> formatter, String title) {
+        this.tableModel = tableModel;
+        this.formatter = formatter;
         this.title = title;
     }
     @Override
@@ -20,17 +26,9 @@ public class TableRow extends MouseAdapter {
             StringBuilder stringBuilder = new StringBuilder();
 
             int rowIndex = target.getSelectedRow();
-            // colIndex begins from 1, ignoring color
-            for (int colIndex = 1; colIndex < target.getColumnCount(); colIndex++) {
-                var value = target.getValueAt(rowIndex, colIndex);
-                if (value instanceof LocalDateTime) {
-                    value = String.format("%d. %d. %d %02d:%02d", ((LocalDateTime) value).getDayOfMonth(), ((LocalDateTime) value).getMonthValue(), ((LocalDateTime) value).getYear(), ((LocalDateTime) value).getHour(), ((LocalDateTime) value).getMinute());
-                } else if (value instanceof Category) {
-                    value = ((Category) value).getName();
-                }
-                stringBuilder.append(target.getColumnName(colIndex)).append(": ").append(value).append("\n");
-            }
-            JOptionPane.showMessageDialog(null, stringBuilder.toString(), this.title, JOptionPane.INFORMATION_MESSAGE);
+            T entity = tableModel.getEntity(rowIndex);
+            stringBuilder.append(formatter.apply(entity));
+            JOptionPane.showMessageDialog(null, stringBuilder.toString(), title, JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

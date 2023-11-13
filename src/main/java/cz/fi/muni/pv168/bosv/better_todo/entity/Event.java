@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 import lombok.extern.jackson.Jacksonized;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @NonNull
 @Jacksonized
 @Builder
+@ToString
 public class Event implements Entity {
     @JsonProperty("id")
     private final UUID id;
