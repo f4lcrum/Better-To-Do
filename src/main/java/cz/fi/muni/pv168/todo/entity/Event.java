@@ -13,27 +13,27 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Event.EventBuilder.class)
 public class Event implements Entity {
-    @JsonProperty("id")
+    @JsonProperty
     private final UUID id;
-    @JsonProperty("userId")
+    @JsonProperty
     private final UUID userId;
 
-    @JsonProperty("name")
+    @JsonProperty
     private final String name;
-    @JsonProperty("status")
+    @JsonProperty
     private final Status status;
 
-    @JsonProperty("category")
+    @JsonProperty
     private final Category category;
 
-    @JsonProperty("date")
+    @JsonProperty
     private final LocalDate date;
-    @JsonProperty("startTime")
+    @JsonProperty
     private final LocalTime startTime;
-    @JsonProperty("endTime")
+    @JsonProperty
     private final LocalTime endTime;
 
-    @JsonProperty("description")
+    @JsonProperty
     private final String description;
 
     public Event(UUID id, UUID userId, String name, Status status, Category category, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
@@ -133,55 +133,55 @@ public class Event implements Entity {
         EventBuilder() {
         }
 
-        @JsonProperty("id")
+        @JsonProperty
         public EventBuilder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        @JsonProperty("userId")
+        @JsonProperty
         public EventBuilder userId(UUID userId) {
             this.userId = userId;
             return this;
         }
 
-        @JsonProperty("name")
+        @JsonProperty
         public EventBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        @JsonProperty("status")
+        @JsonProperty
         public EventBuilder status(Status status) {
             this.status = status;
             return this;
         }
 
-        @JsonProperty("category")
+        @JsonProperty
         public EventBuilder category(Category category) {
             this.category = category;
             return this;
         }
 
-        @JsonProperty("date")
+        @JsonProperty
         public EventBuilder date(LocalDate date) {
             this.date = date;
             return this;
         }
 
-        @JsonProperty("startTime")
+        @JsonProperty
         public EventBuilder startTime(LocalTime startTime) {
             this.startTime = startTime;
             return this;
         }
 
-        @JsonProperty("endTime")
+        @JsonProperty
         public EventBuilder endTime(LocalTime endTime) {
             this.endTime = endTime;
             return this;
         }
 
-        @JsonProperty("description")
+        @JsonProperty
         public EventBuilder description(String description) {
             this.description = description;
             return this;

@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Objects;
 
 public record DatabaseSnapshot(
-        @JsonProperty("categories")
+        @JsonProperty
         Collection<Category> categories,
-        @JsonProperty("events")
+        @JsonProperty
         Collection<Event> events,
-        @JsonProperty("templates")
+        @JsonProperty
         Collection<Template> templates,
-        @JsonProperty("users")
+        @JsonProperty
         Collection<User> users
 ) {
     public DatabaseSnapshot(
