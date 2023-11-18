@@ -4,13 +4,13 @@ package cz.fi.muni.pv168.todo.ui.filter.matcher;
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.entity.EventDuration;
+import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventIntervalMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterDurationValues;
 import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.util.Either;
-import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryCompoundMatcher;
 
 import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public final class TemplateTableFilter {
         templateCompoundMatcher = new EventCompoundMatcher(rowSorter);
         rowSorter.setRowFilter(templateCompoundMatcher);
     }
+
     public void filterDuration(Either<SpecialFilterDurationValues, EventDuration> selectedItems) {
         selectedItems.apply(
                 l -> templateCompoundMatcher.setIntervalMatcher(l.getMatcher()),

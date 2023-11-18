@@ -1,12 +1,5 @@
 package cz.fi.muni.pv168.todo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-
-@AllArgsConstructor
-@NonNull
-@Getter
 public enum EventDuration {
     M0(0),
     M15(15),
@@ -18,8 +11,16 @@ public enum EventDuration {
 
     final Integer duration;
 
+    private EventDuration(Integer duration) {
+        this.duration = duration;
+    }
+
     @Override
     public String toString() {
         return String.format("%d minutes", this.duration);
+    }
+
+    public Integer getDuration() {
+        return this.duration;
     }
 }

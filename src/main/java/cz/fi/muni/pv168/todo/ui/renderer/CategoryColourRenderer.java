@@ -1,9 +1,9 @@
 package cz.fi.muni.pv168.todo.ui.renderer;
 
-import lombok.NonNull;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import java.awt.Color;
+import java.awt.Component;
 
 public class CategoryColourRenderer extends AbstractRenderer<Color> {
     public CategoryColourRenderer() {
@@ -23,7 +23,7 @@ public class CategoryColourRenderer extends AbstractRenderer<Color> {
 
 
     @Override
-    protected void updateLabel(@NonNull JLabel label, @NonNull Color value) {
+    protected void updateLabel( JLabel label,  Color value) {
         label.setText("");
     }
 }

@@ -1,8 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.renderer;
 
-import lombok.NonNull;
-
-import javax.swing.*;
+import javax.swing.JLabel;
 import java.time.LocalDate;
 
 public class LocalDateRenderer extends AbstractRenderer<LocalDate> {
@@ -11,8 +9,8 @@ public class LocalDateRenderer extends AbstractRenderer<LocalDate> {
     }
 
     @Override
-    protected void updateLabel(@NonNull JLabel label,
-                               @NonNull LocalDate value) {
+    protected void updateLabel( JLabel label,
+                                LocalDate value) {
         label.setText(String.format("%s. %s. %s", value.getDayOfMonth(), value.getMonthValue(), value.getYear()));
     }
 }

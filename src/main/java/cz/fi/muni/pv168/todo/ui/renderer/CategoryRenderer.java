@@ -1,9 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.renderer;
 
 import cz.fi.muni.pv168.todo.entity.Category;
-import lombok.NonNull;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 public class CategoryRenderer extends AbstractRenderer<Category> {
     public CategoryRenderer() {
@@ -11,7 +10,7 @@ public class CategoryRenderer extends AbstractRenderer<Category> {
     }
 
     @Override
-    protected void updateLabel(@NonNull JLabel label, @NonNull Category value) {
+    protected void updateLabel( JLabel label,  Category value) {
         label.setText(value.getName());
     }
 }

@@ -4,15 +4,16 @@ import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
-import lombok.Getter;
-import lombok.NonNull;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
-@NonNull
+
 public class CategoryTablePanel extends JPanel {
-    @Getter
+    
     private final JTable eventTable;
 
     private final CategoryTableModel categoryTableModel;
@@ -35,5 +36,9 @@ public class CategoryTablePanel extends JPanel {
         table.setAutoCreateRowSorter(true);
 
         return table;
+    }
+
+    public JTable getEventTable() {
+        return eventTable;
     }
 }

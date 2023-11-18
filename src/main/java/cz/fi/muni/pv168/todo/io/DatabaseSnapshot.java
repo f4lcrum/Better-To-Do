@@ -5,13 +5,11 @@ import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.entity.Template;
 import cz.fi.muni.pv168.todo.entity.User;
-import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@NonNull
 public record DatabaseSnapshot(
         @JsonProperty("categories")
         Collection<Category> categories,
@@ -23,10 +21,10 @@ public record DatabaseSnapshot(
         Collection<User> users
 ) {
     public DatabaseSnapshot(
-            @NonNull Collection<Category> categories,
-            @NonNull Collection<Event> events,
-            @NonNull Collection<Template> templates,
-            @NonNull Collection<User> users
+            Collection<Category> categories,
+            Collection<Event> events,
+            Collection<Template> templates,
+            Collection<User> users
     ) {
         this.categories = List.copyOf(categories);
         this.events = List.copyOf(events);

@@ -1,21 +1,21 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NonNull
+
 abstract class Column<E, T> {
-    @Getter
+
     private final String name;
     private final Class<T> columnType;
     private final Function<E, T> valueGetter;
+
+    private Column(String name, Class<T> columnType, Function<E, T> valueGetter) {
+        this.name = name;
+        this.columnType = columnType;
+        this.valueGetter = valueGetter;
+    }
 
     public static <E, T> Column<E, T> editable(String name, Class<T> columnClass,
                                                Function<E, T> valueGetter,
@@ -30,6 +30,10 @@ abstract class Column<E, T> {
     }
 
     abstract boolean isEditable();
+
+    public String getName() {
+        return name;
+    }
 
     abstract void setValue(Object value, E entity);
 

@@ -6,14 +6,16 @@ import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.LocalDateRenderer;
-import lombok.Getter;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.time.LocalDate;
 
 public class TemplateTablePanel extends JPanel {
-    @Getter
+    
     private final JTable eventTable;
     private final TemplateTableModel templateTableModel;
 
@@ -35,5 +37,9 @@ public class TemplateTablePanel extends JPanel {
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
         table.addMouseListener(new TableRow("Template detail"));
         return table;
+    }
+
+    public JTable getEventTable() {
+        return eventTable;
     }
 }
