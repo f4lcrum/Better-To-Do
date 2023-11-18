@@ -2,7 +2,8 @@ package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.util.Either;
 
-import javax.swing.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.util.IdentityHashMap;

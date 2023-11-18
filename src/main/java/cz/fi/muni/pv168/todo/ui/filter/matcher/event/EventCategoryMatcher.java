@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 
 public class EventCategoryMatcher extends EntityMatcher<Event> {
+
     private final Category category;
 
     @Override

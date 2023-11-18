@@ -2,17 +2,20 @@ package cz.fi.muni.pv168.todo.ui.action.mouseClick;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 
 public class TableRow extends MouseAdapter {
+
     private final String title;
 
     public TableRow(String title) {
         this.title = title;
     }
+
     @Override
     public void mousePressed(MouseEvent me) {
         if (me.getClickCount() == 2) {

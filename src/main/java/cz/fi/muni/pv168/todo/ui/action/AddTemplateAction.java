@@ -7,14 +7,19 @@ import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListModel;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalTime;
 import java.util.UUID;
 
 public final class AddTemplateAction extends AbstractAction {
+
     private final JTable templateTable;
 
     private final ListModel<Category> categoryListModel;
@@ -38,8 +43,7 @@ public final class AddTemplateAction extends AbstractAction {
         dialog.show(templateTable, "Add Template");
     }
 
-    private Template createPrefilledTemplate()
-    {
+    private Template createPrefilledTemplate() {
         return new Template(
                 UUID.randomUUID(),
                 UUID.randomUUID(),

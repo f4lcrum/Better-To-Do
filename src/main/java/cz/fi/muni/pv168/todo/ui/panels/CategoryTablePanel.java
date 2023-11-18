@@ -13,7 +13,7 @@ import java.awt.Color;
 
 
 public class CategoryTablePanel extends JPanel {
-    
+
     private final JTable eventTable;
 
     private final CategoryTableModel categoryTableModel;

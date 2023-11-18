@@ -6,6 +6,7 @@ package cz.fi.muni.pv168.todo.ui.filter.matcher;
  * @author Vojtěch Sassmann
  */
 public class EntityMatchers {
+
     private EntityMatchers() {
     }
 

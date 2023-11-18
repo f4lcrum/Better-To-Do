@@ -3,13 +3,17 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
 public class DeleteEventAction extends AbstractAction {
+
     private final JTable todoTable;
 
     public DeleteEventAction(JTable todoTable) {

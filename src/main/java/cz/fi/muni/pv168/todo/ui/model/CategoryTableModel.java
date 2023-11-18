@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.model;
 import cz.fi.muni.pv168.todo.entity.Category;
 
 import javax.swing.table.AbstractTableModel;
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

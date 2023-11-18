@@ -2,8 +2,8 @@ package cz.fi.muni.pv168.todo;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.UIManager;
+import java.awt.EventQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

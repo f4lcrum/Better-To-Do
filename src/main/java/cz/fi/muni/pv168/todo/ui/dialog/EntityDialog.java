@@ -1,9 +1,14 @@
 package cz.fi.muni.pv168.todo.ui.dialog;
 
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import java.util.Optional;
 
 abstract class EntityDialog<E> {
@@ -19,10 +24,8 @@ abstract class EntityDialog<E> {
         var label = new JLabel(labelText);
         if (isMandatory) {
             label.setText(String.format("<html>%s<font color='red'>%s</font>: </html>", label.getText(), "*"));
-            panel.add(label);
-        } else {
-            panel.add(label);
         }
+        panel.add(label);
         panel.add(component, "wmin 250lp, grow");
     }
 
@@ -46,8 +49,7 @@ abstract class EntityDialog<E> {
     abstract E getEntity();
 
     public Optional<E> show(JComponent parentComponent, String title) {
-        int result = JOptionPane.showOptionDialog(parentComponent, panel, title,
-                OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
+        int result = JOptionPane.showOptionDialog(parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
 
         return result == OK_OPTION ? Optional.of(getEntity()) : Optional.empty();
     }

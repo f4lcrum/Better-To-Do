@@ -5,7 +5,8 @@ import cz.fi.muni.pv168.todo.ui.renderer.AbstractRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.EitherRenderer;
 import cz.fi.muni.pv168.todo.util.Either;
 
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.ListModel;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -44,32 +45,27 @@ public class FilterListModelBuilder<L extends Enum<L>, R> {
         return jList;
     }
 
-    public FilterListModelBuilder<L, R> setSpecialValuesRenderer(AbstractRenderer<L> specialValuesRenderer)
-    {
+    public FilterListModelBuilder<L, R> setSpecialValuesRenderer(AbstractRenderer<L> specialValuesRenderer) {
         this.specialValuesRenderer = specialValuesRenderer;
         return this;
     }
 
-    public FilterListModelBuilder<L, R> setValuesRenderer(AbstractRenderer<R> valuesRenderer)
-    {
+    public FilterListModelBuilder<L, R> setValuesRenderer(AbstractRenderer<R> valuesRenderer) {
         this.valuesRenderer = valuesRenderer;
         return this;
     }
 
-    public FilterListModelBuilder<L, R> setSelectedIndex(int selectedIndex)
-    {
+    public FilterListModelBuilder<L, R> setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
         return this;
     }
 
-    public FilterListModelBuilder<L, R> setVisibleRowsCount(int visibleRowsCount)
-    {
+    public FilterListModelBuilder<L, R> setVisibleRowsCount(int visibleRowsCount) {
         this.visibleRowsCount = visibleRowsCount;
         return this;
     }
 
-    public FilterListModelBuilder<L, R> setFilter(Consumer<List<Either<L, R>>> filter)
-    {
+    public FilterListModelBuilder<L, R> setFilter(Consumer<List<Either<L, R>>> filter) {
         this.filter = filter;
         return this;
     }

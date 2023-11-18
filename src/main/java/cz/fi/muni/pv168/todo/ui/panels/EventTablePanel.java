@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 
 public class EventTablePanel extends JPanel {
-    
+
     private final JTable eventTable;
 
     private final TodoTableModel todoTableModel;

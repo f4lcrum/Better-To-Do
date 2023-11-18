@@ -9,14 +9,18 @@ import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.StatusRenderer;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import java.awt.Font;
 import java.time.LocalDate;
-
-import static java.time.temporal.ChronoUnit.MINUTES;
 
 public final class TemplateDialog extends EntityDialog<Event> {
 

@@ -9,8 +9,13 @@ import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import java.awt.Font;
 import java.time.LocalDate;
 
 public final class EventDialog extends EntityDialog<Event> {

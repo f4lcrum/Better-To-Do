@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.entity.Status;
 
 import javax.swing.table.AbstractTableModel;
-import java.awt.*;
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,9 @@ public class TodoTableModel extends AbstractTableModel implements EntityTableMod
         return columns.get(columnIndex).getName();
     }
 
-    public void getColumnModel() { return; }
+    public void getColumnModel() {
+        return;
+    }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {

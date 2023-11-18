@@ -4,13 +4,16 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JColorChooser;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Font;
 
 public final class CategoryDialog extends EntityDialog<Event> {
 
     private final JTextField nameField = new JTextField();
-    private final JColorChooser color = new JColorChooser(Color.BLACK);;
+    private final JColorChooser color = new JColorChooser(Color.BLACK);
+    ;
 
 
     private final Category category;

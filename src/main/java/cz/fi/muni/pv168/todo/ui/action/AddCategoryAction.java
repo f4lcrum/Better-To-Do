@@ -5,13 +5,14 @@ import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.JTable;
 import java.awt.Color;
-
+import java.awt.event.ActionEvent;
 import java.util.UUID;
 
 public final class AddCategoryAction extends AbstractAction {
+
     private final JTable categoryTable;
 
 
@@ -29,12 +30,11 @@ public final class AddCategoryAction extends AbstractAction {
     }
 
 
-    private Category createPrefilledCategory()
-    {
-    return new Category(
-            UUID.randomUUID(),
-            "Dinner with friends",
-            Color.RED
-    );
+    private Category createPrefilledCategory() {
+        return new Category(
+                UUID.randomUUID(),
+                "Dinner with friends",
+                Color.RED
+        );
     }
 }

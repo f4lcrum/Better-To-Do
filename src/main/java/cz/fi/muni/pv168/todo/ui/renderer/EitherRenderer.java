@@ -2,7 +2,7 @@ package cz.fi.muni.pv168.todo.ui.renderer;
 
 import cz.fi.muni.pv168.todo.util.Either;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 /**
  * @param <L>
