@@ -8,13 +8,13 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = User.UserBuilder.class)
 public class User implements Entity {
-    @JsonProperty("id")
+    @JsonProperty
     private final UUID id;
 
-    @JsonProperty("login")
+    @JsonProperty
     private final String login;
 
-    @JsonProperty("password")
+    @JsonProperty
     private String password;
 
     public User(UUID id, String login, String password) {
@@ -44,7 +44,7 @@ public class User implements Entity {
         return this.password;
     }
 
-    @JsonProperty("password")
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -58,19 +58,19 @@ public class User implements Entity {
         UserBuilder() {
         }
 
-        @JsonProperty("id")
+        @JsonProperty
         public UserBuilder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        @JsonProperty("login")
+        @JsonProperty
         public UserBuilder login(String login) {
             this.login = login;
             return this;
         }
 
-        @JsonProperty("password")
+        @JsonProperty
         public UserBuilder password(String password) {
             this.password = password;
             return this;

@@ -10,22 +10,22 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Template.TemplateBuilder.class)
 public class Template implements Entity {
-    @JsonProperty("id")
+    @JsonProperty
     private final UUID id;
-    @JsonProperty("userId")
+    @JsonProperty
     private final UUID userId;
 
-    @JsonProperty("name")
+    @JsonProperty
     private final String name;
-    @JsonProperty("description")
+    @JsonProperty
     private final String description;
 
-    @JsonProperty("category")
+    @JsonProperty
     private final Category category;
 
-    @JsonProperty("startTime")
+    @JsonProperty
     private final LocalTime startTime;
-    @JsonProperty("endTime")
+    @JsonProperty
     private final LocalTime endTime;
 
     public Template(UUID id, UUID userId, String name, String description, Category category, LocalTime startTime, LocalTime endTime) {
@@ -97,43 +97,43 @@ public class Template implements Entity {
         TemplateBuilder() {
         }
 
-        @JsonProperty("id")
+        @JsonProperty
         public TemplateBuilder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        @JsonProperty("userId")
+        @JsonProperty
         public TemplateBuilder userId(UUID userId) {
             this.userId = userId;
             return this;
         }
 
-        @JsonProperty("name")
+        @JsonProperty
         public TemplateBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        @JsonProperty("description")
+        @JsonProperty
         public TemplateBuilder description(String description) {
             this.description = description;
             return this;
         }
 
-        @JsonProperty("category")
+        @JsonProperty
         public TemplateBuilder category(Category category) {
             this.category = category;
             return this;
         }
 
-        @JsonProperty("startTime")
+        @JsonProperty
         public TemplateBuilder startTime(LocalTime startTime) {
             this.startTime = startTime;
             return this;
         }
 
-        @JsonProperty("endTime")
+        @JsonProperty
         public TemplateBuilder endTime(LocalTime endTime) {
             this.endTime = endTime;
             return this;

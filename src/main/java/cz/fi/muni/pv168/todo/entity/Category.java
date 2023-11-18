@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Category.CategoryBuilder.class)
 public class Category implements Entity {
-    @JsonProperty("id")
+    @JsonProperty
     private final UUID id;
-    @JsonProperty("name")
+    @JsonProperty
     private final String name;
-    @JsonProperty("colour")
+    @JsonProperty
     private final Color colour;
 
     public Category(UUID id, String name, Color colour) {
@@ -61,19 +61,19 @@ public class Category implements Entity {
         CategoryBuilder() {
         }
 
-        @JsonProperty("id")
+        @JsonProperty
         public CategoryBuilder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        @JsonProperty("name")
+        @JsonProperty
         public CategoryBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        @JsonProperty("colour")
+        @JsonProperty
         public CategoryBuilder colour(Color colour) {
             this.colour = colour;
             return this;
