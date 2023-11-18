@@ -20,13 +20,14 @@ public class EditTemplateAction extends AbstractAction {
     private final ListModel<Status> statusListModel;
 
     public EditTemplateAction(JTable templateTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit template", Icons.EDIT_ICON);
         this.templateTable = templateTable;
         this.categoryListModel = categoryListModel;
         this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Edits selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

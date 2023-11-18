@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.bosv.better_todo.ui.panels;
 
 import cz.fi.muni.pv168.bosv.better_todo.entity.Category;
 import cz.fi.muni.pv168.bosv.better_todo.entity.Status;
+import cz.fi.muni.pv168.bosv.better_todo.ui.action.mouseClick.TableRow;
 import cz.fi.muni.pv168.bosv.better_todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class EventTablePanel extends JPanel {
     public EventTablePanel(TodoTableModel todoTableModel) {
         setLayout(new BorderLayout());
         eventTable = setUpTable(todoTableModel);
+        eventTable.addMouseListener(new TableRow("Event detail"));
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
         this.todoTableModel = todoTableModel;

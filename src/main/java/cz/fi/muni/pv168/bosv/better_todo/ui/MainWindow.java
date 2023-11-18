@@ -15,19 +15,26 @@ import cz.fi.muni.pv168.bosv.better_todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.bosv.better_todo.ui.renderer.*;
+import cz.fi.muni.pv168.bosv.better_todo.ui.resources.Icons;
 import cz.fi.muni.pv168.bosv.better_todo.util.Either;
 import cz.fi.muni.pv168.bosv.better_todo.ui.panels.StatisticsPanel;
 import org.jfree.chart.plot.PlotRenderingInfo;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainWindow {
+import static cz.fi.muni.pv168.bosv.better_todo.ui.filter.components.FilterPanel.*;
 
+public class MainWindow {
+    private final int EVENT_TAB = 0;
+    private final int TEMPLATE_TAB = 1;
+    private final int CATEGORY_TAB = 2;
     private final int START_DATE_COL = 2;
     private final JFrame frame;
     private final JTable eventTable;
@@ -93,6 +100,13 @@ public class MainWindow {
         var eventTableFilter = new EventTableFilter(rowSorter);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
 
+        var addButton = new JButton(Icons.ADD_ICON);
+        var editButton = new JButton(Icons.EDIT_ICON);
+        var deleteButton = new JButton(Icons.DELETE_ICON);
+        addButton.setAction(addAction);
+        editButton.setAction(editAction);
+        deleteButton.setAction(deleteAction);
+
         var tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
@@ -103,13 +117,56 @@ public class MainWindow {
         var durationFilter = createFilterPanel(createDurationFilter(eventTableFilter), "Duration: ");
         var categoryFilter = createFilterPanel(createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
 
+        tabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                switch (tabbedPane.getSelectedIndex()) {
+                    case EVENT_TAB:
+                        setPanelEnabled(statusFilter, true);
+                        setPanelEnabled(durationFilter, true);
+                        setPanelEnabled(categoryFilter, true);
+                        addButton.setAction(addAction);
+                        editButton.setAction(editAction);
+                        deleteButton.setAction(deleteAction);
+                        break;
+                    case TEMPLATE_TAB:
+                        setPanelEnabled(statusFilter, false);
+                        setPanelEnabled(durationFilter, false);
+                        setPanelEnabled(categoryFilter, false);
+                        addButton.setAction(addTemplateAction);
+                        editButton.setAction(editTemplateAction);
+                        deleteButton.setAction(deleteTemplateAction);
+                        break;
+                    case CATEGORY_TAB:
+                        setPanelEnabled(statusFilter, false);
+                        setPanelEnabled(durationFilter, false);
+                        setPanelEnabled(categoryFilter, false);
+                        addButton.setAction(addCategoryAction);
+                        editButton.setAction(editCategoryAction);
+                        deleteButton.setAction(deleteCategoryAction);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
-        frame.add(createToolbar(statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilter, durationFilter, categoryFilter), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(statistics, BorderLayout.SOUTH);
-        frame.add(createToolbar(statusFilter, categoryFilter, durationFilter), BorderLayout.BEFORE_FIRST_LINE);
+    }
+
+    void setPanelEnabled(JPanel panel, Boolean isEnabled) {
+        panel.setEnabled(isEnabled);
+        Component[] components = panel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                setPanelEnabled((JPanel) component, isEnabled);
+            }
+            component.setEnabled(isEnabled);
+        }
     }
 
     private JTable createEventTable(List<Event> employees) {
@@ -152,8 +209,6 @@ public class MainWindow {
         templateMenu.add(editTemplateAction);
         templateMenu.add(deleteTemplateAction);
 
-        // var statisticsMenu = new JMenu("Statistics");
-
         menuBar.add(fileMenu);
         menuBar.add(eventMenu);
         menuBar.add(categoryMenu);
@@ -162,9 +217,13 @@ public class MainWindow {
         return menuBar;
     }
 
-    private JToolBar createToolbar(Component... components) {
+    private JToolBar createToolbar(JButton addButton, JButton editButton,
+                                   JButton deleteButton, Component... components) {
         var toolbar = new JToolBar();
-
+        toolbar.add(addButton);
+        toolbar.add(editButton);
+        toolbar.add(deleteButton);
+        toolbar.addSeparator();
         for (var component : components) {
             toolbar.add(component);
             toolbar.addSeparator(new Dimension(50,10));
@@ -175,45 +234,7 @@ public class MainWindow {
     private JFrame createFrame() {
         var frame = new JFrame("TO-DO");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         return frame;
-    }
-
-    private static JPanel createFilterPanel( Component filter, String label) {
-        JPanel statusPanel = new JPanel(new BorderLayout());
-        JLabel filterLabel = new JLabel(label);
-        statusPanel.add(filterLabel, BorderLayout.NORTH);
-        statusPanel.add(filter, BorderLayout.SOUTH);
-        return statusPanel;
-    }
-    private static JComboBox<Either<SpecialFilterDurationValues, EventDuration>> createDurationFilter(
-            EventTableFilter eventTableFilter) {
-        return FilterComboboxBuilder.create(SpecialFilterDurationValues.class, EventDuration.values())
-                .setSelectedItem(SpecialFilterDurationValues.ALL)
-                .setSpecialValuesRenderer(new SpecialFilterDurationValuesRenderer())
-                .setValuesRenderer(new DurationRenderer())
-                .setFilter(eventTableFilter::filterDuration)
-                .build();
-    }
-
-    private static JList<Either<SpecialFilterStatusValues, Status>> createStatusFilter(
-            EventTableFilter eventTableFilter, StatusListModel statusListModel) {
-        return FilterListModelBuilder.create(SpecialFilterStatusValues.class, statusListModel, "Status")
-                .setSelectedIndex(0)
-                .setVisibleRowsCount(3)
-                .setSpecialValuesRenderer(new SpecialFilterStatusRenderer())
-                .setValuesRenderer(new StatusRenderer())
-                .setFilter(eventTableFilter::filterStatus)
-                .build();
-    }
-
-    private static JList<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
-            EventTableFilter eventTableFilter, CategoryListModel categoryListModel) {
-        return FilterListModelBuilder.create(SpecialFilterCategoryValues.class, categoryListModel, "Category")
-                .setSelectedIndex(0)
-                .setVisibleRowsCount(3)
-                .setSpecialValuesRenderer(new SpecialFilterCategoryRenderer())
-                .setValuesRenderer(new CategoryRenderer())
-                .setFilter(eventTableFilter::filterCategory)
-                .build();
     }
 }

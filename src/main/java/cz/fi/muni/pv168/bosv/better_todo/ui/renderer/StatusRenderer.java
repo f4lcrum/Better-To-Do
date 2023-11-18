@@ -14,7 +14,8 @@ public final class StatusRenderer extends AbstractRenderer<Status> {
     @Override
     protected void updateLabel(JLabel label, Status status) {
         if (status != null) {
-            label.setText(status.toString().replace("_", " "));
+            var txt = status.toString().replace("_", " ");
+            label.setText(txt.substring(0, 1).toUpperCase() + txt.substring(1).toLowerCase());
         }
     }
 }

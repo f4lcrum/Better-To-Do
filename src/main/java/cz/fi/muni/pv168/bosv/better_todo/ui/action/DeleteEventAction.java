@@ -13,11 +13,12 @@ public class DeleteEventAction extends AbstractAction {
     private final JTable todoTable;
 
     public DeleteEventAction(JTable todoTable) {
-        super("Delete", Icons.DELETE_ICON);
+        super("Delete event", Icons.DELETE_ICON);
         this.todoTable = todoTable;
         putValue(SHORT_DESCRIPTION, "Deletes selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
+        putValue(Action.SMALL_ICON, Icons.DELETE_ICON);
     }
 
     @Override
