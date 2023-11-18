@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.todo.entity.Template;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

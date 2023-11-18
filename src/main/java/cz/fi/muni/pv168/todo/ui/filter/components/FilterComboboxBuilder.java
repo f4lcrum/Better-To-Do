@@ -6,7 +6,10 @@ import cz.fi.muni.pv168.todo.ui.renderer.AbstractRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.EitherRenderer;
 import cz.fi.muni.pv168.todo.util.Either;
 
-import javax.swing.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.ListModel;
 import java.util.function.Consumer;
 
 /**
@@ -17,6 +20,7 @@ import java.util.function.Consumer;
  * @author Vojtěch Sassmann
  */
 public class FilterComboboxBuilder<L extends Enum<L>, R> {
+
     private final Class<L> clazz;
     private final ComboBoxModel<R> values;
     private AbstractRenderer<L> specialValuesRenderer;

@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.renderer;
 
 import cz.fi.muni.pv168.todo.entity.Status;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 public final class StatusRenderer extends AbstractRenderer<Status> {
 

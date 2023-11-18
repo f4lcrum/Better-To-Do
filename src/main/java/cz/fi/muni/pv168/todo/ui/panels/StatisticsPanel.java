@@ -2,7 +2,8 @@ package cz.fi.muni.pv168.todo.ui.panels;
 
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class StatisticsPanel extends JPanel {
 

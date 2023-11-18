@@ -23,6 +23,7 @@ import java.util.stream.Stream;
  * @author Vojtěch Sassmann, BOSV team
  */
 public final class TemplateTableFilter {
+
     private final EventCompoundMatcher templateCompoundMatcher;
 
     public TemplateTableFilter(TableRowSorter<TodoTableModel> rowSorter) {

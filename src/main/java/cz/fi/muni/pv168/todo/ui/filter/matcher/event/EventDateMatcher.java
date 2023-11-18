@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 import java.time.LocalDate;
 
 public class EventDateMatcher extends EntityMatcher<Event> {
+
     private final LocalDate date;
 
     @Override

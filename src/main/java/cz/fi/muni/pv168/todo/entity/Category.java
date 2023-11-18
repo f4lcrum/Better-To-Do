@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Category.CategoryBuilder.class)
 public class Category implements Entity {
+
     @JsonProperty
     private final UUID id;
     @JsonProperty

@@ -20,6 +20,7 @@ public record DatabaseSnapshot(
         @JsonProperty
         Collection<User> users
 ) {
+
     public DatabaseSnapshot(
             Collection<Category> categories,
             Collection<Event> events,

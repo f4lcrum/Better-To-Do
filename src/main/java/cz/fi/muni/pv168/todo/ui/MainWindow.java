@@ -52,8 +52,6 @@ public class MainWindow {
     private final int CATEGORY_TAB = 2;
     private final int START_DATE_COL = 2;
     private final JFrame frame;
-    private final JTable eventTable;
-    private final JTable templateTable;
     private final Action addAction;
     private final Action quitAction;
     private final Action editAction;
@@ -82,8 +80,6 @@ public class MainWindow {
         var events = testDataGenerator.createTestEvents(10);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();
-        eventTable = createEventTable(events);
-        templateTable = createTemplateTable(testDataGenerator.createTestTemplates(10));
 
         addAction = new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
         quitAction = new QuitAction();

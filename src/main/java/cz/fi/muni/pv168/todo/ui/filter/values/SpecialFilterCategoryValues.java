@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatchers;
 
 public enum SpecialFilterCategoryValues {
+
     ALL(EntityMatchers.all());
 
     private final EntityMatcher<Event> matcher;

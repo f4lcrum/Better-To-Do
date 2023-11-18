@@ -15,7 +15,7 @@ import java.awt.Color;
 import java.time.LocalDate;
 
 public class TemplateTablePanel extends JPanel {
-    
+
     private final JTable eventTable;
     private final TemplateTableModel templateTableModel;
 

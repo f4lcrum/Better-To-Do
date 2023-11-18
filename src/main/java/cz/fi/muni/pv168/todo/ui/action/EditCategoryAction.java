@@ -4,7 +4,9 @@ import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JTable;
 import java.awt.event.ActionEvent;
 
 public class EditCategoryAction extends AbstractAction {
@@ -18,6 +20,7 @@ public class EditCategoryAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         int[] selectedRows = categoryTable.getSelectedRows();

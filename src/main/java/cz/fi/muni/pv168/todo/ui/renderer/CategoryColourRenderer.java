@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 public class CategoryColourRenderer extends AbstractRenderer<Color> {
+
     public CategoryColourRenderer() {
         super(Color.class);
     }
@@ -13,8 +14,7 @@ public class CategoryColourRenderer extends AbstractRenderer<Color> {
     @Override
     public Component getTableCellRendererComponent
             (JTable table, Object value, boolean isSelected,
-             boolean hasFocus, int row, int column)
-    {
+             boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent
                 (table, value, isSelected, hasFocus, row, column);
         cell.setBackground((Color) value);
@@ -23,7 +23,7 @@ public class CategoryColourRenderer extends AbstractRenderer<Color> {
 
 
     @Override
-    protected void updateLabel( JLabel label,  Color value) {
+    protected void updateLabel(JLabel label, Color value) {
         label.setText("");
     }
 }

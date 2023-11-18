@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 import java.time.LocalTime;
 
 public class EventInBetweenTimeMatcher extends EntityMatcher<Event> {
+
     private final LocalTime fromTime;
     private final LocalTime toTime;
 

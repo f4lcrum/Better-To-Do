@@ -2,7 +2,7 @@ package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +19,12 @@ public class CategoryListModel extends AbstractListModel<Category> {
     }
 
     @Override
-    public int getSize() { return categories.size(); }
+    public int getSize() {
+        return categories.size();
+    }
 
     @Override
-    public Category getElementAt(int index) { return categories.get(index); }
+    public Category getElementAt(int index) {
+        return categories.get(index);
+    }
 }

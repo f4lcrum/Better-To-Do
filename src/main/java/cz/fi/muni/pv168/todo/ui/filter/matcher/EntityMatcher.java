@@ -2,14 +2,13 @@ package cz.fi.muni.pv168.todo.ui.filter.matcher;
 
 import cz.fi.muni.pv168.todo.ui.model.EntityTableModel;
 
-import javax.swing.*;
+import javax.swing.RowFilter;
 
 /**
  * General entity matcher which can be extended by implementing the {@link EntityMatcher#evaluate(Object)}
  * method.
  *
  * @param <T> entity type
- *
  * @author Vojtěch Sassmann
  */
 public abstract class EntityMatcher<T> extends RowFilter<EntityTableModel<T>, Integer> {

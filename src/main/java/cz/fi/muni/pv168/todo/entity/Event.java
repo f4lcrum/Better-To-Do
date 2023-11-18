@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Event.EventBuilder.class)
 public class Event implements Entity {
+
     @JsonProperty
     private final UUID id;
     @JsonProperty

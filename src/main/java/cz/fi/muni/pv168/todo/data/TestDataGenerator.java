@@ -1,12 +1,17 @@
 package cz.fi.muni.pv168.todo.data;
 
+import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.*;
-import static cz.fi.muni.pv168.todo.entity.Status.*;
+import cz.fi.muni.pv168.todo.entity.Status;
+import static cz.fi.muni.pv168.todo.entity.Status.DONE;
+import static cz.fi.muni.pv168.todo.entity.Status.IN_PROGRESS;
+import static cz.fi.muni.pv168.todo.entity.Status.PLANNED;
+import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.entity.User;
 import static java.time.Month.SEPTEMBER;
 import static java.time.temporal.ChronoUnit.DAYS;
 
-import java.awt.*;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public final class TestDataGenerator {
+
     private static final Random RAND_GEN = new Random();
 
     private static final User LUCY = new User(UUID.randomUUID(), "Lucy", String.format("%d", RAND_GEN.nextInt()));
@@ -80,6 +86,7 @@ public final class TestDataGenerator {
         String name = selectRandom(CATEGORY_NAMES);
         return new Category(UUID.randomUUID(), name, color);
     }
+
     public List<Category> createTestCategories(int count) {
         return Stream
                 .generate(this::createTestCategory)

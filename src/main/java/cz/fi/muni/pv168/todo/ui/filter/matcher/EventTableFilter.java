@@ -31,6 +31,7 @@ import java.util.stream.Stream;
  * @author Vojtěch Sassmann, BOSV team
  */
 public final class EventTableFilter {
+
     private final EventCompoundMatcher employeeCompoundMatcher;
 
     public EventTableFilter(TableRowSorter<TodoTableModel> rowSorter) {

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.entity.EventDuration;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 
 public class EventIntervalMatcher extends EntityMatcher<Event> {
+
     private final EventDuration eventDuration;
 
     public EventIntervalMatcher(EventDuration eventDuration) {

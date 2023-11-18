@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = User.UserBuilder.class)
 public class User implements Entity {
+    
     @JsonProperty
     private final UUID id;
 

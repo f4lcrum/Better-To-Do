@@ -7,16 +7,20 @@ import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListModel;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.Color;
 import java.time.LocalDate;
-
 import java.time.LocalTime;
 import java.util.UUID;
 
 public final class AddEventAction extends AbstractAction {
+
     private final JTable todoTable;
 
     private final ListModel<Category> categoryListModel;
@@ -40,8 +44,7 @@ public final class AddEventAction extends AbstractAction {
         dialog.show(todoTable, "Add Event");
     }
 
-    private Event createPrefilledEvent()
-    {
+    private Event createPrefilledEvent() {
         return new Event(
                 UUID.randomUUID(),
                 UUID.randomUUID(),

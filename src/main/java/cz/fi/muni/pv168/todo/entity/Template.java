@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @JsonDeserialize(builder = Template.TemplateBuilder.class)
 public class Template implements Entity {
+
     @JsonProperty
     private final UUID id;
     @JsonProperty
