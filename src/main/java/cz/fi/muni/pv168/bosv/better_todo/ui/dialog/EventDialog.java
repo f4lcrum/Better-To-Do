@@ -68,27 +68,20 @@ public final class EventDialog extends EntityDialog<Event> {
     private void addFields() {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setSelectedItem(new CategoryRenderer());
-        var templateComboBox = new JComboBox<>(templateModel);
+        var templateComboBox = new JComboBox<Either<Template, SpecialTemplateValues>>(templateModel);
         templateComboBox.setSelectedItem(EitherRenderer.create(new TemplateRenderer(), new SpecialTemplateRenderer()));
         templateComboBox.setRenderer(EitherRenderer.create(new TemplateRenderer(), new SpecialTemplateRenderer()));
         templateComboBox.addItemListener(e -> {
-            if (templateComboBox.getSelectedIndex() == 0) {
-                return;
-            }
-            Object selectedItem = templateComboBox.getSelectedItem();
-            if (selectedItem instanceof Either) {
-                var left = ((Either<?, ?>) selectedItem).getLeft();
-                if (left.isEmpty()) {
-                    return;
+            int index = templateComboBox.getSelectedIndex();
+            if (index >= 1) {
+                var eitherTemplate = templateComboBox.getItemAt(index);
+                if (eitherTemplate.getLeft().isPresent()) {
+                    var template = eitherTemplate.getLeft().get();
+                    hourField.setText(Integer.toString((template.getStartTime().getHour())));
+                    minuteField.setText(Integer.toString(template.getStartTime().getMinute()));
+                    categoryComboBox.setSelectedItem(template.getCategory());
+                    duration.setText(Long.toString((template.getTemplateDuration())));
                 }
-                Object template = left.get();
-                if (!(template instanceof Template)) {
-                    return;
-                }
-                hourField.setText(Integer.toString(((Template) template).getStartTime().getHour()));
-                minuteField.setText(Integer.toString(((Template) template).getStartTime().getMinute()));
-                categoryComboBox.setSelectedItem(((Template) template).getCategory());
-                duration.setText(Long.toString((((Template) template).getTemplateDuration())));
             }
         });
 
