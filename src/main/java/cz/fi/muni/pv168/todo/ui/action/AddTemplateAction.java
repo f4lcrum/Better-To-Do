@@ -4,7 +4,6 @@ import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.entity.Template;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
-import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -38,7 +37,6 @@ public final class AddTemplateAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var templateTableModel = (TemplateTableModel) templateTable.getModel();
         var dialog = new TemplateDialog(createPrefilledTemplate(), categoryListModel, statusListModel);
         dialog.show(templateTable, "Add Template");
     }

@@ -35,12 +35,14 @@ public class EditTemplateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         int[] selectedRows = templateTable.getSelectedRows();
+
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
         }
         if (templateTable.isEditing()) {
             templateTable.getCellEditor().cancelCellEditing();
         }
+
         var templateTableModel = (TemplateTableModel) templateTable.getModel();
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);

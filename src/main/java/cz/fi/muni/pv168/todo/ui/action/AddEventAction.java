@@ -4,7 +4,6 @@ import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -39,7 +38,6 @@ public final class AddEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var todoTableModel = (TodoTableModel) todoTable.getModel();
         var dialog = new EventDialog(createPrefilledEvent(), categoryListModel);
         dialog.show(todoTable, "Add Event");
     }
