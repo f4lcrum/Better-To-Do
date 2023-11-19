@@ -2,7 +2,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -38,7 +38,7 @@ public class EditEventAction extends AbstractAction {
         if (todoTable.isEditing()) {
             todoTable.getCellEditor().cancelCellEditing();
         }
-        var employeeTableModel = (TodoTableModel) todoTable.getModel();
+        var employeeTableModel = (EventTableModel) todoTable.getModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var employee = employeeTableModel.getEntity(modelRow);
         var dialog = new EventDialog(employee, categoryListModel);

@@ -22,7 +22,7 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
@@ -65,7 +65,7 @@ public class MainWindow {
 
     public MainWindow() {
         var testDataGenerator = new TestDataGenerator();
-        var eventTableModel = new TodoTableModel(testDataGenerator.createTestEvents(10));
+        var eventTableModel = new EventTableModel(testDataGenerator.createTestEvents(10));
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         var templateTableModel = new TemplateTableModel(testDataGenerator.createTestTemplates(10));
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);

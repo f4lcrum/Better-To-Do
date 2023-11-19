@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.panels;
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.ui.action.mouseClick.TableRow;
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.LocalDateRenderer;
@@ -23,19 +23,19 @@ public class EventTablePanel extends JPanel {
 
     private final JTable eventTable;
 
-    private final TodoTableModel todoTableModel;
+    private final EventTableModel eventTableModel;
 
-    public EventTablePanel(TodoTableModel todoTableModel) {
+    public EventTablePanel(EventTableModel eventTableModel) {
         setLayout(new BorderLayout());
-        eventTable = setUpTable(todoTableModel);
+        eventTable = setUpTable(eventTableModel);
         eventTable.addMouseListener(new TableRow("Event detail"));
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
 
-        this.todoTableModel = todoTableModel;
+        this.eventTableModel = eventTableModel;
     }
 
-    private JTable setUpTable(TodoTableModel todoTableModel) {
-        var table = new JTable(todoTableModel);
+    private JTable setUpTable(EventTableModel eventTableModel) {
+        var table = new JTable(eventTableModel);
 
         // Renderers bind
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
