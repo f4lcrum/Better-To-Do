@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -28,7 +27,6 @@ public class DeleteCategoryAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Check if there is no existing model of such category
-        var categoryTableModel = (TodoTableModel) categoryTable.getModel();
         Arrays.stream(categoryTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(categoryTable::convertRowIndexToModel)

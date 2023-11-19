@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -27,7 +26,6 @@ public class DeleteTemplateAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (TodoTableModel) todoTable.getModel();
         Arrays.stream(todoTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(todoTable::convertRowIndexToModel)

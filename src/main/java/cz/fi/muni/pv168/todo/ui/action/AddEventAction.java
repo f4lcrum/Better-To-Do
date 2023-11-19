@@ -23,13 +23,11 @@ public final class AddEventAction extends AbstractAction {
     private final JTable todoTable;
 
     private final ListModel<Category> categoryListModel;
-    private final ListModel<Status> statusListModel;
 
-    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
         super("Add event", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
-        this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));

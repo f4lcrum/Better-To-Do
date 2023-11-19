@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TemplateTableModel extends AbstractTableModel implements EntityTableModel<Template> {
 
-    private List<Template> templates;
+    private final List<Template> templates;
 
     private final List<Column<Template, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Template::getColour),

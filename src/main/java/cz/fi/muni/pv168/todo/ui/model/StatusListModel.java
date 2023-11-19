@@ -7,7 +7,7 @@ import java.util.List;
 
 public class StatusListModel extends AbstractListModel<Status> {
 
-    private List<Status> statuses;
+    private final List<Status> statuses;
 
     public StatusListModel() {
         this.statuses = List.of(Status.values());

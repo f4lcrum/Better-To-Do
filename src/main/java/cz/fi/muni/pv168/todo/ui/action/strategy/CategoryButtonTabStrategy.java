@@ -9,7 +9,7 @@ import javax.swing.JTable;
 
 public class CategoryButtonTabStrategy implements ButtonTabStrategy {
 
-    private JTable table;
+    private final JTable table;
 
     public CategoryButtonTabStrategy(JTable table) {
         this.table = table;

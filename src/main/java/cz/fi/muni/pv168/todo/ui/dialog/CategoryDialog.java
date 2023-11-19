@@ -13,8 +13,6 @@ public final class CategoryDialog extends EntityDialog<Event> {
 
     private final JTextField nameField = new JTextField();
     private final JColorChooser color = new JColorChooser(Color.BLACK);
-    ;
-
 
     private final Category category;
 

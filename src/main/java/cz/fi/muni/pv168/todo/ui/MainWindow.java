@@ -149,8 +149,8 @@ public class MainWindow {
         fileMenu.add(quitAction);
 
         var eventMenu = new JMenu("Event");
-        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel));
-        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, statusListModel));
+        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel));
+        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel));
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
 
         var categoryMenu = new JMenu("Category");

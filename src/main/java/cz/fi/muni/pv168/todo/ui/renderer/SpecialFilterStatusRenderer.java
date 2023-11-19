@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Objects;
 
 public class SpecialFilterStatusRenderer extends AbstractRenderer<SpecialFilterStatusValues> {
 
@@ -13,8 +14,8 @@ public class SpecialFilterStatusRenderer extends AbstractRenderer<SpecialFilterS
     }
 
     protected void updateLabel(JLabel label, SpecialFilterStatusValues value) {
-        switch (value) {
-            case ALL -> renderAll(label);
+        if (Objects.requireNonNull(value) == SpecialFilterStatusValues.ALL) {
+            renderAll(label);
         }
     }
 

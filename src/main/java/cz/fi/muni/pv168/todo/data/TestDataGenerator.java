@@ -8,8 +8,6 @@ import static cz.fi.muni.pv168.todo.entity.Status.IN_PROGRESS;
 import static cz.fi.muni.pv168.todo.entity.Status.PLANNED;
 import cz.fi.muni.pv168.todo.entity.Template;
 import cz.fi.muni.pv168.todo.entity.User;
-import static java.time.Month.SEPTEMBER;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.awt.Color;
 import java.time.LocalDate;
@@ -37,11 +35,6 @@ public final class TestDataGenerator {
     );
 
     private static final List<Status> STATUSES = List.of(PLANNED, IN_PROGRESS, DONE);
-
-
-    private static final LocalDate EVENT_START = LocalDate.of(2023, SEPTEMBER, 27);
-
-    private static final LocalDate EVENT_END = LocalDate.of(2023, SEPTEMBER, 29);
 
     private static final List<String> CATEGORY_NAMES = List.of("Social", "Chores", "Shopping", "Work", "School");
 
@@ -108,11 +101,5 @@ public final class TestDataGenerator {
     private <T> T selectRandom(List<T> data) {
         int index = random.nextInt(data.size());
         return data.get(index);
-    }
-
-    private LocalDate selectRandomLocalDate(LocalDate min, LocalDate max) {
-        int maxDays = Math.toIntExact(DAYS.between(min, max) + 1);
-        int days = random.nextInt(maxDays);
-        return min.plusDays(days);
     }
 }
