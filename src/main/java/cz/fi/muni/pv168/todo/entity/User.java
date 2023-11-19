@@ -37,14 +37,6 @@ public class User implements Entity {
         return this.id;
     }
 
-    public String getLogin() {
-        return this.login;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;

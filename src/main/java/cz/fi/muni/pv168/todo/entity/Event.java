@@ -83,14 +83,6 @@ public class Event implements Entity {
         return this.category.getColour();
     }
 
-    public UUID getId() {
-        return this.id;
-    }
-
-    public UUID getUserId() {
-        return this.userId;
-    }
-
     public String getName() {
         return this.name;
     }

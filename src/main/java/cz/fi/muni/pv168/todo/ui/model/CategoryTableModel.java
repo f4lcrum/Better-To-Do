@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryTableModel extends AbstractTableModel implements EntityTableModel<Category> {
 
-    private List<Category> categories;
+    private final List<Category> categories;
 
     private final List<Column<Category, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Category::getColour),

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterDurationValues;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Objects;
 
 public class SpecialFilterDurationValuesRenderer extends AbstractRenderer<SpecialFilterDurationValues> {
 
@@ -13,8 +14,8 @@ public class SpecialFilterDurationValuesRenderer extends AbstractRenderer<Specia
     }
 
     protected void updateLabel(JLabel label, SpecialFilterDurationValues value) {
-        switch (value) {
-            case ALL -> renderAll(label);
+        if (Objects.requireNonNull(value) == SpecialFilterDurationValues.ALL) {
+            renderAll(label);
         }
     }
 

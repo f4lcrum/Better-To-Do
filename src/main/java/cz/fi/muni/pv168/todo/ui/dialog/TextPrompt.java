@@ -32,8 +32,8 @@ public class TextPrompt extends JLabel
         FOCUS_LOST;
     }
 
-    private JTextComponent component;
-    private Document document;
+    private final JTextComponent component;
+    private final Document document;
 
     private Show show;
     private boolean showPromptOnce;

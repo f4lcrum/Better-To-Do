@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CategoryListModel extends AbstractListModel<Category> {
 
-    private List<Category> categories;
+    private final List<Category> categories;
 
     public CategoryListModel() {
         this.categories = new ArrayList<>();

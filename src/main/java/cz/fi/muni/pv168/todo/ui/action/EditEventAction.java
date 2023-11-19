@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
@@ -19,13 +18,11 @@ public class EditEventAction extends AbstractAction {
     private final JTable todoTable;
 
     private final ListModel<Category> categoryListModel;
-    private final ListModel<Status> statusListModel;
 
-    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
         super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
-        this.statusListModel = statusListModel;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));

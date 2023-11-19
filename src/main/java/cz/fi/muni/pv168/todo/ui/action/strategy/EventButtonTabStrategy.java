@@ -23,12 +23,12 @@ public class EventButtonTabStrategy implements ButtonTabStrategy {
 
     @Override
     public AbstractAction getAddAction() {
-        return new AddEventAction(table, categoryListModel, statusListModel);
+        return new AddEventAction(table, categoryListModel);
     }
 
     @Override
     public AbstractAction getEditAction() {
-        return new EditEventAction(table, categoryListModel, statusListModel);
+        return new EditEventAction(table, categoryListModel);
     }
 
     @Override
