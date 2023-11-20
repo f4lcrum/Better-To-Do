@@ -9,7 +9,7 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventIntervalMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterDurationValues;
-import cz.fi.muni.pv168.todo.ui.model.TodoTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.table.TableRowSorter;
@@ -26,7 +26,7 @@ public final class TemplateTableFilter {
 
     private final EventCompoundMatcher templateCompoundMatcher;
 
-    public TemplateTableFilter(TableRowSorter<TodoTableModel> rowSorter) {
+    public TemplateTableFilter(TableRowSorter<EventTableModel> rowSorter) {
         templateCompoundMatcher = new EventCompoundMatcher(rowSorter);
         rowSorter.setRowFilter(templateCompoundMatcher);
     }
@@ -57,12 +57,12 @@ public final class TemplateTableFilter {
      */
     private static class EventCompoundMatcher extends EntityMatcher<Event> {
 
-        private final TableRowSorter<TodoTableModel> rowSorter;
+        private final TableRowSorter<EventTableModel> rowSorter;
         private EntityMatcher<Event> dateMatcher = EntityMatchers.all();
         private EntityMatcher<Event> intervalMatcher = EntityMatchers.all();
         private EntityMatcher<Event> categoryMatcher = EntityMatchers.all();
 
-        private EventCompoundMatcher(TableRowSorter<TodoTableModel> rowSorter) {
+        private EventCompoundMatcher(TableRowSorter<EventTableModel> rowSorter) {
             this.rowSorter = rowSorter;
         }
 
