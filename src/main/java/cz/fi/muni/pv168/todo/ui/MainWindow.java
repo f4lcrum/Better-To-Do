@@ -4,25 +4,25 @@ import cz.fi.muni.pv168.todo.data.TestDataGenerator;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.strategy.ButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.EditCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.ExportAction;
 import cz.fi.muni.pv168.todo.ui.action.ImportAction;
 import cz.fi.muni.pv168.todo.ui.action.QuitAction;
+import cz.fi.muni.pv168.todo.ui.action.strategy.ButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
@@ -45,6 +45,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 public class MainWindow {
+
     private final JFrame frame;
     private ButtonTabStrategy buttonTabStrategy;
     private final JButton addButton;
@@ -60,7 +61,6 @@ public class MainWindow {
     private final CategoryTablePanel categoryTablePanel;
     private final TemplateTablePanel templateTablePanel;
     private final JPanel statusFilterPanel;
-    private final JPanel durationFilterPanel;
     private final JPanel categoryFilterPanel;
 
     public MainWindow() {
@@ -93,7 +93,6 @@ public class MainWindow {
 
         // Filters
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
-        this.durationFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createDurationFilter(eventTableFilter), "Duration: ");
         this.categoryFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
 
         this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
@@ -113,7 +112,7 @@ public class MainWindow {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.pack();
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, durationFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(statistics, BorderLayout.SOUTH);
     }
 
@@ -123,7 +122,6 @@ public class MainWindow {
 
     public void applyButtonStrategy() {
         setPanelEnabled(getStatusFilterPanel(), buttonTabStrategy.statusFilterEnabled());
-        setPanelEnabled(getDurationFilterPanel(), buttonTabStrategy.durationFilterEnabled());
         setPanelEnabled(getCategoryFilterPanel(), buttonTabStrategy.categoryFilterEnabled());
         addButton.setAction(buttonTabStrategy.getAddAction());
         editButton.setAction(buttonTabStrategy.getEditAction());
@@ -204,10 +202,6 @@ public class MainWindow {
 
     public JPanel getStatusFilterPanel() {
         return statusFilterPanel;
-    }
-
-    public JPanel getDurationFilterPanel() {
-        return durationFilterPanel;
     }
 
     public JPanel getCategoryFilterPanel() {

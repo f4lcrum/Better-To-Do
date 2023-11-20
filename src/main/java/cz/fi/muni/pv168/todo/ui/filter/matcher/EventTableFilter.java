@@ -3,24 +3,17 @@ package cz.fi.muni.pv168.todo.ui.filter.matcher;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.EventDuration;
 import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryMatcher;
-import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventDateMatcher;
-import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventInBetweenTimeMatcher;
-import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventIntervalMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
-import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterDurationValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.table.TableRowSorter;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -39,14 +32,6 @@ public final class EventTableFilter {
         rowSorter.setRowFilter(employeeCompoundMatcher);
     }
 
-    public void filterDate(LocalDate date) {
-        employeeCompoundMatcher.setDateMatcher(new EventDateMatcher(date));
-    }
-
-    public void filterBetweenDate(LocalTime from, LocalTime to) {
-        employeeCompoundMatcher.setInBetweenTimeMatcher(new EventInBetweenTimeMatcher(from, to));
-    }
-
     public void filterStatus(List<Either<SpecialFilterStatusValues, Status>> selectedItems) {
         List<EntityMatcher<Event>> matchers = new ArrayList<>();
         selectedItems.forEach(either -> either.apply(
@@ -54,13 +39,6 @@ public final class EventTableFilter {
                 r -> matchers.add(new EventStatusMatcher(r))
         ));
         employeeCompoundMatcher.setStatusMatcher(new EventStatusCompoundMatcher(matchers));
-    }
-
-    public void filterDuration(Either<SpecialFilterDurationValues, EventDuration> selectedItems) {
-        selectedItems.apply(
-                l -> employeeCompoundMatcher.setIntervalMatcher(l.getMatcher()),
-                r -> employeeCompoundMatcher.setIntervalMatcher(new EventIntervalMatcher(r))
-        );
     }
 
     public void filterCategory(List<Either<SpecialFilterCategoryValues, Category>> selectedItems) {
@@ -83,9 +61,6 @@ public final class EventTableFilter {
     private static class EventCompoundMatcher extends EntityMatcher<Event> {
 
         private final TableRowSorter<EventTableModel> rowSorter;
-        private EntityMatcher<Event> dateMatcher = EntityMatchers.all();
-        private EntityMatcher<Event> intervalMatcher = EntityMatchers.all();
-        private EntityMatcher<Event> inBetweenDateMatcher = EntityMatchers.all();
         private EntityMatcher<Event> statusMatcher = EntityMatchers.all();
         private EntityMatcher<Event> categoryMatcher = EntityMatchers.all();
 
@@ -93,20 +68,6 @@ public final class EventTableFilter {
             this.rowSorter = rowSorter;
         }
 
-        private void setDateMatcher(EntityMatcher<Event> dateMatcher) {
-            this.dateMatcher = dateMatcher;
-            rowSorter.sort();
-        }
-
-        private void setIntervalMatcher(EntityMatcher<Event> intervalMatcher) {
-            this.intervalMatcher = intervalMatcher;
-            rowSorter.sort();
-        }
-
-        private void setInBetweenTimeMatcher(EntityMatcher<Event> inBetweenDateMatcher) {
-            this.inBetweenDateMatcher = inBetweenDateMatcher;
-            rowSorter.sort();
-        }
 
         private void setStatusMatcher(EntityMatcher<Event> statusMatcher) {
             this.statusMatcher = statusMatcher;
@@ -120,7 +81,7 @@ public final class EventTableFilter {
 
         @Override
         public boolean evaluate(Event event) {
-            return Stream.of(dateMatcher, intervalMatcher, inBetweenDateMatcher, statusMatcher, categoryMatcher).allMatch(m -> m.evaluate(event));
+            return Stream.of(statusMatcher, categoryMatcher).allMatch(m -> m.evaluate(event));
         }
     }
 }

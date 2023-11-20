@@ -1,24 +1,18 @@
 package cz.fi.muni.pv168.todo.ui.filter.components;
 
 import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.EventDuration;
 import cz.fi.muni.pv168.todo.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
-import cz.fi.muni.pv168.todo.ui.filter.matcher.TemplateTableFilter;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
-import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterDurationValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
-import cz.fi.muni.pv168.todo.ui.renderer.DurationRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.SpecialFilterCategoryRenderer;
-import cz.fi.muni.pv168.todo.ui.renderer.SpecialFilterDurationValuesRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.SpecialFilterStatusRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.StatusRenderer;
 import cz.fi.muni.pv168.todo.util.Either;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -28,46 +22,12 @@ import java.awt.Component;
 
 public class FilterPanel<L extends Enum<L>, R> {
 
-    private Component filter;
-    private String label;
-
-    public static void setPanelEnabled(JPanel panel, Boolean isEnabled) {
-        panel.setEnabled(isEnabled);
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JPanel) {
-                setPanelEnabled((JPanel) component, isEnabled);
-            }
-            component.setEnabled(isEnabled);
-        }
-    }
-
     public static JPanel createFilterPanel(Component filter, String label) {
         JPanel statusPanel = new JPanel(new BorderLayout());
         JLabel filterLabel = new JLabel(label);
         statusPanel.add(filterLabel, BorderLayout.NORTH);
         statusPanel.add(filter, BorderLayout.SOUTH);
         return statusPanel;
-    }
-
-    public static JComboBox<Either<SpecialFilterDurationValues, EventDuration>> createDurationFilter(
-            TemplateTableFilter templateTableFilter) {
-        return FilterComboboxBuilder.create(SpecialFilterDurationValues.class, EventDuration.values())
-                .setSelectedItem(SpecialFilterDurationValues.ALL)
-                .setSpecialValuesRenderer(new SpecialFilterDurationValuesRenderer())
-                .setValuesRenderer(new DurationRenderer())
-                .setFilter(templateTableFilter::filterDuration)
-                .build();
-    }
-
-    public static JComboBox<Either<SpecialFilterDurationValues, EventDuration>> createDurationFilter(
-            EventTableFilter eventTableFilter) {
-        return FilterComboboxBuilder.create(SpecialFilterDurationValues.class, EventDuration.values())
-                .setSelectedItem(SpecialFilterDurationValues.ALL)
-                .setSpecialValuesRenderer(new SpecialFilterDurationValuesRenderer())
-                .setValuesRenderer(new DurationRenderer())
-                .setFilter(eventTableFilter::filterDuration)
-                .build();
     }
 
     public static JList<Either<SpecialFilterStatusValues, Status>> createStatusFilter(
