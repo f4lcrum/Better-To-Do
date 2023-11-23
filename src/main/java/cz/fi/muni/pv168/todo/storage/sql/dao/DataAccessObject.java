@@ -37,14 +37,6 @@ public interface DataAccessObject<E> {
     Optional<E> findById(long id);
 
     /**
-     * Finds entity by GUID.
-     *
-     * @param guid entity guid
-     * @return either empty if not found or the entity instance
-     */
-    Optional<E> findByGuid(String guid);
-
-    /**
      * Updates an entity using the underlying data source.
      *
      * @param entity entity to be deleted
@@ -53,24 +45,8 @@ public interface DataAccessObject<E> {
     E update(E entity);
 
     /**
-     * Deletes an entity using the underlying data source.
-     *
-     * @param guid entity guid to be deleted
-     * @throws IllegalArgumentException when the entity has not been persisted yet
-     */
-    void deleteByGuid(String guid);
-
-    /**
      * Deletes all entities from the underlying data source.
      *
      */
     void deleteAll();
-
-    /**
-     * Checks if entity with given guid exists in the underlying data source.
-     *
-     * @param guid entity guid
-     * @return true if entity exists, false otherwise
-     */
-    boolean existsByGuid(String guid);
 }
