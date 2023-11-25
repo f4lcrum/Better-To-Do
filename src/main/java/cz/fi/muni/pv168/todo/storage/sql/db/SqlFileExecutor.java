@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 final class SqlFileExecutor {
+
     private final Class<?> resourceRoot;
     private final Supplier<Transaction> transactions;
 

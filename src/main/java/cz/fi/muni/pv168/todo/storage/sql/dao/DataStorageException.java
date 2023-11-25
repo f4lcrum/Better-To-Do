@@ -2,7 +2,7 @@ package cz.fi.muni.pv168.todo.storage.sql.dao;
 
 /**
  * Exception that is thrown if there is some problem with data storage
- @author Vojtěch Sassmann
+ * @author Vojtěch Sassmann
  */
 import cz.fi.muni.pv168.todo.business.error.RuntimeApplicationException;
 
