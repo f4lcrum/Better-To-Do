@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import java.awt.Color;
 import java.awt.Component;
 
 /**
@@ -37,6 +38,14 @@ public abstract class AbstractRenderer<T> implements ListCellRenderer<T>, TableC
                 table, value, isSelected, hasFocus, row, column);
         updateLabel(label, elementType.cast(value));
         return label;
+    }
+
+    protected void setBackground(Color bg) {
+        listCellRenderer.setBackground(bg);
+    }
+
+    protected void setText(String t) {
+        listCellRenderer.setText(t);
     }
 
     @Override

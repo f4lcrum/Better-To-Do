@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.strategy.CategoryButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.model.CategoryColorListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 
@@ -34,6 +35,7 @@ public class PanelChangeListener implements ChangeListener {
 
         CategoryListModel categoryListModel = mainWindow.getCategoryListModel();
         StatusListModel statusListModel = mainWindow.getStatusListModel();
+        CategoryColorListModel categoryColorListModel = mainWindow.getCategoryColorListModel();
 
         int selectedIndex = mainWindow.getTabbedPane().getSelectedIndex();
         switch (selectedIndex) {
@@ -44,7 +46,7 @@ public class PanelChangeListener implements ChangeListener {
                 mainWindow.setButtonTabStrategy(new TemplateButtonTabStrategy(templateTable, categoryListModel, statusListModel));
                 break;
             case CATEGORY_TAB_INDEX:
-                mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable));
+                mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable, categoryColorListModel));
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("The strategy for column index %d is not yet impolemented!", selectedIndex));

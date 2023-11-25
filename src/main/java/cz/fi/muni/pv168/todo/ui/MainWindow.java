@@ -18,6 +18,7 @@ import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
+import cz.fi.muni.pv168.todo.ui.model.CategoryColorListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
@@ -56,6 +57,7 @@ public class MainWindow {
     private final Action importAction;
     private final StatusListModel statusListModel;
     private final CategoryListModel categoryListModel;
+    private final CategoryColorListModel categoryColorListModel;
     private final JTabbedPane tabbedPane;
     private final EventTablePanel eventTablePanel;
     private final CategoryTablePanel categoryTablePanel;
@@ -72,6 +74,7 @@ public class MainWindow {
         var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
+        categoryColorListModel = new CategoryColorListModel();
         statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
@@ -152,8 +155,8 @@ public class MainWindow {
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
 
         var categoryMenu = new JMenu("Category");
-        categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable()));
-        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable()));
+        categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), categoryColorListModel));
+        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable(), categoryColorListModel));
         categoryMenu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable()));
 
         var templateMenu = new JMenu("Template");
@@ -194,6 +197,10 @@ public class MainWindow {
 
     public StatusListModel getStatusListModel() {
         return statusListModel;
+    }
+
+    public CategoryColorListModel getCategoryColorListModel() {
+        return categoryColorListModel;
     }
 
     public CategoryListModel getCategoryListModel() {
