@@ -9,8 +9,10 @@ import java.util.Objects;
 
 /**
  * Transaction handler
+ * @author Peter Stanko
  */
 public class TransactionImpl implements Transaction {
+
     private final ConnectionHandler connectionHandler;
     private boolean closed = false;
 
