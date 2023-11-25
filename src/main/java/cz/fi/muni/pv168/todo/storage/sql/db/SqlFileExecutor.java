@@ -22,6 +22,7 @@ import java.util.function.Supplier;
  * Execute the SQL files
  * @author Peter Stanko
  */
+
 final class SqlFileExecutor {
     private final Class<?> resourceRoot;
     private final Supplier<Transaction> transactions;
