@@ -1,6 +1,8 @@
-package cz.muni.fi.pv168.employees.storage.sql.db;
+package cz.fi.muni.pv168.todo.storage.sql.db;
 
-import cz.muni.fi.pv168.employees.storage.sql.dao.DataStorageException;
+
+
+import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

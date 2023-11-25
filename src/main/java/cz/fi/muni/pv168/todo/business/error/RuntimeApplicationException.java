@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.employees.business.error;
+package cz.fi.muni.pv168.todo.business.error;
 
 import java.io.Serial;
 

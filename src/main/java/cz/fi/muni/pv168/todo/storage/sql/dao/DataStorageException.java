@@ -1,6 +1,8 @@
-package cz.muni.fi.pv168.employees.storage.sql.dao;
+package cz.fi.muni.pv168.todo.storage.sql.dao;
 
-import cz.muni.fi.pv168.employees.business.error.RuntimeApplicationException;
+
+
+import cz.fi.muni.pv168.todo.business.error.RuntimeApplicationException;
 
 import java.io.Serial;
 
