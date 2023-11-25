@@ -1,6 +1,10 @@
 package cz.fi.muni.pv168.todo.business.error;
+/**
+ * @author Vojtěch Sassmann
+ */
 
 import java.io.Serial;
+
 
 public class RuntimeApplicationException extends RuntimeException implements ApplicationException {
 

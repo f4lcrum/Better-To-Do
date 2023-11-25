@@ -8,6 +8,7 @@ import java.io.Serial;
 
 /**
  * Exception that is thrown if there is some problem with data storage
+ @author Vojtěch Sassmann
  */
 public class DataStorageException extends RuntimeApplicationException {
 
