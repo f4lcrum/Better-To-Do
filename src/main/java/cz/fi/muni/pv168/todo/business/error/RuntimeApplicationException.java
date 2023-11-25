@@ -1,4 +1,5 @@
 package cz.fi.muni.pv168.todo.business.error;
+
 /**
  * @author Vojtěch Sassmann
  */
