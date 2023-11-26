@@ -43,7 +43,6 @@ public final class AddEventAction extends AbstractAction {
     private Event createPrefilledEvent() {
         return new Event(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Dinner",
                 Status.PLANNED,
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),

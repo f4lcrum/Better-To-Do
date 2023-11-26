@@ -16,11 +16,10 @@ public class Event implements Entity {
 
     @JsonProperty
     private final UUID id;
-    @JsonProperty
-    private final UUID userId;
 
     @JsonProperty
     private final String name;
+
     @JsonProperty
     private final Status status;
 
@@ -29,17 +28,18 @@ public class Event implements Entity {
 
     @JsonProperty
     private final LocalDate date;
+
     @JsonProperty
     private final LocalTime startTime;
+
     @JsonProperty
     private final LocalTime endTime;
 
     @JsonProperty
     private final String description;
 
-    public Event(UUID id, UUID userId, String name, Status status, Category category, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
+    public Event(UUID id, String name, Status status, Category category, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
         this.id = id;
-        this.userId = userId;
         this.name = name;
         this.status = status;
         this.category = category;
@@ -113,6 +113,7 @@ public class Event implements Entity {
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class EventBuilder {
+
         private UUID id;
         private UUID userId;
         private String name;
@@ -181,7 +182,7 @@ public class Event implements Entity {
         }
 
         public Event build() {
-            return new Event(this.id, this.userId, this.name, this.status, this.category, this.date, this.startTime, this.endTime, this.description);
+            return new Event(this.id, this.name, this.status, this.category, this.date, this.startTime, this.endTime, this.description);
         }
 
         public String toString() {
