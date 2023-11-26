@@ -4,10 +4,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-<<<<<<< Updated upstream:src/main/java/cz/fi/muni/pv168/todo/ui/panels/StatisticsPanel.java
-=======
 import java.awt.BorderLayout;
->>>>>>> Stashed changes:src/main/java/cz/fi/muni/pv168/bosv/better_todo/ui/panels/StatisticsPanel.java
 
 public class StatisticsPanel extends JPanel {
 
