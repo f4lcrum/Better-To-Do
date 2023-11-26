@@ -44,7 +44,6 @@ public final class AddTemplateAction extends AbstractAction {
     private Template createPrefilledTemplate() {
         return new Template(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Restaurant",
                 "",
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),

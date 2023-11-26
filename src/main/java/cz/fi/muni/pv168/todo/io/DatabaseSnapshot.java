@@ -4,33 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
 import cz.fi.muni.pv168.todo.entity.Template;
-import cz.fi.muni.pv168.todo.entity.User;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 public record DatabaseSnapshot(
+
         @JsonProperty
         Collection<Category> categories,
         @JsonProperty
         Collection<Event> events,
         @JsonProperty
-        Collection<Template> templates,
-        @JsonProperty
-        Collection<User> users
+        Collection<Template> templates
 ) {
 
     public DatabaseSnapshot(
             Collection<Category> categories,
             Collection<Event> events,
-            Collection<Template> templates,
-            Collection<User> users
+            Collection<Template> templates
     ) {
         this.categories = List.copyOf(categories);
         this.events = List.copyOf(events);
         this.templates = List.copyOf(templates);
-        this.users = List.copyOf(users);
     }
 
     @Override
@@ -40,12 +36,11 @@ public record DatabaseSnapshot(
         DatabaseSnapshot that = (DatabaseSnapshot) o;
         return Objects.equals(categories, that.categories) &&
                 Objects.equals(events, that.events) &&
-                Objects.equals(templates, that.templates) &&
-                Objects.equals(users, that.users);
+                Objects.equals(templates, that.templates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categories, events, templates, users);
+        return Objects.hash(categories, events, templates);
     }
 }

@@ -13,11 +13,10 @@ public class Template implements Entity {
 
     @JsonProperty
     private final UUID id;
-    @JsonProperty
-    private final UUID userId;
 
     @JsonProperty
     private final String name;
+
     @JsonProperty
     private final String description;
 
@@ -26,12 +25,12 @@ public class Template implements Entity {
 
     @JsonProperty
     private final LocalTime startTime;
+
     @JsonProperty
     private final LocalTime endTime;
 
-    public Template(UUID id, UUID userId, String name, String description, Category category, LocalTime startTime, LocalTime endTime) {
+    public Template(UUID id, String name, String description, Category category, LocalTime startTime, LocalTime endTime) {
         this.id = id;
-        this.userId = userId;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -79,6 +78,7 @@ public class Template implements Entity {
 
     @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class TemplateBuilder {
+
         private UUID id;
         private UUID userId;
         private String name;
@@ -133,11 +133,11 @@ public class Template implements Entity {
         }
 
         public Template build() {
-            return new Template(this.id, this.userId, this.name, this.description, this.category, this.startTime, this.endTime);
+            return new Template(this.id, this.name, this.description, this.category, this.startTime, this.endTime);
         }
 
         public String toString() {
-            return "Template.TemplateBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + this.endTime + ")";
+            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + this.endTime + ")";
         }
     }
 }
