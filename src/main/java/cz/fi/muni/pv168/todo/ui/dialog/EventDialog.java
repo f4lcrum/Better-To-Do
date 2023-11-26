@@ -3,6 +3,8 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
@@ -20,9 +22,9 @@ import java.time.LocalDate;
 
 public final class EventDialog extends EntityDialog<Event> {
 
-    private final JTextField nameField = new JTextField();
-    private final JTextField duration = new JTextField();
-    private final JTextArea description = new JTextArea();
+    private final PlaceholderTextField nameField = new PlaceholderTextField("Doctor's visit");
+    private final PlaceholderTextField duration = new PlaceholderTextField("5");
+    private final PlaceholderTextArea description = new PlaceholderTextArea("A short regular annual visit to my doctor.");
     private final ComboBoxModel<Category> categoryModel;
     private final JTextField hourField = new JTextField();
     private final JTextField minuteField = new JTextField();
@@ -35,19 +37,6 @@ public final class EventDialog extends EntityDialog<Event> {
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         // setValues();
         addFields();
-        setHints();
-    }
-
-    private void setHints() {
-        var nameHint = new TextPrompt(event.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
-        var durationHint = new TextPrompt(String.format("%s minutes", event.getEventDuration()), duration, TextPrompt.Show.FOCUS_LOST);
-        var descriptionHint = new TextPrompt(event.getDescription(), description, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        durationHint.changeAlpha(0.5f);
-        descriptionHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
-        durationHint.changeStyle(Font.ITALIC);
-        descriptionHint.changeStyle(Font.ITALIC);
     }
 
     private void setValues() {
