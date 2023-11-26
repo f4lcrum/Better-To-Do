@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;

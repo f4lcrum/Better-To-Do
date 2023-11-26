@@ -1,12 +1,12 @@
 package cz.fi.muni.pv168.todo.data;
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Status;
-import static cz.fi.muni.pv168.todo.entity.Status.DONE;
-import static cz.fi.muni.pv168.todo.entity.Status.IN_PROGRESS;
-import static cz.fi.muni.pv168.todo.entity.Status.PLANNED;
-import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
+import static cz.fi.muni.pv168.todo.business.entity.Status.DONE;
+import static cz.fi.muni.pv168.todo.business.entity.Status.IN_PROGRESS;
+import static cz.fi.muni.pv168.todo.business.entity.Status.PLANNED;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 
 import java.awt.Color;
 import java.time.LocalDate;

@@ -1,8 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Status;
-import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 

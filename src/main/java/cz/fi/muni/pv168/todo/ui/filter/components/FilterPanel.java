@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.filter.components;
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;

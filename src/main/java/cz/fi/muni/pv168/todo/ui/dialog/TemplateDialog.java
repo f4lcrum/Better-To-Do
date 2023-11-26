@@ -1,10 +1,10 @@
 package cz.fi.muni.pv168.todo.ui.dialog;
 
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Status;
-import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;

@@ -1,4 +1,4 @@
-package cz.fi.muni.pv168.todo.entity;
+package cz.fi.muni.pv168.todo.business.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

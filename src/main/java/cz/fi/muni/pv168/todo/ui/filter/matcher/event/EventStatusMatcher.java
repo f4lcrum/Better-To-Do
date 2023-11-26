@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.filter.matcher.event;
 
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 
 public class EventStatusMatcher extends EntityMatcher<Event> {
