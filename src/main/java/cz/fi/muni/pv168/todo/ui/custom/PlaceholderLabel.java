@@ -13,12 +13,6 @@ public class PlaceholderLabel extends JLabel {
 
     private void setStyle() {
         setFont(getFont().deriveFont(Font.ITALIC));
-        int alpha = 128;
-        Color foreground = Color.gray;
-        int red = foreground.getRed();
-        int green = foreground.getGreen();
-        int blue = foreground.getBlue();
-        Color color = new Color(red, green, blue, alpha);
-        super.setForeground(color);
+        super.setForeground(Color.gray);
     }
 }
