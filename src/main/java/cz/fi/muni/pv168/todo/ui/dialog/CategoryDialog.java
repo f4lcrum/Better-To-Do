@@ -3,15 +3,16 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 import cz.fi.muni.pv168.todo.entity.Category;
 import cz.fi.muni.pv168.todo.entity.Event;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderLabel;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
 import javax.swing.JColorChooser;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Font;
 
 public final class CategoryDialog extends EntityDialog<Event> {
 
-    private final JTextField nameField = new JTextField();
+    private final PlaceholderTextField nameField = new PlaceholderTextField();
     private final JColorChooser color = new JColorChooser(Color.BLACK);
 
     private final Category category;
@@ -24,9 +25,9 @@ public final class CategoryDialog extends EntityDialog<Event> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(category.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
+        var namePlaceholder = new PlaceholderLabel("Healthcare");
+        nameField.setPlaceholder(namePlaceholder);
+        nameField.add(namePlaceholder);
     }
 
     private void setValues() {
