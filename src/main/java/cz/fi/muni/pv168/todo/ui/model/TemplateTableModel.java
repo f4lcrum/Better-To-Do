@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.swing.table.AbstractTableModel;

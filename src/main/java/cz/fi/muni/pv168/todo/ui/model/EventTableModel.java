@@ -1,8 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 
 import javax.swing.table.AbstractTableModel;
 import java.awt.Color;

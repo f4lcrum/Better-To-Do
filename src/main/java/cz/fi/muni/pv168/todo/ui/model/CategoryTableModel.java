@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import cz.fi.muni.pv168.todo.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Category;
 
 import javax.swing.table.AbstractTableModel;
 import java.awt.Color;

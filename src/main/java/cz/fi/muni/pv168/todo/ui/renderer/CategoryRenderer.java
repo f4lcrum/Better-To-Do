@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.renderer;
 
-import cz.fi.muni.pv168.todo.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Category;
 
 import javax.swing.JLabel;
 

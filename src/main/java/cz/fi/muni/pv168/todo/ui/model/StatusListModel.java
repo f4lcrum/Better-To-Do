@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import cz.fi.muni.pv168.todo.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 
 import javax.swing.AbstractListModel;
 import java.util.List;

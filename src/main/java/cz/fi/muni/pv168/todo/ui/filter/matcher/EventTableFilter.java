@@ -1,9 +1,9 @@
 package cz.fi.muni.pv168.todo.ui.filter.matcher;
 
 
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventCategoryMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusCompoundMatcher;

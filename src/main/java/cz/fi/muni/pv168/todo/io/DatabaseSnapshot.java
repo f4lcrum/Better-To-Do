@@ -1,9 +1,9 @@
 package cz.fi.muni.pv168.todo.io;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cz.fi.muni.pv168.todo.entity.Category;
-import cz.fi.muni.pv168.todo.entity.Event;
-import cz.fi.muni.pv168.todo.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 
 import java.util.Collection;
 import java.util.List;
