@@ -31,7 +31,6 @@ public final class Icons {
 
     private static ImageIcon createIcon(String name) {
         URL url = Icons.class.getResource(name);
-        System.out.println();
         if (url == null) {
             throw new IllegalArgumentException("Icon resource not found on classpath: " + name);
         }
