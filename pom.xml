@@ -19,6 +19,8 @@
         <miglayout.version>3.7.4</miglayout.version>
         <jdatepicker.version>2.0.3</jdatepicker.version>
         <jfreechart.version>1.5.4</jfreechart.version>
+        <h2database.version>2.1.214</h2database.version>
+        <tinylog.version>2.5.0</tinylog.version>
     </properties>
 
     <dependencies>
@@ -51,6 +53,21 @@
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>${jfreechart.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2database.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-api</artifactId>
+            <version>${tinylog.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-impl</artifactId>
+            <version>${tinylog.version}</version>
         </dependency>
     </dependencies>
 
