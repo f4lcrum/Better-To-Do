@@ -7,7 +7,6 @@ import static cz.fi.muni.pv168.todo.entity.Status.DONE;
 import static cz.fi.muni.pv168.todo.entity.Status.IN_PROGRESS;
 import static cz.fi.muni.pv168.todo.entity.Status.PLANNED;
 import cz.fi.muni.pv168.todo.entity.Template;
-import cz.fi.muni.pv168.todo.entity.User;
 
 import java.awt.Color;
 import java.time.LocalDate;
@@ -20,8 +19,6 @@ import java.util.stream.Stream;
 public final class TestDataGenerator {
 
     private static final Random RAND_GEN = new Random();
-
-    private static final User LUCY = new User(UUID.randomUUID(), "Lucy", String.format("%d", RAND_GEN.nextInt()));
 
     private static final List<String> EVENT_NAMES = List.of("Meeting", "Exam", "Doctor", "Walk the dog", "Cook", "Clean the dishes", "Bank", "Party", "Clean shoes");
 
@@ -50,7 +47,7 @@ public final class TestDataGenerator {
         LocalDate eventStart = createRandomDate();
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        return new Event(UUID.randomUUID(), LUCY.getId(), name, status, category, eventStart, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
+        return new Event(UUID.randomUUID(), name, status, category, eventStart, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
     }
 
     public LocalDate createRandomDate() {
@@ -71,7 +68,7 @@ public final class TestDataGenerator {
         LocalDate eventStart = createRandomDate();
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        return new Template(UUID.randomUUID(), LUCY.getId(), name, description, category, startDateTime.toLocalTime(), endDateTime.toLocalTime());
+        return new Template(UUID.randomUUID(), name, description, category, startDateTime.toLocalTime(), endDateTime.toLocalTime());
     }
 
     public Category createTestCategory() {
