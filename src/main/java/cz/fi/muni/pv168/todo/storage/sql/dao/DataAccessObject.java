@@ -34,7 +34,7 @@ public interface DataAccessObject<E> {
      * @param id entity id
      * @return either empty if not found or the entity instance
      */
-    Optional<E> findById(long id);
+    Optional<E> findById(String id);
 
     /**
      * Updates an entity using the underlying data source.
@@ -46,7 +46,6 @@ public interface DataAccessObject<E> {
 
     /**
      * Deletes all entities from the underlying data source.
-     *
      */
     void deleteAll();
 }
