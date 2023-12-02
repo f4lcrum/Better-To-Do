@@ -7,6 +7,7 @@ import java.util.function.Supplier;
  * @author Vojtěch Sassmann
  */
 public class TransactionConnectionSupplier implements Supplier<ConnectionHandler> {
+
     private final TransactionManager transactionManager;
     private final DatabaseManager databaseManager;
 
