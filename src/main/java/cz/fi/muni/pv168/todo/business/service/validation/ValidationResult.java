@@ -15,6 +15,7 @@ import java.util.Objects;
  * @author Vojtěch Sassmann
  */
 public final class ValidationResult {
+
     private final List<String> validationErrors;
 
     public static ValidationResult failed(String... validationErrors) {

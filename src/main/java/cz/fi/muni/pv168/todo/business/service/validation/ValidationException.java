@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class ValidationException extends RuntimeApplicationException {
+
     private final List<String> validationErrors;
 
     public ValidationException(String message, List<String> validationErrors) {

@@ -4,6 +4,7 @@ package cz.fi.muni.pv168.todo.business.service.validation.common;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
 public final class StringLengthValidator extends PropertyValidator<String>  {
+
     private final int min;
     private final int max;
 

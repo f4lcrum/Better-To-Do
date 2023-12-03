@@ -11,6 +11,7 @@ import java.util.function.Function;
  */
 @FunctionalInterface
 public interface Validator<M> {
+
     ValidationResult validate(M model);
 
     default Validator<M> and(Validator<M> other) {
