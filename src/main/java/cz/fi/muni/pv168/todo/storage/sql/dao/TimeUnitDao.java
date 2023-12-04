@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.storage.sql.dao;
 
 import cz.fi.muni.pv168.todo.storage.sql.db.ConnectionHandler;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TimeUnitEntity;
+import cz.muni.fi.pv168.employees.storage.sql.dao.DataAccessObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -151,6 +152,28 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     }
 
     @Override
+    public void deleteById(String id) {
+        var sql = "DELETE FROM TimeUnit WHERE id = ?";
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new DataStorageException("Time unit not found, id: " + id);
+            }
+            if (rowsUpdated > 1) {
+                throw new DataStorageException("More then 1 time unit (rows=%d) has been deleted: %s"
+                        .formatted(rowsUpdated, id));
+            }
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to delete time unit, id: " + id, ex);
+        }
+
+    }
+
+    @Override
     public void deleteAll() {
         var sql = "DELETE FROM TimeUnit";
         try (
@@ -163,6 +186,8 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         }
     }
 
+
+    @Override
     public boolean existsByGuid(String id) {
         var sql = """
                 SELECT id
