@@ -23,10 +23,12 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
+import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
+import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
@@ -43,6 +45,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 public class MainWindow {
 
@@ -60,6 +63,7 @@ public class MainWindow {
     private final EventTablePanel eventTablePanel;
     private final CategoryTablePanel categoryTablePanel;
     private final TemplateTablePanel templateTablePanel;
+    private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
 
@@ -71,6 +75,8 @@ public class MainWindow {
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
         var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
+        var timeUnitTableModel = new TimeUnitTableModel(new ArrayList<>());
+        this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();
 
@@ -90,6 +96,7 @@ public class MainWindow {
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
+        tabbedPane.addTab("Units", timeUnitTablePanel);
 
         // Filters
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
@@ -222,5 +229,9 @@ public class MainWindow {
 
     public TemplateTablePanel getTemplateTablePanel() {
         return templateTablePanel;
+    }
+
+    public TimeUnitTablePanel getTimeUnitTablePanel() {
+        return timeUnitTablePanel;
     }
 }
