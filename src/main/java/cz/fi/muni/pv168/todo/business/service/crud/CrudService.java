@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.business.service.crud;
 
-import cz.fi.muni.pv168.todo.entity.Entity;
+import cz.fi.muni.pv168.todo.business.entity.Entity;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
 import java.util.List;
