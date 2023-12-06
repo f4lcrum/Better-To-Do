@@ -13,7 +13,7 @@ public record CategoryEntity(
             int color
     ) {
         this.id = id;
-        this.name = Objects.requireNonNull(name, "guid must not be null");;
+        this.name = Objects.requireNonNull(name, "Name must not be null");;
         this.color = color;
     }
 
