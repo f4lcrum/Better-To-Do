@@ -10,11 +10,11 @@ public record CategoryEntity(
     public CategoryEntity(
             String id,
             String name,
-            Color colour
+            int color
     ) {
         this.id = id;
         this.name = Objects.requireNonNull(name, "guid must not be null");;
-        this.color = colour.getRGB();
+        this.color = color;
     }
 
 }
