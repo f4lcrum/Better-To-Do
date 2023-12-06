@@ -132,6 +132,39 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         }
     }
 
+    @Override
+    public void deleteByid(String id) {
+        var sql = "DELETE FROM Category WHERE id = ?";
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new DataStorageException("Category not found, id: " + id);
+            }
+            if (rowsUpdated > 1) {
+                throw new DataStorageException("More than 1 category (rows=%d) has been deleted: %s".formatted(rowsUpdated, id));
+            }
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to delete category,  id: " + id, ex);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        var sql = "DELETE FROM Category";
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to delete all categories", ex);
+        }
+    }
+
     private static CategoryEntity categoryFromResultSet(ResultSet resultSet) throws SQLException {
         return new CategoryEntity(
                 resultSet.getString("id"),
