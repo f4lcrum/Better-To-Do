@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class CategoryDao implements DataAccessObject<CategoryEntity> {
@@ -75,6 +76,59 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
             return categories;
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to load all departments", ex);
+        }
+    }
+
+    @Override
+    public Optional<CategoryEntity> findById(String id) {
+        var sql = """
+                SELECT id,
+                       name,
+                       color
+                FROM Category
+                WHERE id = ?
+                """;
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1, id);
+
+            var resultSet = statement.executeQuery();
+
+            return resultSet.next() ? Optional.of(categoryFromResultSet(resultSet)) : Optional.empty();
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to load department by ID", ex);
+        }
+    }
+
+    @Override
+    public CategoryEntity update(CategoryEntity categoryEntity) {
+        var sql = """
+                UPDATE Category
+                SET name = ?,
+                    color = ?
+                WHERE id = ?
+                """;
+
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1, categoryEntity.id());
+            statement.setString(2, categoryEntity.name());
+            statement.setInt(3, categoryEntity.color());
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new DataStorageException("Category not found, id: " + categoryEntity.id());
+            }
+            if (rowsUpdated > 1) {
+                throw new DataStorageException("More then 1 category (rows=%d) has been updated: %s"
+                        .formatted(rowsUpdated, categoryEntity));
+            }
+            return categoryEntity;
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to update category: " + categoryEntity, ex);
         }
     }
 
