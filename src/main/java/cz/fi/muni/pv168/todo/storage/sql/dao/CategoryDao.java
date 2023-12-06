@@ -6,6 +6,9 @@ import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class CategoryDao implements DataAccessObject<CategoryEntity> {
@@ -46,5 +49,40 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to store: " + newCategory, ex);
         }
+    }
+
+    @Override
+    public Collection<CategoryEntity> findAll() {
+        var sql = """
+                SELECT id,
+                       name,
+                       color
+                FROM Category
+                """;
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            List<CategoryEntity> categories = new ArrayList<>();
+            try (var resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    var category = categoryFromResultSet(resultSet);
+                    categories.add(category);
+
+                }
+            }
+
+            return categories;
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to load all departments", ex);
+        }
+    }
+
+    private static CategoryEntity categoryFromResultSet(ResultSet resultSet) throws SQLException {
+        return new CategoryEntity(
+                resultSet.getString("id"),
+                resultSet.getString("name"),
+                resultSet.getInt("color")
+        );
     }
 }
