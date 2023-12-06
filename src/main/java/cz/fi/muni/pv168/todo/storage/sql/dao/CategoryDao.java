@@ -115,9 +115,9 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, categoryEntity.id());
-            statement.setString(2, categoryEntity.name());
-            statement.setInt(3, categoryEntity.color());
+            statement.setString(1, categoryEntity.name());
+            statement.setInt(2, categoryEntity.color());
+            statement.setString(3, categoryEntity.id());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Category not found, id: " + categoryEntity.id());
