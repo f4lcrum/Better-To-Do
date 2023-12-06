@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.storage.sql.dao;
 
 
+import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -34,7 +36,7 @@ public interface DataAccessObject<E> {
      * @param id entity id
      * @return either empty if not found or the entity instance
      */
-    Optional<E> findById(long id);
+    Optional<E> findById(String id);
 
     /**
      * Updates an entity using the underlying data source.
@@ -49,4 +51,10 @@ public interface DataAccessObject<E> {
      *
      */
     void deleteAll();
+
+    Optional<CategoryEntity> findByGuid(String guid);
+
+    void deleteByid(String id);
+
+    boolean existsByGuid(String id);
 }

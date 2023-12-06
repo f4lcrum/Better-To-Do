@@ -165,6 +165,27 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         }
     }
 
+    @Override
+    public boolean existsByGuid(String id) {
+        var sql = """
+                SELECT id
+                FROM Category
+                WHERE id = ?                
+                """;
+        try (
+                var connection = connections.get();
+                var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1, id);
+
+            var resultSet = statement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException ex) {
+            throw new DataStorageException("Failed to check whether category with id=%s exists!".formatted(id), ex);
+        }
+    }
+
     private static CategoryEntity categoryFromResultSet(ResultSet resultSet) throws SQLException {
         return new CategoryEntity(
                 resultSet.getString("id"),
