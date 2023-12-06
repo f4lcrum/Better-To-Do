@@ -34,10 +34,10 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
             statement.executeUpdate();
 
             try (ResultSet keyResultSet = statement.getGeneratedKeys()) {
-                int categoryId;
+                String categoryId;
 
                 if (keyResultSet.next()) {
-                    categoryId = keyResultSet.getInt(1);
+                    categoryId = keyResultSet.getString(1);
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + newCategory);
                 }
@@ -133,7 +133,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     }
 
     @Override
-    public void deleteByid(String id) {
+    public void deleteById(String id) {
         var sql = "DELETE FROM Category WHERE id = ?";
         try (
                 var connection = connections.get();
