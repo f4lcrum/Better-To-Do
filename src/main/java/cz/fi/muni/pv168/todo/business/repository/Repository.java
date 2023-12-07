@@ -1,5 +1,6 @@
 package cz.fi.muni.pv168.todo.business.repository;
 
+import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Entity;
 
 import java.util.List;
@@ -32,4 +33,10 @@ public interface Repository<T extends Entity> {
      * Delete all entities.
      */
     void deleteAll();
+
+    void deleteByGuid(String guid);
+
+    boolean existsByGuid(String guid);
+
+    Optional<Category> findByGuid(String guid);
 }
