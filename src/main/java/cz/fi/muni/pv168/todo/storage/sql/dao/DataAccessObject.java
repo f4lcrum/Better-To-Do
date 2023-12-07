@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.storage.sql.dao;
 
 
+import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
+
 import java.util.Collection;
 import java.util.Optional;
 
