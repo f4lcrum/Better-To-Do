@@ -1,7 +1,5 @@
-package cz.muni.fi.pv168.employees.storage.sql.dao;
+package cz.fi.muni.pv168.todo.storage.sql.dao;
 
-
-import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
 
 import java.util.Collection;
 import java.util.Optional;
