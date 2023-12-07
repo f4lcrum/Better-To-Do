@@ -33,5 +33,5 @@ public interface EntityMapper<E, M> {
      * @param dbId existing entity db id
      * @return database entity
      */
-    E mapExistingEntityToDatabase(M entity, Long dbId);
+    E mapExistingEntityToDatabase(M entity, String dbId);
 }
