@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.employees.storage.sql.dao;
 
 
+import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -8,7 +10,6 @@ import java.util.Optional;
  * Generic interface for CRUD operations on entities.
  *
  * @param <E> type of the entity this DAO operates on
- *
  * @author Vojtech Sassmann
  */
 public interface DataAccessObject<E> {

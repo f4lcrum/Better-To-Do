@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.storage.sql.dao;
 
 import cz.fi.muni.pv168.todo.storage.sql.db.ConnectionHandler;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TimeUnitEntity;
-import cz.muni.fi.pv168.employees.storage.sql.dao.DataAccessObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -191,7 +190,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     public boolean existsByGuid(String id) {
         var sql = """
                 SELECT id
-                FROM Employee
+                FROM TimeUnit
                 WHERE id = ?
                 """;
         try (

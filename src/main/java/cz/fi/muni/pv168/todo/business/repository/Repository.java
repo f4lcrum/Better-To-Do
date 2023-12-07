@@ -51,5 +51,4 @@ public interface Repository<T extends Entity> {
      * @return true, if an Entity with given {@code} is found, false otherwise
      */
     boolean existsByGuid(String guid);
-
 }
