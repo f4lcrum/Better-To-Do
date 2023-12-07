@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.business.repository;
 
-import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Entity;
 
 import java.util.List;
@@ -30,13 +29,26 @@ public interface Repository<T extends Entity> {
     void update(T entity);
 
     /**
+     * Delete entity with given {@code guid}.
+     */
+    void deleteByGuid(String guid);
+
+    /**
+     * Find entity with given {@code guid}.
+     *
+     * @return optional with found entity, or empty optional if no entity with given {@code guid} is found
+     */
+    Optional<T> findByGuid(String guid);
+
+    /**
      * Delete all entities.
      */
     void deleteAll();
 
-    void deleteByGuid(String guid);
-
+    /**
+     * Check if there is an existing Entity with given {@code guid}
+     *
+     * @return true, if an Entity with given {@code} is found, false otherwise
+     */
     boolean existsByGuid(String guid);
-
-    Optional<Category> findByGuid(String guid);
 }
