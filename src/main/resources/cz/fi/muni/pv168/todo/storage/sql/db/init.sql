@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS "Event"
     `category`      CHAR(36) REFERENCES "Category"(`id`),
     `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),
     `timeUnitCount` INT NOT NULL,
-    `startDateTime` DATETIME NOT NULL,
+    `startDate`     DATE NOT NULL,
+    `startTime`     TIME NOT NULL,
     `description`   VARCHAR(1024) NOT NULL
 );
 
