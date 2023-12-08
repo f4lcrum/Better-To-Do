@@ -170,7 +170,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 SELECT id
                 FROM Category
-                WHERE id = ?                
+                WHERE id = ?
                 """;
         try (
                 var connection = connections.get();

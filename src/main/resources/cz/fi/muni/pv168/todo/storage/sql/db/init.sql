@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS "Event"
     `id`            CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
     `name`          VARCHAR(128) NOT NULL,
     `category`      CHAR(36) REFERENCES "Category"(`id`),
-    `duration`      CHAR(36) REFERENCES "TimeUnit"(`id`),
+    `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),
+    `timeUnitCount` INT NOT NULL,
     `startDateTime` DATETIME NOT NULL,
     `description`   VARCHAR(1024) NOT NULL
 );

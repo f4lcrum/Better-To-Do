@@ -21,9 +21,6 @@ public class Event implements Entity {
     private final String name;
 
     @JsonProperty
-    private final Status status;
-
-    @JsonProperty
     private final Category category;
 
     @JsonProperty
@@ -33,19 +30,22 @@ public class Event implements Entity {
     private final LocalTime startTime;
 
     @JsonProperty
-    private final LocalTime endTime;
+    private final TimeUnit timeUnit;
+
+    @JsonProperty
+    private final int timeUnitCount;
 
     @JsonProperty
     private final String description;
 
-    public Event(UUID id, String name, Status status, Category category, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
+    public Event(UUID id, String name, Category category, LocalDate date, LocalTime startTime, TimeUnit timeUnit, int timeUnitCount, String description) {
         this.id = id;
         this.name = name;
-        this.status = status;
         this.category = category;
         this.date = date;
         this.startTime = startTime;
-        this.endTime = endTime;
+        this.timeUnit = timeUnit;
+        this.timeUnitCount = timeUnitCount;
         this.description = description;
     }
 
@@ -54,24 +54,12 @@ public class Event implements Entity {
     }
 
     public long getEventDuration() {
-        Duration duration = Duration.between(startTime, endTime);
+        Duration duration = Duration.between(startTime, getEndTime());
         return duration.toMinutes();
     }
 
     public LocalDateTime calculateStart() {
         return LocalDateTime.of(date, startTime);
-    }
-
-    public Status calculateStatus() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startDateTime = calculateStart();
-        if (now.isBefore(startDateTime)) {
-            return Status.PLANNED;
-        }
-        if (now.isBefore(startDateTime.plusMinutes(getEventDuration()))) {
-            return Status.IN_PROGRESS;
-        }
-        return Status.DONE;
     }
 
     @Override
@@ -88,7 +76,15 @@ public class Event implements Entity {
     }
 
     public Status getStatus() {
-        return this.status;
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startDateTime = calculateStart();
+        if (now.isBefore(startDateTime)) {
+            return Status.PLANNED;
+        }
+        if (now.isBefore(startDateTime.plusMinutes(getEventDuration()))) {
+            return Status.IN_PROGRESS;
+        }
+        return Status.DONE;
     }
 
     public Category getCategory() {
@@ -104,11 +100,21 @@ public class Event implements Entity {
     }
 
     public LocalTime getEndTime() {
-        return this.endTime;
+        var hours = timeUnit.getHourCount() * timeUnitCount;
+        var minutes = timeUnit.getMinuteCount() * timeUnitCount;
+        return this.startTime.plusHours(hours).plusMinutes(minutes);
     }
 
     public String getDescription() {
         return this.description;
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    public int getTimeUnitCount() {
+        return timeUnitCount;
     }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
@@ -117,11 +123,11 @@ public class Event implements Entity {
         private UUID id;
         private UUID userId;
         private String name;
-        private Status status;
         private Category category;
         private LocalDate date;
         private LocalTime startTime;
-        private LocalTime endTime;
+        private TimeUnit timeUnit;
+        private int timeUnitCount;
         private String description;
 
         EventBuilder() {
@@ -146,12 +152,6 @@ public class Event implements Entity {
         }
 
         @JsonProperty
-        public EventBuilder status(Status status) {
-            this.status = status;
-            return this;
-        }
-
-        @JsonProperty
         public EventBuilder category(Category category) {
             this.category = category;
             return this;
@@ -170,8 +170,14 @@ public class Event implements Entity {
         }
 
         @JsonProperty
-        public EventBuilder endTime(LocalTime endTime) {
-            this.endTime = endTime;
+        public EventBuilder timeUnit(TimeUnit timeUnit) {
+            this.timeUnit = timeUnit;
+            return this;
+        }
+
+        @JsonProperty
+        public EventBuilder timeUnitCount(int timeUnitCount) {
+            this.timeUnitCount = timeUnitCount;
             return this;
         }
 
@@ -182,11 +188,11 @@ public class Event implements Entity {
         }
 
         public Event build() {
-            return new Event(this.id, this.name, this.status, this.category, this.date, this.startTime, this.endTime, this.description);
+            return new Event(this.id, this.name, this.category, this.date, this.startTime, this.timeUnit, this.timeUnitCount, this.description);
         }
 
         public String toString() {
-            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", status=" + this.status + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", endTime=" + this.endTime + ", description=" + this.description + ")";
+            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit  + ", timeUnitCount=" + this.timeUnitCount + ", description=" + this.description + ")";
         }
     }
 }
