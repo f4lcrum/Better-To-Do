@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS "Template"
     `id`           CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
     `name`         VARCHAR(128) NOT NULL,
     `category`     CHAR(36) REFERENCES "Category"(`id`),
+    `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),
+    `timeUnitCount` INT NOT NULL,
     `startTime`    TIME NOT NULL,
-    `duration`     CHAR(36) NOT NULL,
     `description`  VARCHAR(1024) NOT NULL
 );
