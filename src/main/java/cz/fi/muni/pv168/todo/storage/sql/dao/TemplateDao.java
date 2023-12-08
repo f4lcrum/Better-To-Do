@@ -147,7 +147,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(2, entity.categoryId());
             statement.setDate(3, Date.valueOf(entity.startTime()));
             statement.setString(4, entity.durationId());
-            statement.setString(4, entity.description());
+            statement.setString(5, entity.description());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Template not found, id: " + entity.id());
