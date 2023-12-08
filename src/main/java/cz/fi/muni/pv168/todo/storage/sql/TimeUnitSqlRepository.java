@@ -2,10 +2,10 @@ package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.TimeUnitRepository;
+import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TimeUnitEntity;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EntityMapper;
-import cz.muni.fi.pv168.employees.storage.sql.dao.DataAccessObject;
 
 import java.util.List;
 import java.util.Optional;
