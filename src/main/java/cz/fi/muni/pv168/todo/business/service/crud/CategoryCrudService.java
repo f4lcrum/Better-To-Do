@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Crud operations for the {@link Category} entity.
- * @author Vojtech Sassmann
+ * @author Vojtech Sassmanngit
  */
 public class CategoryCrudService implements CrudService<Category> {
 
@@ -32,7 +32,6 @@ public class CategoryCrudService implements CrudService<Category> {
         var validationResult = categoryValidator.validate(newEntity);
         if (newEntity.getGuid().toString() == null || newEntity.getGuid().toString().isBlank()) {
             throw new EntityNoUUIDException("Category does not have assigned UUID");
-            ;
         } else if (categoryRepository.existsByGuid(String.valueOf(newEntity.getGuid()))) {
             throw new EntityAlreadyExistsException("Category with given guid already exists: " + newEntity.getGuid());
         }
