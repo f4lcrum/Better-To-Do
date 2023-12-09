@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -44,11 +45,11 @@ public final class AddEventAction extends AbstractAction {
         return new Event(
                 UUID.randomUUID(),
                 "Dinner",
-                Status.PLANNED,
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalDate.now(),
                 LocalTime.now(),
-                LocalTime.now(),
+                new TimeUnit(UUID.randomUUID(), "CoffeBreak", 0, 10),
+                5,
                 "Dinner with parents"
         );
     }

@@ -7,6 +7,7 @@ import static cz.fi.muni.pv168.todo.business.entity.Status.DONE;
 import static cz.fi.muni.pv168.todo.business.entity.Status.IN_PROGRESS;
 import static cz.fi.muni.pv168.todo.business.entity.Status.PLANNED;
 import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 
 import java.awt.Color;
 import java.time.LocalDate;
@@ -42,12 +43,12 @@ public final class TestDataGenerator {
     public Event createTestEvent() {
         String name = selectRandom(EVENT_NAMES);
         String description = selectRandom(DESCRIPTION);
-        Status status = selectRandom(STATUSES);
         Category category = selectRandom(CATEGORIES);
         LocalDate eventStart = createRandomDate();
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        return new Event(UUID.randomUUID(), name, status, category, eventStart, startDateTime.toLocalTime(), endDateTime.toLocalTime(), description);
+        TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
+        return new Event(UUID.randomUUID(), name, category, eventStart, startDateTime.toLocalTime(), timeUnit, RAND_GEN.nextInt(5), description);
     }
 
     public LocalDate createRandomDate() {
