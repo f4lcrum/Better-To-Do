@@ -3,9 +3,11 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
+import java.time.LocalDate;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -48,7 +50,9 @@ public final class AddTemplateAction extends AbstractAction {
                 "",
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalTime.now(),
-                LocalTime.now()
+                new TimeUnit(UUID.randomUUID(), "CoffeBreak", 0, 10),
+                5
+
         );
     }
 }

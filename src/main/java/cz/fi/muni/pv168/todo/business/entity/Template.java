@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.awt.Color;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -26,16 +27,20 @@ public class Template implements Entity {
     @JsonProperty
     private final LocalTime startTime;
 
-    @JsonProperty
-    private final LocalTime endTime;
+    private final TimeUnit timeUnit;
 
-    public Template(UUID id, String name, String description, Category category, LocalTime startTime, LocalTime endTime) {
+    @JsonProperty
+    private final int timeUnitCount;
+
+    public Template(UUID id, String name, String description, Category category,
+                    LocalTime startTime, TimeUnit timeUnit, int timeUnitCount) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
         this.startTime = startTime;
-        this.endTime = endTime;
+        this.timeUnit = timeUnit;
+        this.timeUnitCount = timeUnitCount;
     }
 
     public static TemplateBuilder builder() {
@@ -43,7 +48,7 @@ public class Template implements Entity {
     }
 
     public long getTemplateDuration() {
-        Duration duration = Duration.between(startTime, endTime);
+        Duration duration = Duration.between(startTime, getEndTime());
         return duration.toMinutes();
     }
 
@@ -73,19 +78,29 @@ public class Template implements Entity {
     }
 
     public LocalTime getEndTime() {
-        return this.endTime;
+        var hours = timeUnit.getHourCount() * timeUnitCount;
+        var minutes = timeUnit.getMinuteCount() * timeUnitCount;
+        return this.startTime.plusHours(hours).plusMinutes(minutes);
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    public int getTimeUnitCount() {
+        return timeUnitCount;
     }
 
     @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class TemplateBuilder {
 
         private UUID id;
-        private UUID userId;
         private String name;
         private String description;
         private Category category;
         private LocalTime startTime;
-        private LocalTime endTime;
+        private TimeUnit timeUnit;
+        private int timeUnitCount;
 
         TemplateBuilder() {
         }
@@ -93,12 +108,6 @@ public class Template implements Entity {
         @JsonProperty
         public TemplateBuilder id(UUID id) {
             this.id = id;
-            return this;
-        }
-
-        @JsonProperty
-        public TemplateBuilder userId(UUID userId) {
-            this.userId = userId;
             return this;
         }
 
@@ -127,17 +136,23 @@ public class Template implements Entity {
         }
 
         @JsonProperty
-        public TemplateBuilder endTime(LocalTime endTime) {
-            this.endTime = endTime;
+        public TemplateBuilder timeUnit(TimeUnit timeUnit) {
+            this.timeUnit = timeUnit;
+            return this;
+        }
+
+        @JsonProperty
+        public TemplateBuilder timeUnitCount(int timeUnitCount) {
+            this.timeUnitCount = timeUnitCount;
             return this;
         }
 
         public Template build() {
-            return new Template(this.id, this.name, this.description, this.category, this.startTime, this.endTime);
+            return new Template(this.id, this.name, this.description, this.category, this.startTime, this.timeUnit, this.timeUnitCount);
         }
 
         public String toString() {
-            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + this.endTime + ")";
+            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + ", timeUnit=" + this.timeUnit  + ", timeUnitCount=" + this.timeUnitCount + ")";
         }
     }
 }

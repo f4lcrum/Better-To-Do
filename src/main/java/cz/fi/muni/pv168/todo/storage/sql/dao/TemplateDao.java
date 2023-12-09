@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,9 +32,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 INSERT INTO Template(
                     id,
                     name,
-                    categoryId,
+                    category,
+                    timeUnit,
+                    timeUnitCount,
                     startTime,
-                    durationId,
                     description,
                 )
                 VALUES (?, ?, ?, ?, ?, ?);
@@ -45,9 +47,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(1, newTemplate.id());
             statement.setString(2, newTemplate.name());
             statement.setString(3, newTemplate.categoryId());
-            statement.setDate(4, Date.valueOf(newTemplate.startTime()));
-            statement.setString(5, newTemplate.durationId());
-            statement.setString(6, newTemplate.description());
+            statement.setString(4, newTemplate.timeUnitId());
+            statement.setInt(5, newTemplate.timeUnitCount());
+            statement.setTime(6, Time.valueOf(newTemplate.startTime()));
+            statement.setString(7, newTemplate.description());
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
@@ -75,9 +78,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         var sql = """
                 SELECT id,
                     name,
-                    categoryId,
+                    category,
+                    timeUnit,
+                    timeUnitCount,
                     startTime,
-                    durationId,
                     description
                 FROM Template
                 """;
@@ -104,9 +108,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         var sql = """
                 SELECT id,
                     name,
-                    categoryId,
+                    category,
+                    timeUnit,
+                    timeUnitCount,
                     startTime,
-                    durationId,
                     description
                 FROM Template
                 WHERE id = ?
@@ -133,9 +138,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         var sql = """
                 UPDATE Template
                 SET name = ?,
-                    categoryId = ?,
+                    category = ?,
+                    timeUnit = ?,
+                    timeUnitCount = ?,
                     startTime = ?,
-                    durationId = ?,
                     description = ?
                 WHERE id = ?
                 """;
@@ -145,9 +151,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         ) {
             statement.setString(1, entity.name());
             statement.setString(2, entity.categoryId());
-            statement.setDate(3, Date.valueOf(entity.startTime()));
-            statement.setString(4, entity.durationId());
-            statement.setString(5, entity.description());
+            statement.setString(3, entity.timeUnitId());
+            statement.setInt(4, entity.timeUnitCount());
+            statement.setTime(5, Time.valueOf(entity.startTime()));
+            statement.setString(6, entity.description());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Template not found, id: " + entity.id());
@@ -223,9 +230,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         return new TemplateEntity(
                 resultSet.getString("id"),
                 resultSet.getString("name"),
-                resultSet.getString("categoryId"),
-                resultSet.getTimestamp("startTime").toLocalDateTime().toLocalDate(),
-                resultSet.getString("durationId"),
+                resultSet.getString("category"),
+                resultSet.getTimestamp("startTime").toLocalDateTime().toLocalTime(),
+                resultSet.getString("timeUnit"),
+                resultSet.getInt("timeUnitCount"),
                 resultSet.getString("description")
         );
     }
