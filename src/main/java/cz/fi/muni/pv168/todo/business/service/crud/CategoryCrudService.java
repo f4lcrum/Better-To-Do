@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Crud operations for the {@link Category} entity.
- * @author Vojtech Sassmanngit
+ * @author Vojtech Sassmann
  */
 public class CategoryCrudService implements CrudService<Category> {
 
