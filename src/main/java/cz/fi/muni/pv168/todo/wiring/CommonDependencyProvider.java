@@ -5,10 +5,12 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.EventDao;
@@ -33,7 +35,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final DatabaseManager databaseManager;
     private final TransactionExecutor transactionExecutor;
     private final Repository<TimeUnit> timeUnitRepository;
+    private final Repository<Category> categoryRepository;
+    private final CrudService<Category> categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
+
+
 
 
 
@@ -47,16 +53,33 @@ public class CommonDependencyProvider implements DependencyProvider {
         var timeUnitMapper = new TimeUnitMapper();
         var timeUnitValidator = new TimeUnitValidator();
 
-        this.timeUnitRepository= new TimeUnitSqlRepository(
+        this.timeUnitRepository = new TimeUnitSqlRepository(
                 timeUnitDao,
                 timeUnitMapper
         );
         timeUnitCrudService = new TimeUnitCrudService(getTimeUnitRepository(), timeUnitValidator);
 
+        var categoryDao = new CategoryDao(transactionConnectionSupplier);
+        var categoryMapper = new CategoryMapper(categoryDao);
+        var categoryValidator = new CategoryValidator();
+
+        this.categoryRepository = new CategorySqlRepository(
+                categoryDao,
+                categoryMapper
+        );
+
+        categoryCrudService = new CategoryCrudService(getCategoryRepository(), categoryValidator);
+
+
     }
     @Override
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
+    }
+
+    @Override
+    public Repository<Category> getCategoryRepository() {
+        return this.categoryRepository;
     }
 
     @Override
@@ -67,6 +90,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public CrudService<Event> getEventCrudService() {
         return null;
+    }
+
+    @Override
+    public CrudService<Category> getCategoryCrudService() {
+        return categoryCrudService;
     }
 
     @Override
