@@ -1,12 +1,29 @@
 package cz.fi.muni.pv168.todo.wiring;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.repository.Repository;
+import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
+import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
+import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
+import cz.fi.muni.pv168.todo.storage.sql.dao.EventDao;
+import cz.fi.muni.pv168.todo.storage.sql.dao.TemplateDao;
+import cz.fi.muni.pv168.todo.storage.sql.dao.TimeUnitDao;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
+import cz.fi.muni.pv168.todo.storage.sql.db.TransactionConnectionSupplier;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutorImpl;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionManagerImpl;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
+import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.CategoryMapper;
+import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EventMapper;
+import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TimeUnitMapper;
+
 /**
  * Common dependency provider for both production and test environment.
  * @author Vojtech Sassmann
@@ -15,13 +32,27 @@ public class CommonDependencyProvider implements DependencyProvider {
 
     private final DatabaseManager databaseManager;
     private final TransactionExecutor transactionExecutor;
-    private final CategoryValidator categoryValidator;
+    private final Repository<TimeUnit> timeUnitRepository;
+    private final CrudService<TimeUnit> timeUnitCrudService;
+
+
 
     public CommonDependencyProvider(DatabaseManager databaseManager) {
-        categoryValidator = new CategoryValidator();
         this.databaseManager = databaseManager;
         var transactionManager = new TransactionManagerImpl(databaseManager);
         this.transactionExecutor = new TransactionExecutorImpl(transactionManager::beginTransaction);
+        var transactionConnectionSupplier = new TransactionConnectionSupplier(transactionManager, databaseManager);
+
+        var timeUnitDao = new TimeUnitDao(transactionConnectionSupplier);
+        var timeUnitMapper = new TimeUnitMapper();
+        var timeUnitValidator = new TimeUnitValidator();
+
+        this.timeUnitRepository= new TimeUnitSqlRepository(
+                timeUnitDao,
+                timeUnitMapper
+        );
+        timeUnitCrudService = new TimeUnitCrudService(getTimeUnitRepository(), timeUnitValidator);
+
     }
     @Override
     public DatabaseManager getDatabaseManager() {
@@ -29,8 +60,18 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
-    public Validator<Category> getCategoryValidator() {
-        return categoryValidator;
+    public Repository<TimeUnit> getTimeUnitRepository() {
+        return timeUnitRepository;
+    }
+
+    @Override
+    public CrudService<Event> getEventCrudService() {
+        return null;
+    }
+
+    @Override
+    public CrudService<TimeUnit> getTimeUnitCrudService() {
+        return timeUnitCrudService;
     }
 
     @Override

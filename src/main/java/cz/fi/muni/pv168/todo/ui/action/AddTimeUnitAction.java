@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
+import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -27,8 +28,11 @@ public class AddTimeUnitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        var timeUnitTableModel = (TimeUnitTableModel) timeUnitTable.getModel();
         var dialog = new TimeUnitDialog(createPrefilledTimeUnit());
-        dialog.show(timeUnitTable, "Add Duration Unit");
+        dialog.show(timeUnitTable, "Add Time Unit")
+                .ifPresent(timeUnitTableModel::addRow);
+
     }
 
     private TimeUnit createPrefilledTimeUnit() {

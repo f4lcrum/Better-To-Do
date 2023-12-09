@@ -15,7 +15,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     public TimeUnitDialog(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
-//        setDialogValues();
+        setDialogValues();
         addDialogFields();
         setHints();
     }
@@ -41,6 +41,9 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     @Override
     public TimeUnit getEntity() {
+        timeUnit.setName(nameField.getText());
+        timeUnit.setHourCount(Long.parseLong(hourField.getText()));
+        timeUnit.setMinuteCount(Long.parseLong(minuteField.getText()));
         return timeUnit;
     }
 }

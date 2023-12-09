@@ -3,7 +3,7 @@
 --
 CREATE TABLE IF NOT EXISTS "Category"
 (
-    `id`           CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
+    `id`           CHAR(36) PRIMARY KEY,
     `name`         VARCHAR(128) NOT NULL,
     `r`            SMALLINT NOT NULL,
     `g`            SMALLINT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "Category"
 --
 CREATE TABLE IF NOT EXISTS "TimeUnit"
 (
-    `id`           CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
+    `id`           CHAR(36) PRIMARY KEY,
     `name`         VARCHAR(128) NOT NULL,
     `hourCount`    INT NOT NULL,
     `minuteCount`  INT NOT NULL
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "TimeUnit"
 --
 CREATE TABLE IF NOT EXISTS "Event"
 (
-    `id`            CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
+    `id`            CHAR(36) PRIMARY KEY,
     `name`          VARCHAR(128) NOT NULL,
     `category`      CHAR(36) REFERENCES "Category"(`id`),
     `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS "Event"
 --
 CREATE TABLE IF NOT EXISTS "Template"
 (
-    `id`           CHAR(36) ALWAYS AS IDENTITY PRIMARY KEY,
+    `id`           CHAR(36) PRIMARY KEY,
     `name`         VARCHAR(128) NOT NULL,
     `category`     CHAR(36) REFERENCES "Category"(`id`),
     `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),

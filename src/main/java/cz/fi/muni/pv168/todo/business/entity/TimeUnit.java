@@ -11,13 +11,13 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     private final UUID id;
 
     @JsonProperty
-    private final String name;
+    private String name;
 
     @JsonProperty
-    private final long hourCount;
+    private long hourCount;
 
     @JsonProperty
-    private final long minuteCount;
+    private long minuteCount;
 
     public TimeUnit(UUID id, String name, long hourCount, long minuteCount) {
         this.id = id;
@@ -50,6 +50,20 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     public long getMinuteCount() {
         return minuteCount;
     }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public void setHourCount(long hour) {
+        this.hourCount = hour;
+    }
+
+    public void setMinuteCount(long minutes) {
+        this.minuteCount = minutes;
+    }
+
 
     @Override
     public boolean equals(Object o) {
