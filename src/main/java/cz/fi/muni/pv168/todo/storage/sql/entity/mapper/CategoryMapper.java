@@ -27,10 +27,11 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " + entity.id()));
 
+        var color = new Color(entity.r(), entity.g(), entity.b());
         return new Category(
                 UUID.fromString(entity.id()),
                 entity.name(),
-                new Color(entity.color())
+                color
         );
     }
 
@@ -40,11 +41,14 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
         var categoryEntity = categoryDao
                 .findById(String.valueOf(entity.getId()))
                 .orElseThrow(() -> new DataStorageException("Category not found, guid: " + entity.getId()));
+        var color = entity.getColour();
 
         return new CategoryEntity(
                 entity.getId().toString(),
                 entity.getName(),
-                entity.getColour().getRGB()
+                color.getRed(),
+                color.getGreen(),
+                color.getBlue()
         );
 
     }
@@ -55,11 +59,14 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
                 .findById(String.valueOf(entity.getId()))
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.getId()));
+        var color = entity.getColour();
 
         return new CategoryEntity(
                 categoryEntity.id(),
                 entity.getName(),
-                entity.getColour().getRGB()
+                color.getRed(),
+                color.getGreen(),
+                color.getBlue()
         );
     }
 
