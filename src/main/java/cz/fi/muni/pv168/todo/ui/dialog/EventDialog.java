@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.dialog;
 
-
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
@@ -23,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import java.awt.Font;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public final class EventDialog extends EntityDialog<Event> {
 

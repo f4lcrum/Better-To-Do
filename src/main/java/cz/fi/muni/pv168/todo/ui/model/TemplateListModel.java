@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.ui.renderer.SpecialTemplateValues;
 import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.AbstractListModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
