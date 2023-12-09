@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 
+import cz.fi.muni.pv168.todo.wiring.ProductionDependencyProvider;
 import javax.swing.UIManager;
 import java.awt.EventQueue;
 import java.util.logging.Level;
@@ -11,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         initNimbusLookAndFeel();
-        EventQueue.invokeLater(() -> new MainWindow().show());
+        EventQueue.invokeLater(() -> new MainWindow(new ProductionDependencyProvider()).show());
     }
 
     private static void initNimbusLookAndFeel() {

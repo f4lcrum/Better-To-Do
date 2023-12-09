@@ -32,6 +32,7 @@ import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,7 +68,7 @@ public class MainWindow {
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
 
-    public MainWindow() {
+    public MainWindow(DependencyProvider dependencyProvider) {
         var testDataGenerator = new TestDataGenerator();
         var eventTableModel = new EventTableModel(testDataGenerator.createTestEvents(10));
         this.eventTablePanel = new EventTablePanel(eventTableModel);
@@ -75,7 +76,7 @@ public class MainWindow {
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
         var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
-        var timeUnitTableModel = new TimeUnitTableModel(new ArrayList<>());
+        var timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();

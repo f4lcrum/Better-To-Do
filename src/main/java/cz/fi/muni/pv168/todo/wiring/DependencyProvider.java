@@ -13,19 +13,14 @@ import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
 public interface DependencyProvider {
     DatabaseManager getDatabaseManager();
 
-    Repository<Event> getEventRepository();
-    Repository<Category> getCategoryRepository();
-    Repository<Template> getTemplateRepository();
+//    Repository<Event> getEventRepository();
+//    Repository<Category> getCategoryRepository();
+//    Repository<Template> getTemplateRepository();
     Repository<TimeUnit> getTimeUnitRepository();
     CrudService<Event> getEventCrudService();
-    CrudService<Category> getCategoryCrudService();
-    CrudService<Template> getTemplateCrudService();
+//    CrudService<Category> getCategoryCrudService();
+//    CrudService<Template> getTemplateCrudService();
     CrudService<TimeUnit> getTimeUnitCrudService();
-    Validator<Event> getEventValidator();
-    Validator<Category> getCategoryValidator();
-    Validator<Template> getTemplateValidator();
-    Validator<TimeUnit> getTimeUnitValidator();
-
     TransactionExecutor getTransactionExecutor();
 
 }
