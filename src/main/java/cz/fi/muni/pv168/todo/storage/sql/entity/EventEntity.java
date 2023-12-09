@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Representation of Department entity in a SQL database.
+ * Representation of Event entity in a SQL database.
  */
 public record EventEntity(String id,
                           String name,
