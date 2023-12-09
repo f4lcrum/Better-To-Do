@@ -11,20 +11,15 @@ import java.util.UUID;
 public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     private final DataAccessObject<CategoryEntity> categoryDao;
-    private final EntityMapper<CategoryEntity, Category> categoryMapper;
 
-    public CategoryMapper(
-            DataAccessObject<CategoryEntity> categoryDao,
-            EntityMapper<CategoryEntity, Category> categoryMapper) {
+    public CategoryMapper(DataAccessObject<CategoryEntity> categoryDao) {
         this.categoryDao = categoryDao;
-        this.categoryMapper = categoryMapper;
     }
 
     @Override
     public Category mapToBusiness(CategoryEntity entity) {
         var category = categoryDao
                 .findById(entity.id())
-                .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " + entity.id()));
 
         var color = new Color(entity.r(), entity.g(), entity.b());
