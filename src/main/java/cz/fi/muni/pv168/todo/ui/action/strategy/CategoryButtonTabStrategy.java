@@ -25,7 +25,7 @@ public class CategoryButtonTabStrategy implements ButtonTabStrategy {
 
     @Override
     public AbstractAction getEditAction() {
-        return new EditCategoryAction(table);
+        return new EditCategoryAction(table, mainWindow);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
@@ -12,11 +13,12 @@ import java.awt.event.ActionEvent;
 public class EditCategoryAction extends AbstractAction {
 
     private final JTable categoryTable;
+    private final MainWindow mainWindow;
 
-
-    public EditCategoryAction(JTable categoryTable) {
+    public EditCategoryAction(JTable categoryTable, MainWindow mainWindow) {
         super("Edit category", Icons.EDIT_ICON);
         this.categoryTable = categoryTable;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
@@ -30,10 +32,11 @@ public class EditCategoryAction extends AbstractAction {
         if (categoryTable.isEditing()) {
             categoryTable.getCellEditor().cancelCellEditing();
         }
-        var categoryTableModel = (CategoryTableModel) categoryTable.getModel();
+        var categoryTableModel = mainWindow.getCategoryTableModel();
         int modelRow = categoryTable.convertRowIndexToModel(selectedRows[0]);
         var category = categoryTableModel.getEntity(modelRow);
-        var dialog = new CategoryDialog(category);
-        dialog.show(categoryTable, "Edit Category");
+        var dialog = new CategoryDialog(category, true);
+        dialog.show(categoryTable, "Edit Category")
+                .ifPresent(categoryTableModel::updateRow);
     }
 }

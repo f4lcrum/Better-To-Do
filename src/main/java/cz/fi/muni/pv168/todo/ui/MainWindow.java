@@ -162,7 +162,7 @@ public class MainWindow {
 
         var categoryMenu = new JMenu("Category");
         categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
-        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable()));
+        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable(), this));
         categoryMenu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable(), this));
 
         var templateMenu = new JMenu("Template");

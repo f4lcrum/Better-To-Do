@@ -79,6 +79,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
         categoryCrudService.update(category)
                 .intoException();
         int rowIndex = categories.indexOf(category);
+        categories.set(rowIndex, category);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 

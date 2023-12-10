@@ -27,7 +27,7 @@ public final class AddCategoryAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var categoryTableModel = mainWindow.getCategoryTableModel();
-        var dialog = new CategoryDialog(createPrefilledCategory());
+        var dialog = new CategoryDialog(createPrefilledCategory(), false);
         dialog.show(categoryTable, "Add Category")
                 .ifPresent(categoryTableModel::addRow);
     }

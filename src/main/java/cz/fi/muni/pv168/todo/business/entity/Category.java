@@ -61,6 +61,14 @@ public class Category implements Entity{
         return Objects.hash(id);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return category.id == this.id;
+
+    }
     public void setColour(Color colour) { this.colour = colour; }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
