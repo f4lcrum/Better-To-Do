@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class CategoryDao implements DataAccessObject<CategoryEntity> {
@@ -36,10 +37,10 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
             statement.executeUpdate();
 
             try (ResultSet keyResultSet = statement.getGeneratedKeys()) {
-                String categoryId;
+                UUID categoryId;
 
                 if (keyResultSet.next()) {
-                    categoryId = keyResultSet.getString(1);
+                    categoryId = UUID.fromString(keyResultSet.getString(1));
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + newCategory);
                 }
@@ -84,7 +85,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     }
 
     @Override
-    public Optional<CategoryEntity> findById(String id) {
+    public Optional<CategoryEntity> findById(UUID id) {
         var sql = """
                 SELECT id,
                        name,
@@ -98,7 +99,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
 
             var resultSet = statement.executeQuery();
 
@@ -143,13 +144,13 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         var sql = "DELETE FROM Category WHERE id = ?";
         try (
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Category not found, id: " + id);
@@ -176,7 +177,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     }
 
     @Override
-    public boolean existsByGuid(String id) {
+    public boolean existsByGuid(UUID id) {
         var sql = """
                 SELECT id
                 FROM Category
@@ -186,7 +187,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
 
             var resultSet = statement.executeQuery();
 

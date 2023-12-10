@@ -9,6 +9,7 @@ import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EntityMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CategorySqlRepository implements Repository<Category> {
 
@@ -38,7 +39,7 @@ public class CategorySqlRepository implements Repository<Category> {
 
     @Override
     public void update(Category entity) {
-        var existingCategory = categoryDao.findById(entity.getGuid().toString())
+        var existingCategory = categoryDao.findById(entity.getGuid())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.getGuid()));
         var updatedCategory = categoryEntityMapper.mapExistingEntityToDatabase(entity, existingCategory.id());
@@ -46,7 +47,7 @@ public class CategorySqlRepository implements Repository<Category> {
     }
 
     @Override
-    public void deleteByGuid(String guid) {
+    public void deleteByGuid(UUID guid) {
         categoryDao.deleteById(guid);
     }
 
@@ -56,12 +57,12 @@ public class CategorySqlRepository implements Repository<Category> {
     }
 
     @Override
-    public boolean existsByGuid(String guid) {
+    public boolean existsByGuid(UUID guid) {
         return categoryDao.existsByGuid(guid);
     }
 
     @Override
-    public Optional<Category> findByGuid(String guid) {
+    public Optional<Category> findByGuid(UUID guid) {
         return categoryDao
                 .findById(guid)
                 .map(categoryEntityMapper::mapToBusiness);

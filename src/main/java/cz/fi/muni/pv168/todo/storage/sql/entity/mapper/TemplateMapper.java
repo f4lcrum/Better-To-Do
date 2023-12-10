@@ -8,7 +8,7 @@ import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TemplateEntity;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TimeUnitEntity;
-import java.awt.Color;
+
 import java.util.UUID;
 
 public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
@@ -33,12 +33,12 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
     @Override
     public Template mapToBusiness(TemplateEntity entity) {
         var category = categoryDao
-                .findById(entity.categoryId())
+                .findById(UUID.fromString(entity.categoryId()))
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.categoryId()));
         var timeUnit = timeUnitDao
-                .findById(entity.timeUnitId())
+                .findById(UUID.fromString(entity.timeUnitId()))
                 .map(timeUnitMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, id: " +
                         entity.timeUnitId()));
@@ -56,11 +56,11 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
     @Override
     public TemplateEntity mapNewEntityToDatabase(Template entity) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getGuid().toString())
+                .findById(entity.getCategory().getGuid())
                 .orElseThrow(() -> new DataStorageException("Category not found, guid: " +
                         entity.getCategory().getGuid()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getGuid().toString())
+                .findById(entity.getTimeUnit().getGuid())
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, guid: " +
                         entity.getTimeUnit().getGuid()));
         return new TemplateEntity(
@@ -77,11 +77,11 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
     @Override
     public TemplateEntity mapExistingEntityToDatabase(Template entity, String dbId) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getGuid().toString())
+                .findById(entity.getCategory().getGuid())
                 .orElseThrow(() -> new DataStorageException("Category not found, guid: " +
                         entity.getCategory().getGuid()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getGuid().toString())
+                .findById(entity.getTimeUnit().getGuid())
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, guid: " +
                         entity.getTimeUnit().getGuid()));
         return new TemplateEntity(

@@ -6,10 +6,12 @@ import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
  * Crud operations for the {@link Category} entity.
+ *
  * @author Vojtech Sassmann
  */
 public class CategoryCrudService implements CrudService<Category> {
@@ -32,7 +34,7 @@ public class CategoryCrudService implements CrudService<Category> {
         var validationResult = categoryValidator.validate(newEntity);
         if (newEntity.getGuid().toString() == null || newEntity.getGuid().toString().isBlank()) {
             throw new EntityNoUUIDException("Category does not have assigned UUID");
-        } else if (categoryRepository.existsByGuid(String.valueOf(newEntity.getGuid()))) {
+        } else if (categoryRepository.existsByGuid(newEntity.getGuid())) {
             throw new EntityAlreadyExistsException("Category with given guid already exists: " + newEntity.getGuid());
         }
         if (validationResult.isValid()) {
@@ -53,7 +55,7 @@ public class CategoryCrudService implements CrudService<Category> {
     }
 
     @Override
-    public void deleteByGuid(String guid) {
+    public void deleteByGuid(UUID guid) {
         categoryRepository.deleteByGuid(guid);
     }
 

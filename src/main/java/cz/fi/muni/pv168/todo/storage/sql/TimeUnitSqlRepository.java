@@ -9,6 +9,7 @@ import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EntityMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class TimeUnitSqlRepository implements TimeUnitRepository {
 
@@ -41,7 +42,7 @@ public class TimeUnitSqlRepository implements TimeUnitRepository {
 
     @Override
     public void update(TimeUnit entity) {
-        var existingTimeUnit = timeUnitDao.findById(entity.getGuid().toString())
+        var existingTimeUnit = timeUnitDao.findById(entity.getGuid())
                 .orElseThrow(() -> new DataStorageException("Time unit not found, id: " + entity.getGuid()));
         var updatedTimeUnit = timeUnitEntityMapper
                 .mapExistingEntityToDatabase(entity, existingTimeUnit.id());
@@ -50,7 +51,7 @@ public class TimeUnitSqlRepository implements TimeUnitRepository {
     }
 
     @Override
-    public void deleteByGuid(String guid) {
+    public void deleteByGuid(UUID guid) {
         timeUnitDao.deleteById(guid);
     }
 
@@ -60,12 +61,12 @@ public class TimeUnitSqlRepository implements TimeUnitRepository {
     }
 
     @Override
-    public boolean existsByGuid(String guid) {
+    public boolean existsByGuid(UUID guid) {
         return timeUnitDao.existsByGuid(guid);
     }
 
     @Override
-    public Optional<TimeUnit> findByGuid(String guid) {
+    public Optional<TimeUnit> findByGuid(UUID guid) {
         return timeUnitDao
                 .findById(guid)
                 .map(timeUnitEntityMapper::mapToBusiness);

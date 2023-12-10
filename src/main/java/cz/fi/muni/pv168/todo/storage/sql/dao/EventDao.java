@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public final class EventDao implements DataAccessObject<EventEntity> {
@@ -52,10 +53,10 @@ public final class EventDao implements DataAccessObject<EventEntity> {
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
-                String timeUnitId;
+                UUID timeUnitId;
 
                 if (keyResultSet.next()) {
-                    timeUnitId = keyResultSet.getString(1);
+                    timeUnitId = UUID.fromString(keyResultSet.getString(1));
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + entity);
                 }
@@ -106,7 +107,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
     }
 
     @Override
-    public Optional<EventEntity> findById(String id) {
+    public Optional<EventEntity> findById(UUID id) {
         var sql = """
                 SELECT
                     id,
@@ -124,7 +125,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
         try (var connection = connections.get();
              var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
 
             var resultSet = statement.executeQuery();
 
@@ -182,13 +183,13 @@ public final class EventDao implements DataAccessObject<EventEntity> {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         var sql = "DELETE FROM Event WHERE id = ?";
         try (
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Event not found, id: " + id);
@@ -217,7 +218,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
     }
 
     @Override
-    public boolean existsByGuid(String id) {
+    public boolean existsByGuid(UUID id) {
         var sql = """
                 SELECT id
                 FROM Event
@@ -227,7 +228,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
 
             var resultSet = statement.executeQuery();
 

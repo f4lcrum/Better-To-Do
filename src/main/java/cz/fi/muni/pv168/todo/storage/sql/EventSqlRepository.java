@@ -9,6 +9,7 @@ import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EntityMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class EventSqlRepository implements Repository<Event> {
 
@@ -38,7 +39,7 @@ public class EventSqlRepository implements Repository<Event> {
 
     @Override
     public void update(Event entity) {
-        var existingEvent = eventDao.findById(entity.getGuid().toString())
+        var existingEvent = eventDao.findById(entity.getGuid())
                 .orElseThrow(() -> new DataStorageException("Event not found, id: " + entity.getGuid()));
         var updatedEventEntity = eventMapper
                 .mapExistingEntityToDatabase(entity, existingEvent.id());
@@ -46,12 +47,12 @@ public class EventSqlRepository implements Repository<Event> {
     }
 
     @Override
-    public void deleteByGuid(String id) {
+    public void deleteByGuid(UUID id) {
         eventDao.deleteById(id);
     }
 
     @Override
-    public Optional<Event> findByGuid(String id) {
+    public Optional<Event> findByGuid(UUID id) {
         return eventDao
                 .findById(id)
                 .map(eventMapper::mapToBusiness);
@@ -63,7 +64,7 @@ public class EventSqlRepository implements Repository<Event> {
     }
 
     @Override
-    public boolean existsByGuid(String id) {
+    public boolean existsByGuid(UUID id) {
         return eventDao.existsByGuid(id);
     }
 }
