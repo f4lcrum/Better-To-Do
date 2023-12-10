@@ -9,14 +9,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 @JsonDeserialize(builder = Category.CategoryBuilder.class)
-public class Category implements Entity{
+public class Category implements Entity {
 
     @JsonProperty
     private final UUID id;
     @JsonProperty
-    private String name;
+    private final String name;
     @JsonProperty
-    private Color colour;
+    private final Color colour;
 
     public Category(UUID id, String name, Color colour) {
         this.id = id;
@@ -50,8 +50,6 @@ public class Category implements Entity{
         return this.name;
     }
 
-    public void setName(String name) { this.name = name;}
-
     public Color getColour() {
         return this.colour;
     }
@@ -69,7 +67,6 @@ public class Category implements Entity{
         return category.id == this.id;
 
     }
-    public void setColour(Color colour) { this.colour = colour; }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class CategoryBuilder {
