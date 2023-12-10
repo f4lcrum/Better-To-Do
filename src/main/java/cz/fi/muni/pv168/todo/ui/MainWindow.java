@@ -70,7 +70,9 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
+    private final CategoryTableModel categoryTableModel;
     private final TimeUnitTableModel timeUnitTableModel;
+
 
     public MainWindow(DependencyProvider dependencyProvider) {
         var testDataGenerator = new TestDataGenerator();
@@ -78,7 +80,7 @@ public class MainWindow {
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         var templateTableModel = new TemplateTableModel(testDataGenerator.createTestTemplates(10));
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
-        var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
+        categoryTableModel = new CategoryTableModel(dependencyProvider.getCategoryCrudService());
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
         this.timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
@@ -170,9 +172,9 @@ public class MainWindow {
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
 
         var categoryMenu = new JMenu("Category");
-        categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable()));
-        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable()));
-        categoryMenu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable()));
+        categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
+        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable(), this));
+        categoryMenu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable(), this));
 
         var templateMenu = new JMenu("Template");
         templateMenu.add(new AddTemplateAction(templateTablePanel.getEventTable(), categoryListModel, statusListModel));
@@ -278,6 +280,8 @@ public class MainWindow {
         return timeUnitTablePanel;
     }
 
+    public CategoryTableModel getCategoryTableModel() { return categoryTableModel; }
+    
     public TimeUnitTableModel getTimeUnitTableModel() {
         return timeUnitTableModel;
     }

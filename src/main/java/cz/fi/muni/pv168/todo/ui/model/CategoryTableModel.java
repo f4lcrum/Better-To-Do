@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
 import java.awt.Color;
@@ -10,19 +12,17 @@ import java.util.List;
 
 public class CategoryTableModel extends AbstractTableModel implements EntityTableModel<Category> {
 
-    private final List<Category> categories;
+    private List<Category> categories;
+    private final CrudService<Category> categoryCrudService;
 
     private final List<Column<Category, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Category::getColour),
             Column.readonly("Name", String.class, Category::getName)
     );
 
-    public CategoryTableModel() {
-        this.categories = new ArrayList<>();
-    }
-
-    public CategoryTableModel(List<Category> categories) {
-        this.categories = categories;
+    public CategoryTableModel(CrudService<Category> categoryCrudService) {
+        this.categoryCrudService = categoryCrudService;
+        this.categories = new ArrayList<>(categoryCrudService.findAll());
     }
 
     @Override
@@ -60,7 +60,33 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         return;
     }
+    public void deleteRow(int rowIndex) {
+        var timeUnitToBeDeleted = getEntity(rowIndex);
+        categoryCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid().toString());
+        categories.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
 
+    public void addRow(Category category) {
+        categoryCrudService.create(category)
+                .intoException();
+        int newRowIndex = categories.size();
+        categories.add(category);
+        fireTableRowsInserted(newRowIndex, newRowIndex);
+    }
+
+    public void updateRow(Category category) {
+        categoryCrudService.update(category)
+                .intoException();
+        int rowIndex = categories.indexOf(category);
+        categories.set(rowIndex, category);
+        fireTableRowsUpdated(rowIndex, rowIndex);
+    }
+
+    public void refresh() {
+        this.categories = new ArrayList<>(categoryCrudService.findAll());
+        fireTableDataChanged();
+    }
     @Override
     public Category getEntity(int rowIndex) {
         return categories.get(rowIndex);

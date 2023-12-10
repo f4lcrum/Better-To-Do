@@ -14,11 +14,11 @@ public interface DependencyProvider {
     DatabaseManager getDatabaseManager();
 
 //    Repository<Event> getEventRepository();
-//    Repository<Category> getCategoryRepository();
+    Repository<Category> getCategoryRepository();
 //    Repository<Template> getTemplateRepository();
     Repository<TimeUnit> getTimeUnitRepository();
     CrudService<Event> getEventCrudService();
-//    CrudService<Category> getCategoryCrudService();
+    CrudService<Category> getCategoryCrudService();
 //    CrudService<Template> getTemplateCrudService();
     CrudService<TimeUnit> getTimeUnitCrudService();
     TransactionExecutor getTransactionExecutor();

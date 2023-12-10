@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.awt.Color;
+import java.util.Objects;
 import java.util.UUID;
 
 @JsonDeserialize(builder = Category.CategoryBuilder.class)
@@ -47,6 +48,20 @@ public class Category implements Entity {
 
     public Color getColour() {
         return this.colour;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return category.id == this.id;
+
     }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")

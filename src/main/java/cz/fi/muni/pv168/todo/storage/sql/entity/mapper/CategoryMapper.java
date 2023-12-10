@@ -10,24 +10,11 @@ import java.util.UUID;
 
 public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
-    private final DataAccessObject<CategoryEntity> categoryDao;
-    private final EntityMapper<CategoryEntity, Category> categoryMapper;
 
-    public CategoryMapper(
-            DataAccessObject<CategoryEntity> categoryDao,
-            EntityMapper<CategoryEntity, Category> categoryMapper) {
-        this.categoryDao = categoryDao;
-        this.categoryMapper = categoryMapper;
-    }
+    public CategoryMapper() {};
 
     @Override
     public Category mapToBusiness(CategoryEntity entity) {
-        UUID id = UUID.fromString(entity.id());
-        categoryDao
-                .findById(id)
-                .map(categoryMapper::mapToBusiness)
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " + entity.id()));
-
         var color = new Color(entity.r(), entity.g(), entity.b());
         return new Category(
                 UUID.fromString(entity.id()),
@@ -39,9 +26,6 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public CategoryEntity mapNewEntityToDatabase(Category entity) {
-        categoryDao
-                .findById(entity.getGuid())
-                .orElseThrow(() -> new DataStorageException("Category not found, guid: " + entity.getGuid()));
         var color = entity.getColour();
 
         return new CategoryEntity(
@@ -56,14 +40,10 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public CategoryEntity mapExistingEntityToDatabase(Category entity, String dbId) {
-        var categoryEntity = categoryDao
-                .findById(entity.getGuid())
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        entity.getGuid()));
         var color = entity.getColour();
 
         return new CategoryEntity(
-                categoryEntity.id(),
+                dbId,
                 entity.getName(),
                 color.getRed(),
                 color.getGreen(),

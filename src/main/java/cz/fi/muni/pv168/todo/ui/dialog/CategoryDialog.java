@@ -9,22 +9,24 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 
-public final class CategoryDialog extends EntityDialog<Event> {
+public final class CategoryDialog extends EntityDialog<Category> {
 
     private final JTextField nameField = new JTextField();
     private final JColorChooser color = new JColorChooser(Color.BLACK);
 
     private final Category category;
 
-    public CategoryDialog(Category category) {
+    public CategoryDialog(Category category, boolean edit) {
         this.category = category;
-        // setValues();
         addFields();
+        if (edit) {
+            setValues();
+        }
         setHints();
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(category.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
+        var nameHint = new TextPrompt("School", nameField, TextPrompt.Show.FOCUS_LOST);
         nameHint.changeAlpha(0.5f);
         nameHint.changeStyle(Font.ITALIC);
     }
@@ -39,7 +41,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
     }
 
     @Override
-    Event getEntity() {
-        return null;
+    Category getEntity() {
+        return new Category(category.getId(), nameField.getText(), color.getColor());
     }
 }
