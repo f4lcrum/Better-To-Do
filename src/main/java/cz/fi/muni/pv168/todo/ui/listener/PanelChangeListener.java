@@ -47,7 +47,7 @@ public class PanelChangeListener implements ChangeListener {
                 mainWindow.setButtonTabStrategy(new TemplateButtonTabStrategy(templateTable, categoryListModel, statusListModel));
                 break;
             case CATEGORY_TAB_INDEX:
-                mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable));
+                mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable, mainWindow));
                 break;
             case TIMEUNIT_TAB_INDEX:
                 mainWindow.setButtonTabStrategy(new TimeUnitButtonTabStrategy(timeUnitTable));

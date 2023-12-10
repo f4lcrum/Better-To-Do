@@ -10,18 +10,11 @@ import java.util.UUID;
 
 public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
-    private final DataAccessObject<CategoryEntity> categoryDao;
 
-    public CategoryMapper(DataAccessObject<CategoryEntity> categoryDao) {
-        this.categoryDao = categoryDao;
-    }
+    public CategoryMapper() {};
 
     @Override
     public Category mapToBusiness(CategoryEntity entity) {
-        var category = categoryDao
-                .findById(entity.id())
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " + entity.id()));
-
         var color = new Color(entity.r(), entity.g(), entity.b());
         return new Category(
                 UUID.fromString(entity.id()),
@@ -33,9 +26,6 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public CategoryEntity mapNewEntityToDatabase(Category entity) {
-        var categoryEntity = categoryDao
-                .findById(String.valueOf(entity.getId()))
-                .orElseThrow(() -> new DataStorageException("Category not found, guid: " + entity.getId()));
         var color = entity.getColour();
 
         return new CategoryEntity(
@@ -50,14 +40,10 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public CategoryEntity mapExistingEntityToDatabase(Category entity, String dbId) {
-        var categoryEntity = categoryDao
-                .findById(String.valueOf(entity.getId()))
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        entity.getId()));
         var color = entity.getColour();
 
         return new CategoryEntity(
-                categoryEntity.id(),
+                dbId,
                 entity.getName(),
                 color.getRed(),
                 color.getGreen(),

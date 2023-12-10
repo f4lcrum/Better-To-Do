@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 
-public final class CategoryDialog extends EntityDialog<Event> {
+public final class CategoryDialog extends EntityDialog<Category> {
 
     private final JTextField nameField = new JTextField();
     private final JColorChooser color = new JColorChooser(Color.BLACK);
@@ -18,7 +18,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
 
     public CategoryDialog(Category category) {
         this.category = category;
-        // setValues();
+        setValues();
         addFields();
         setHints();
     }
@@ -39,7 +39,7 @@ public final class CategoryDialog extends EntityDialog<Event> {
     }
 
     @Override
-    Event getEntity() {
-        return null;
+    Category getEntity() {
+        return new Category(category.getId(), nameField.getText(), color.getColor());
     }
 }

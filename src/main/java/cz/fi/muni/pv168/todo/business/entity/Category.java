@@ -5,17 +5,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.awt.Color;
+import java.util.Objects;
 import java.util.UUID;
 
 @JsonDeserialize(builder = Category.CategoryBuilder.class)
-public class Category implements Entity {
+public class Category implements Entity{
 
     @JsonProperty
     private final UUID id;
     @JsonProperty
-    private final String name;
+    private String name;
     @JsonProperty
-    private final Color colour;
+    private Color colour;
 
     public Category(UUID id, String name, Color colour) {
         this.id = id;
@@ -49,9 +50,18 @@ public class Category implements Entity {
         return this.name;
     }
 
+    public void setName(String name) { this.name = name;}
+
     public Color getColour() {
         return this.colour;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public void setColour(Color colour) { this.colour = colour; }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class CategoryBuilder {
