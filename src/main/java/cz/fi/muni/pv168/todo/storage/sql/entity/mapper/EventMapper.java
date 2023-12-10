@@ -31,13 +31,15 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
 
     @Override
     public Event mapToBusiness(EventEntity entity) {
+        var categoryId = UUID.fromString(entity.categoryId());
         var category = categoryDao
-                .findById(entity.categoryId())
+                .findById(categoryId)
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.categoryId()));
+        var timeUnitId = UUID.fromString(entity.timeUnitId());
         var timeUnit = timeUnitDao
-                .findById(entity.timeUnitId())
+                .findById(timeUnitId)
                 .map(timeUnitMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, id: " +
                         entity.timeUnitId()));
@@ -56,11 +58,11 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
     @Override
     public EventEntity mapNewEntityToDatabase(Event entity) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getGuid().toString())
+                .findById(entity.getCategory().getGuid())
                 .orElseThrow(() -> new DataStorageException("Category not found, guid: " +
                         entity.getCategory().getGuid()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getGuid().toString())
+                .findById(entity.getTimeUnit().getGuid())
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, guid: " +
                         entity.getTimeUnit().getGuid()));
         return new EventEntity(
@@ -78,11 +80,11 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
     @Override
     public EventEntity mapExistingEntityToDatabase(Event entity, String dbId) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getGuid().toString())
+                .findById(entity.getCategory().getGuid())
                 .orElseThrow(() -> new DataStorageException("Category not found, guid: " +
                         entity.getCategory().getGuid()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getGuid().toString())
+                .findById(entity.getTimeUnit().getGuid())
                 .orElseThrow(() -> new DataStorageException("TimeUnit not found, guid: " +
                         entity.getTimeUnit().getGuid()));
         return new EventEntity(

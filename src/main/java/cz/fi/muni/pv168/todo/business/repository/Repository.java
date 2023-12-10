@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.Entity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Represents a repository for any entity.
@@ -31,14 +32,14 @@ public interface Repository<T extends Entity> {
     /**
      * Delete entity with given {@code guid}.
      */
-    void deleteByGuid(String guid);
+    void deleteByGuid(UUID guid);
 
     /**
      * Find entity with given {@code guid}.
      *
      * @return optional with found entity, or empty optional if no entity with given {@code guid} is found
      */
-    Optional<T> findByGuid(String guid);
+    Optional<T> findByGuid(UUID guid);
 
     /**
      * Delete all entities.
@@ -50,5 +51,5 @@ public interface Repository<T extends Entity> {
      *
      * @return true, if an Entity with given {@code} is found, false otherwise
      */
-    boolean existsByGuid(String guid);
+    boolean existsByGuid(UUID guid);
 }

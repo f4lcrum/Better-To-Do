@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public final class TimeUnitCrudService implements CrudService<TimeUnit> {
@@ -27,7 +28,7 @@ public final class TimeUnitCrudService implements CrudService<TimeUnit> {
     @Override
     public ValidationResult create(TimeUnit newEntity) {
         var validationResult = timeUnitValidator.validate(newEntity);
-        if (timeUnitRepository.existsByGuid(newEntity.getGuid().toString())) {
+        if (timeUnitRepository.existsByGuid(newEntity.getGuid())) {
             throw new EntityAlreadyExistsException("Time unit with given id already exists: " + newEntity.getGuid());
         }
         if (validationResult.isValid()) {
@@ -46,7 +47,7 @@ public final class TimeUnitCrudService implements CrudService<TimeUnit> {
     }
 
     @Override
-    public void deleteByGuid(String id) {
+    public void deleteByGuid(UUID id) {
         timeUnitRepository.deleteByGuid(id);
     }
 

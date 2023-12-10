@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.Entity;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service for creation, read, update, and delete operations.
@@ -33,7 +34,7 @@ public interface CrudService<T extends Entity> {
     /**
      * Delete entity with given guid.
      */
-    void deleteByGuid(String guid);
+    void deleteByGuid(UUID guid);
 
     /**
      * Delete all entities.
