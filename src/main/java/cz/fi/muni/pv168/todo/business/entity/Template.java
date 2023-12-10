@@ -96,7 +96,7 @@ public class Template implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Template template = (Template) o;
-        return template.id == this.id;
+        return Objects.equals(template.id, this.id);
     }
 
     @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")

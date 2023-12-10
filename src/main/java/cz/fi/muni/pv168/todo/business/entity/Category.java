@@ -60,7 +60,7 @@ public class Category implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return category.id == this.id;
+        return Objects.equals(category.id, this.id);
 
     }
 
