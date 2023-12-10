@@ -14,12 +14,12 @@ import java.util.Comparator;
 
 public class DeleteTemplateAction extends AbstractAction {
 
-    private final JTable todoTable;
+    private final JTable templateTable;
     private final MainWindow mainWindow;
 
-    public DeleteTemplateAction(JTable todoTable, MainWindow mainWindow) {
+    public DeleteTemplateAction(JTable templateTable, MainWindow mainWindow) {
         super("Delete template", Icons.DELETE_ICON);
-        this.todoTable = todoTable;
+        this.templateTable = templateTable;
         this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Deletes selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
@@ -30,13 +30,14 @@ public class DeleteTemplateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var templateTableModel = mainWindow.getTemplateTableModel();
-        Arrays.stream(todoTable.getSelectedRows())
+        Arrays.stream(templateTable.getSelectedRows())
                 // view row index must be converted to model row index
-                .map(todoTable::convertRowIndexToModel)
+                .map(templateTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(templateTableModel::deleteRow);
+        mainWindow.refreshTemplateListModel();
     }
 }

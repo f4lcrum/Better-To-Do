@@ -3,15 +3,18 @@ package cz.fi.muni.pv168.todo.ui.model;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
 import java.awt.Color;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventTableModel extends AbstractTableModel implements EntityTableModel<Event> {
 
-    private final List<Event> events;
+    private List<Event> events;
+    private final CrudService<Event> eventCrudService;
 
     private final List<Column<Event, ?>> columns = List.of(
             Column.readonly(" ", Color.class, Event::getColour),
@@ -22,8 +25,9 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
             Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration)
     );
 
-    public EventTableModel(List<Event> events) {
-        this.events = events;
+    public EventTableModel(CrudService<Event> eventCrudService) {
+        this.eventCrudService = eventCrudService;
+        this.events = new ArrayList<>(eventCrudService.findAll());
     }
 
     @Override
@@ -58,9 +62,36 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
         return columns.get(columnIndex).isEditable();
     }
 
+    public void deleteRow(int rowIndex) {
+        var eventToBeDeleted = getEntity(rowIndex);
+        eventCrudService.deleteByGuid(eventToBeDeleted.getGuid());
+        events.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+    public void addRow(Event event) {
+        eventCrudService.create(event)
+                .intoException();
+        int newRowIndex = events.size();
+        events.add(event);
+        fireTableRowsInserted(newRowIndex, newRowIndex);
+    }
+
+    public void updateRow(Event event) {
+        eventCrudService.update(event)
+                .intoException();
+        int rowIndex = events.indexOf(event);
+        events.set(rowIndex, event);
+        fireTableRowsUpdated(rowIndex, rowIndex);
+    }
+
+    public void refresh() {
+        this.events = new ArrayList<>(eventCrudService.findAll());
+        fireTableDataChanged();
+    }
+
     @Override
     public Event getEntity(int rowIndex) {
         return events.get(rowIndex);
     }
-
 }

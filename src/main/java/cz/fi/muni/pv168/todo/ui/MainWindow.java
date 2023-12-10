@@ -24,6 +24,7 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
+import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
@@ -49,7 +50,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
@@ -63,7 +63,7 @@ public class MainWindow {
     private final Action quitAction;
     private final Action exportAction;
     private final Action importAction;
-    private final StatusListModel statusListModel;
+    private final TemplateListModel templateListModel;
     private final CategoryListModel categoryListModel;
     private final TimeUnitListModel timeUnitListModel;
     private final JTabbedPane tabbedPane;
@@ -73,13 +73,13 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
+    private final EventTableModel eventTableModel;
     private final CategoryTableModel categoryTableModel;
     private final TimeUnitTableModel timeUnitTableModel;
     private final TemplateTableModel templateTableModel;
 
     public MainWindow(DependencyProvider dependencyProvider) {
-        //var testDataGenerator = new TestDataGenerator();
-        var eventTableModel = new EventTableModel(new ArrayList<>());
+        this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         this.templateTableModel = new TemplateTableModel(dependencyProvider.getTemplateCrudService());
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
@@ -89,7 +89,8 @@ public class MainWindow {
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
-        this.statusListModel = new StatusListModel();
+        this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
+        var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
         exportAction = new ExportAction(eventTablePanel);
@@ -119,7 +120,7 @@ public class MainWindow {
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
         this.categoryFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
 
-        this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, statusListModel);
+        this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this);
 
         this.addButton = new JButton(Icons.ADD_ICON);
         this.editButton = new JButton(Icons.EDIT_ICON);
@@ -146,6 +147,10 @@ public class MainWindow {
 
     public void refreshTimeUnitListModel() {
         timeUnitListModel.refresh();
+    }
+
+    public void refreshTemplateListModel() {
+        templateListModel.refresh();
     }
 
     public void show() {
@@ -179,9 +184,9 @@ public class MainWindow {
         fileMenu.add(quitAction);
 
         var eventMenu = new JMenu("Event");
-        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel));
-        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel));
-        eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
+        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
+        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
+        eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
 
         var categoryMenu = new JMenu("Category");
         categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
@@ -222,9 +227,9 @@ public class MainWindow {
 
     private JPopupMenu createEventTablePopupMenu() {
         var menu = new JPopupMenu();
-        menu.add(new DeleteEventAction(eventTablePanel.getEventTable()));
-        menu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel));
-        menu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel));
+        menu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
+        menu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
+        menu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         return menu;
     }
 
@@ -256,16 +261,16 @@ public class MainWindow {
         this.buttonTabStrategy = buttonTabStrategy;
     }
 
-    public StatusListModel getStatusListModel() {
-        return statusListModel;
-    }
-
     public CategoryListModel getCategoryListModel() {
         return categoryListModel;
     }
 
     public TimeUnitListModel getTimeUnitListModel() {
         return timeUnitListModel;
+    }
+
+    public TemplateListModel getTemplateListModel() {
+        return templateListModel;
     }
 
     public JPanel getStatusFilterPanel() {
@@ -294,6 +299,10 @@ public class MainWindow {
 
     public TimeUnitTablePanel getTimeUnitTablePanel() {
         return timeUnitTablePanel;
+    }
+
+    public EventTableModel getEventTableModel() {
+        return eventTableModel;
     }
 
     public CategoryTableModel getCategoryTableModel() {
