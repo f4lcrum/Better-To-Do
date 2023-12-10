@@ -17,7 +17,7 @@ public record CategoryEntity(
             int b
     ) {
         this.id = id;
-        this.name = Objects.requireNonNull(name, "Name must not be null");;
+        this.name = Objects.requireNonNull(name, "Name must not be null");
         this.r = r;
         this.g = g;
         this.b = b;
