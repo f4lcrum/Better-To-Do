@@ -48,8 +48,8 @@ public class EditEventAction extends AbstractAction {
         }
         var eventTableModel = mainWindow.getEventTableModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
-        var employee = eventTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel, timeUnitListModel, templateListModel, true);
+        var event = eventTableModel.getEntity(modelRow);
+        var dialog = new EventDialog(event, categoryListModel, timeUnitListModel, templateListModel, true);
         dialog.show(todoTable, "Edit Event")
                 .ifPresent(eventTableModel::updateRow);
     }

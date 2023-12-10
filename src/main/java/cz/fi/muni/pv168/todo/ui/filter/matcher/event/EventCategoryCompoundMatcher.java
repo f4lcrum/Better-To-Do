@@ -7,15 +7,15 @@ import java.util.Collection;
 
 public class EventCategoryCompoundMatcher extends EntityMatcher<Event> {
 
-    private final Collection<EntityMatcher<Event>> employeeMatchers;
+    private final Collection<EntityMatcher<Event>> eventMatchers;
 
-    public EventCategoryCompoundMatcher(Collection<EntityMatcher<Event>> employeeMatchers) {
-        this.employeeMatchers = employeeMatchers;
+    public EventCategoryCompoundMatcher(Collection<EntityMatcher<Event>> eventMatchers) {
+        this.eventMatchers = eventMatchers;
     }
 
     @Override
     public boolean evaluate(Event event) {
-        return employeeMatchers.stream()
+        return eventMatchers.stream()
                 .anyMatch(matcher -> matcher.evaluate(event));
     }
 }
