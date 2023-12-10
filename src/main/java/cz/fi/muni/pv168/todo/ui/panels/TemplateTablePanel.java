@@ -1,7 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.panels;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.ui.action.mouseClick.TableRow;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.ui.action.DetailClick;
 import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
@@ -35,7 +36,7 @@ public class TemplateTablePanel extends JPanel {
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(LocalDate.class, new LocalDateRenderer());
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
-        table.addMouseListener(new TableRow("Template detail"));
+        table.addMouseListener(new DetailClick<>(templateTableModel, Template::getName, "Template detail"));
         return table;
     }
 
