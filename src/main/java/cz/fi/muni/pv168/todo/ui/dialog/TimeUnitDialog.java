@@ -13,17 +13,25 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     private final TimeUnit timeUnit;
 
-    public TimeUnitDialog(TimeUnit timeUnit) {
+    public TimeUnitDialog(TimeUnit timeUnit, boolean edit) {
         this.timeUnit = timeUnit;
-        setDialogValues();
         addDialogFields();
+        if (edit) {
+            setDialogValues();
+        }
         setHints();
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt(timeUnit.getName(), nameField, TextPrompt.Show.FOCUS_LOST);
+        var nameHint = new TextPrompt("Sprint", nameField, TextPrompt.Show.FOCUS_LOST);
         nameHint.changeAlpha(0.5f);
         nameHint.changeStyle(Font.ITALIC);
+        var hourHint = new TextPrompt("4", hourField, TextPrompt.Show.FOCUS_LOST);
+        hourHint.changeAlpha(0.5f);
+        hourHint.changeStyle(Font.ITALIC);
+        var minuteHint = new TextPrompt("30", minuteField, TextPrompt.Show.FOCUS_LOST);
+        minuteHint.changeAlpha(0.5f);
+        minuteHint.changeStyle(Font.ITALIC);
     }
 
     private void setDialogValues() {
@@ -41,9 +49,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     @Override
     public TimeUnit getEntity() {
-        timeUnit.setName(nameField.getText());
-        timeUnit.setHourCount(Long.parseLong(hourField.getText()));
-        timeUnit.setMinuteCount(Long.parseLong(minuteField.getText()));
-        return timeUnit;
+        return new TimeUnit(timeUnit.getGuid(), nameField.getText(), Long.parseLong(hourField.getText()), Long.parseLong(minuteField.getText()));
     }
 }
