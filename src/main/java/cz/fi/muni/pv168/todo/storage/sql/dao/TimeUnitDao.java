@@ -130,7 +130,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         ) {
             statement.setString(1, entity.name());
             statement.setLong(2, entity.hourCount());
-            statement.setLong(3, entity.hourCount());
+            statement.setLong(3, entity.minuteCount());
             statement.setString(4, entity.id());
 
             var rowsUpdatedCount = statement.executeUpdate();

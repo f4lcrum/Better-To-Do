@@ -50,7 +50,7 @@ public class PanelChangeListener implements ChangeListener {
                 mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable));
                 break;
             case TIMEUNIT_TAB_INDEX:
-                mainWindow.setButtonTabStrategy(new TimeUnitButtonTabStrategy(timeUnitTable));
+                mainWindow.setButtonTabStrategy(new TimeUnitButtonTabStrategy(timeUnitTable, mainWindow));
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("The strategy for column index %d is not yet impolemented!", selectedIndex));

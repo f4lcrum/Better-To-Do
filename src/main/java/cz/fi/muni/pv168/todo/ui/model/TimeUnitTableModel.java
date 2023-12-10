@@ -78,6 +78,7 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
         timeUnitCrudService.update(timeUnit)
                 .intoException();
         int rowIndex = timeUnits.indexOf(timeUnit);
+        timeUnits.set(rowIndex, timeUnit);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 

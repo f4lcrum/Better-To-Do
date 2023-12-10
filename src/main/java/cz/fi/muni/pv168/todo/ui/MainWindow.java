@@ -67,6 +67,7 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
+    private final TimeUnitTableModel timeUnitTableModel;
 
     public MainWindow(DependencyProvider dependencyProvider) {
         var testDataGenerator = new TestDataGenerator();
@@ -76,7 +77,7 @@ public class MainWindow {
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
         var categoryTableModel = new CategoryTableModel(testDataGenerator.createTestCategories(10));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
-        var timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
+        this.timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         categoryListModel = new CategoryListModel(testDataGenerator.getCategories());
         statusListModel = new StatusListModel();
@@ -234,5 +235,9 @@ public class MainWindow {
 
     public TimeUnitTablePanel getTimeUnitTablePanel() {
         return timeUnitTablePanel;
+    }
+
+    public TimeUnitTableModel getTimeUnitTableModel() {
+        return timeUnitTableModel;
     }
 }
