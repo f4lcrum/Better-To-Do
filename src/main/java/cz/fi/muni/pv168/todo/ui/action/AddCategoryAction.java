@@ -3,7 +3,6 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
-import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -30,6 +29,7 @@ public final class AddCategoryAction extends AbstractAction {
         var dialog = new CategoryDialog(createPrefilledCategory(), false);
         dialog.show(categoryTable, "Add Category")
                 .ifPresent(categoryTableModel::addRow);
+        mainWindow.refreshCategoryListModel();
     }
 
 

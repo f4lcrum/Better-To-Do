@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Event;
 
 import javax.swing.JColorChooser;
 import javax.swing.JTextField;
@@ -42,6 +41,6 @@ public final class CategoryDialog extends EntityDialog<Category> {
 
     @Override
     Category getEntity() {
-        return new Category(category.getId(), nameField.getText(), color.getColor());
+        return new Category(category.getGuid(), nameField.getText(), color.getColor());
     }
 }

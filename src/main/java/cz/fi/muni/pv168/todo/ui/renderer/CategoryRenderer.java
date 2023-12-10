@@ -12,6 +12,10 @@ public class CategoryRenderer extends AbstractRenderer<Category> {
 
     @Override
     protected void updateLabel(JLabel label, Category value) {
+        if (value == null) {
+            label.setText("");
+            return;
+        }
         label.setText(value.getName());
     }
 }

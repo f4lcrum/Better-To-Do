@@ -41,5 +41,6 @@ public class EditTimeUnitAction extends AbstractAction {
         var dialog = new TimeUnitDialog(timeUnit, true);
         dialog.show(timeUnitTable, "Edit time unit")
                 .ifPresent(timeUnitTableModel::updateRow);
+        mainWindow.refreshTimeUnitListModel();
     }
 }

@@ -3,7 +3,6 @@ package cz.fi.muni.pv168.todo.storage.sql.dao;
 import cz.fi.muni.pv168.todo.storage.sql.db.ConnectionHandler;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TemplateEntity;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,13 +31,14 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 INSERT INTO Template(
                     id,
                     name,
+                    eventName,
                     category,
                     timeUnit,
                     timeUnitCount,
                     startTime,
-                    description,
+                    description
                 )
-                VALUES (?, ?, ?, ?, ?, ?);
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                 """;
         try (
                 var connection = connections.get();
@@ -46,11 +46,12 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         ) {
             statement.setString(1, newTemplate.id());
             statement.setString(2, newTemplate.name());
-            statement.setString(3, newTemplate.categoryId());
-            statement.setString(4, newTemplate.timeUnitId());
-            statement.setInt(5, newTemplate.timeUnitCount());
-            statement.setTime(6, Time.valueOf(newTemplate.startTime()));
-            statement.setString(7, newTemplate.description());
+            statement.setString(3, newTemplate.eventName());
+            statement.setString(4, newTemplate.categoryId());
+            statement.setString(5, newTemplate.timeUnitId());
+            statement.setInt(6, newTemplate.timeUnitCount());
+            statement.setTime(7, Time.valueOf(newTemplate.startTime()));
+            statement.setString(8, newTemplate.description());
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
@@ -76,8 +77,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
     @Override
     public Collection<TemplateEntity> findAll() {
         var sql = """
-                SELECT id,
+                SELECT
+                    id,
                     name,
+                    eventName,
                     category,
                     timeUnit,
                     timeUnitCount,
@@ -106,8 +109,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
     @Override
     public Optional<TemplateEntity> findById(UUID id) {
         var sql = """
-                SELECT id,
+                SELECT
+                    id,
                     name,
+                    eventName,
                     category,
                     timeUnit,
                     timeUnitCount,
@@ -129,7 +134,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 return Optional.empty();
             }
         } catch (SQLException ex) {
-            throw new DataStorageException("Failed to load department by id: " + id, ex);
+            throw new DataStorageException("Failed to load template by id: " + id, ex);
         }
     }
 
@@ -138,6 +143,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         var sql = """
                 UPDATE Template
                 SET name = ?,
+                    eventName = ?,
                     category = ?,
                     timeUnit = ?,
                     timeUnitCount = ?,
@@ -150,11 +156,13 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, entity.name());
-            statement.setString(2, entity.categoryId());
-            statement.setString(3, entity.timeUnitId());
-            statement.setInt(4, entity.timeUnitCount());
-            statement.setTime(5, Time.valueOf(entity.startTime()));
-            statement.setString(6, entity.description());
+            statement.setString(2, entity.eventName());
+            statement.setString(3, entity.categoryId());
+            statement.setString(4, entity.timeUnitId());
+            statement.setInt(5, entity.timeUnitCount());
+            statement.setTime(6, Time.valueOf(entity.startTime()));
+            statement.setString(7, entity.description());
+            statement.setString(8, entity.id());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Template not found, id: " + entity.id());
@@ -230,6 +238,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
         return new TemplateEntity(
                 resultSet.getString("id"),
                 resultSet.getString("name"),
+                resultSet.getString("eventName"),
                 resultSet.getString("category"),
                 resultSet.getTimestamp("startTime").toLocalDateTime().toLocalTime(),
                 resultSet.getString("timeUnit"),

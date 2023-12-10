@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.TimeUnitButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
+import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
@@ -37,6 +38,7 @@ public class PanelChangeListener implements ChangeListener {
 
         CategoryListModel categoryListModel = mainWindow.getCategoryListModel();
         StatusListModel statusListModel = mainWindow.getStatusListModel();
+        TimeUnitListModel timeUnitListModel = mainWindow.getTimeUnitListModel();
 
         int selectedIndex = mainWindow.getTabbedPane().getSelectedIndex();
         switch (selectedIndex) {
@@ -44,7 +46,7 @@ public class PanelChangeListener implements ChangeListener {
                 mainWindow.setButtonTabStrategy(new EventButtonTabStrategy(eventTable, categoryListModel, statusListModel));
                 break;
             case TEMPLATE_TAB_INDEX:
-                mainWindow.setButtonTabStrategy(new TemplateButtonTabStrategy(templateTable, categoryListModel, statusListModel));
+                mainWindow.setButtonTabStrategy(new TemplateButtonTabStrategy(templateTable, categoryListModel, timeUnitListModel, mainWindow));
                 break;
             case CATEGORY_TAB_INDEX:
                 mainWindow.setButtonTabStrategy(new CategoryButtonTabStrategy(categoryTable, mainWindow));

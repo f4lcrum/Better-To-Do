@@ -1,17 +1,21 @@
 package cz.fi.muni.pv168.todo.wiring;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
+import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
+import cz.fi.muni.pv168.todo.storage.sql.TemplateSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
+import cz.fi.muni.pv168.todo.storage.sql.dao.TemplateDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.TimeUnitDao;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionConnectionSupplier;
@@ -19,6 +23,7 @@ import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutorImpl;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionManagerImpl;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.CategoryMapper;
+import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TemplateMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TimeUnitMapper;
 
 /**
@@ -32,9 +37,10 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final TransactionExecutor transactionExecutor;
     private final Repository<TimeUnit> timeUnitRepository;
     private final Repository<Category> categoryRepository;
+    private final Repository<Template> templateRepository;
     private final CrudService<Category> categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
-
+    private final CrudService<Template> templateCrudService;
 
     public CommonDependencyProvider(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
@@ -45,25 +51,29 @@ public class CommonDependencyProvider implements DependencyProvider {
         var timeUnitDao = new TimeUnitDao(transactionConnectionSupplier);
         var timeUnitMapper = new TimeUnitMapper();
         var timeUnitValidator = new TimeUnitValidator();
-
         this.timeUnitRepository = new TimeUnitSqlRepository(
                 timeUnitDao,
                 timeUnitMapper
         );
-        timeUnitCrudService = new TimeUnitCrudService(getTimeUnitRepository(), timeUnitValidator);
+        this.timeUnitCrudService = new TimeUnitCrudService(this.timeUnitRepository, timeUnitValidator);
 
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
         var categoryMapper = new CategoryMapper();
         var categoryValidator = new CategoryValidator();
-
         this.categoryRepository = new CategorySqlRepository(
                 categoryDao,
                 categoryMapper
         );
+        this.categoryCrudService = new CategoryCrudService(this.categoryRepository, categoryValidator);
 
-        categoryCrudService = new CategoryCrudService(getCategoryRepository(), categoryValidator);
-
-
+        var templateDao = new TemplateDao(transactionConnectionSupplier);
+        var templateMapper = new TemplateMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
+        var templateValidator = new TemplateValidator();
+        this.templateRepository = new TemplateSqlRepository(
+                templateDao,
+                templateMapper
+        );
+        this.templateCrudService = new TemplateCrudService(this.templateRepository, templateValidator);
     }
 
     @Override
@@ -82,8 +92,8 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
-    public CrudService<Event> getEventCrudService() {
-        return null;
+    public Repository<Template> getTemplateRepository() {
+        return templateRepository;
     }
 
     @Override
@@ -94,6 +104,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public CrudService<TimeUnit> getTimeUnitCrudService() {
         return timeUnitCrudService;
+    }
+
+    @Override
+    public CrudService<Template> getTemplateCrudService() {
+        return templateCrudService;
     }
 
     @Override

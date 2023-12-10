@@ -38,5 +38,6 @@ public class DeleteCategoryAction extends AbstractAction {
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(categoryTableModel::deleteRow);
+        mainWindow.refreshCategoryListModel();
     }
 }

@@ -3,9 +3,6 @@ package cz.fi.muni.pv168.todo.data;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
-import static cz.fi.muni.pv168.todo.business.entity.Status.DONE;
-import static cz.fi.muni.pv168.todo.business.entity.Status.IN_PROGRESS;
-import static cz.fi.muni.pv168.todo.business.entity.Status.PLANNED;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 
@@ -16,6 +13,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import static cz.fi.muni.pv168.todo.business.entity.Status.DONE;
+import static cz.fi.muni.pv168.todo.business.entity.Status.IN_PROGRESS;
+import static cz.fi.muni.pv168.todo.business.entity.Status.PLANNED;
 
 public final class TestDataGenerator {
 
@@ -70,7 +71,7 @@ public final class TestDataGenerator {
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
         TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
-        return new Template(UUID.randomUUID(), name, description, category, startDateTime.toLocalTime(), timeUnit, RAND_GEN.nextInt(5));
+        return new Template(UUID.randomUUID(), name, name, category, startDateTime.toLocalTime(), timeUnit, RAND_GEN.nextInt(5), description);
     }
 
     public Category createTestCategory() {

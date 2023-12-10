@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
-import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -38,5 +37,6 @@ public class EditCategoryAction extends AbstractAction {
         var dialog = new CategoryDialog(category, true);
         dialog.show(categoryTable, "Edit Category")
                 .ifPresent(categoryTableModel::updateRow);
+        mainWindow.refreshCategoryListModel();
     }
 }

@@ -1,9 +1,9 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
-import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -19,13 +19,16 @@ public class EditTemplateAction extends AbstractAction {
     private final JTable templateTable;
 
     private final ListModel<Category> categoryListModel;
-    private final ListModel<Status> statusListModel;
+    private final ListModel<TimeUnit> timeUnitListModel;
+    private final MainWindow mainWindow;
 
-    public EditTemplateAction(JTable templateTable, ListModel<Category> categoryListModel, ListModel<Status> statusListModel) {
+    public EditTemplateAction(JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel,
+                              ListModel<TimeUnit> timeUnitListModel) {
         super("Edit template", Icons.EDIT_ICON);
         this.templateTable = templateTable;
         this.categoryListModel = categoryListModel;
-        this.statusListModel = statusListModel;
+        this.timeUnitListModel = timeUnitListModel;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Edits selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -43,10 +46,11 @@ public class EditTemplateAction extends AbstractAction {
             templateTable.getCellEditor().cancelCellEditing();
         }
 
-        var templateTableModel = (TemplateTableModel) templateTable.getModel();
+        var templateTableModel = mainWindow.getTemplateTableModel();
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);
-        var dialog = new TemplateDialog(template, categoryListModel, statusListModel);
-        dialog.show(templateTable, "Edit Template");
+        var dialog = new TemplateDialog(template, categoryListModel, timeUnitListModel, true);
+        dialog.show(templateTable, "Edit Template")
+                .ifPresent(templateTableModel::updateRow);
     }
 }

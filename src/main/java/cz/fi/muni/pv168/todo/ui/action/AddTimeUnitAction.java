@@ -34,7 +34,7 @@ public class AddTimeUnitAction extends AbstractAction {
         var dialog = new TimeUnitDialog(createPrefilledTimeUnit(), false);
         dialog.show(timeUnitTable, "Add Time Unit")
                 .ifPresent(timeUnitTableModel::addRow);
-
+        mainWindow.refreshTimeUnitListModel();
     }
 
     private TimeUnit createPrefilledTimeUnit() {
