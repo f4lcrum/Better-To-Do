@@ -41,11 +41,12 @@ CREATE TABLE IF NOT EXISTS "Event"
 --
 CREATE TABLE IF NOT EXISTS "Template"
 (
-    `id`           CHAR(36) PRIMARY KEY,
-    `name`         VARCHAR(128) NOT NULL,
-    `category`     CHAR(36) REFERENCES "Category"(`id`),
+    `id`            CHAR(36) PRIMARY KEY,
+    `name`          VARCHAR(128) NOT NULL,
+    `eventName`     VARCHAR(128) NOT NULL,
+    `category`      CHAR(36) REFERENCES "Category"(`id`),
+    `startTime`     TIME NOT NULL,
     `timeUnit`      CHAR(36) REFERENCES "TimeUnit"(`id`),
     `timeUnitCount` INT NOT NULL,
-    `startTime`    TIME NOT NULL,
-    `description`  VARCHAR(1024) NOT NULL
+    `description`   VARCHAR(1024) NOT NULL
 );

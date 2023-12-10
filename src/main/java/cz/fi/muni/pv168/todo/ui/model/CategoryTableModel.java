@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
@@ -60,9 +59,10 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         return;
     }
+
     public void deleteRow(int rowIndex) {
-        var timeUnitToBeDeleted = getEntity(rowIndex);
-        categoryCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid().toString());
+        var categoryToBeDeleted = getEntity(rowIndex);
+        categoryCrudService.deleteByGuid(categoryToBeDeleted.getGuid());
         categories.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
@@ -87,6 +87,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
         this.categories = new ArrayList<>(categoryCrudService.findAll());
         fireTableDataChanged();
     }
+
     @Override
     public Category getEntity(int rowIndex) {
         return categories.get(rowIndex);

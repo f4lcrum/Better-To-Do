@@ -1,5 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -14,10 +15,12 @@ import java.util.Comparator;
 public class DeleteTemplateAction extends AbstractAction {
 
     private final JTable todoTable;
+    private final MainWindow mainWindow;
 
-    public DeleteTemplateAction(JTable todoTable) {
+    public DeleteTemplateAction(JTable todoTable, MainWindow mainWindow) {
         super("Delete template", Icons.DELETE_ICON);
         this.todoTable = todoTable;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Deletes selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -26,12 +29,14 @@ public class DeleteTemplateAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        var templateTableModel = mainWindow.getTemplateTableModel();
         Arrays.stream(todoTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(todoTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
-                .sorted(Comparator.reverseOrder());
+                .sorted(Comparator.reverseOrder())
+                .forEach(templateTableModel::deleteRow);
     }
 }

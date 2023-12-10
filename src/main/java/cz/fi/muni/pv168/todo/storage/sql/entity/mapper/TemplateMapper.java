@@ -45,11 +45,12 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
         return new Template(
                 UUID.fromString(entity.id()),
                 entity.name(),
-                entity.description(),
+                entity.eventName(),
                 category,
                 entity.startTime(),
                 timeUnit,
-                entity.timeUnitCount()
+                entity.timeUnitCount(),
+                entity.description()
         );
     }
 
@@ -66,6 +67,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
         return new TemplateEntity(
                 entity.getGuid().toString(),
                 entity.getName(),
+                entity.getEventName(),
                 categoryEntity.id(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),
@@ -87,6 +89,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
         return new TemplateEntity(
                 dbId,
                 entity.getName(),
+                entity.getEventName(),
                 categoryEntity.id(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),

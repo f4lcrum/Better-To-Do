@@ -38,6 +38,7 @@ public class DeleteTimeUnitAction extends AbstractAction {
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(timeUnitTableModel::deleteRow);
+        mainWindow.refreshTimeUnitListModel();
     }
 
 }
