@@ -1,9 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.Main;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;

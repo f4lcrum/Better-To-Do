@@ -30,9 +30,8 @@ import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
-import static java.awt.Frame.MAXIMIZED_BOTH;
-
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,7 +45,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
+
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
