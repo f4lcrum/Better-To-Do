@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
 import java.util.List;
+import java.util.UUID;
 
 public class EventCrudService implements CrudService<Event> {
 
@@ -26,7 +27,7 @@ public class EventCrudService implements CrudService<Event> {
     @Override
     public ValidationResult create(Event newEntity) {
         var validationResult = eventValidator.validate(newEntity);
-        if (eventRepository.existsByGuid(newEntity.getGuid().toString())) {
+        if (eventRepository.existsByGuid(newEntity.getGuid())) {
             throw new EntityAlreadyExistsException("Event with given id already exists: " + newEntity.getGuid());
         }
         if (validationResult.isValid()) {
@@ -45,7 +46,7 @@ public class EventCrudService implements CrudService<Event> {
     }
 
     @Override
-    public void deleteByGuid(String id) {
+    public void deleteByGuid(UUID id) {
         eventRepository.deleteByGuid(id);
     }
 

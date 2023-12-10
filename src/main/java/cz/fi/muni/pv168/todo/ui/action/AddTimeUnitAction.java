@@ -1,8 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,10 +16,12 @@ import java.util.UUID;
 public class AddTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
+    private final MainWindow mainWindow;
 
-    public AddTimeUnitAction(JTable timeUnitTable) {
+    public AddTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
         super("Add duration unit", Icons.ADD_ICON);
         this.timeUnitTable = timeUnitTable;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Adds new duration unit");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
@@ -28,8 +30,8 @@ public class AddTimeUnitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var timeUnitTableModel = (TimeUnitTableModel) timeUnitTable.getModel();
-        var dialog = new TimeUnitDialog(createPrefilledTimeUnit());
+        var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
+        var dialog = new TimeUnitDialog(createPrefilledTimeUnit(), false);
         dialog.show(timeUnitTable, "Add Time Unit")
                 .ifPresent(timeUnitTableModel::addRow);
 

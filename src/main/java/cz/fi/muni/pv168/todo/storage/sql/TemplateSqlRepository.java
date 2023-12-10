@@ -44,7 +44,7 @@ public class TemplateSqlRepository implements Repository<Template> {
 
     @Override
     public void update(Template entity) {
-        var existingTemplate= templateDao.findById(entity.getGuid().toString())
+        var existingTemplate = templateDao.findById(entity.getGuid())
                 .orElseThrow(() -> new DataStorageException("Department not found, guid: " + entity.getGuid()));
         var updatedDepartment = templateMapper.mapExistingEntityToDatabase(entity, existingTemplate.id());
 
@@ -52,7 +52,7 @@ public class TemplateSqlRepository implements Repository<Template> {
     }
 
     @Override
-    public void deleteByGuid(String id) {
+    public void deleteByGuid(UUID id) {
         templateDao.deleteById(id);
     }
 
@@ -62,12 +62,12 @@ public class TemplateSqlRepository implements Repository<Template> {
     }
 
     @Override
-    public boolean existsByGuid(String id) {
+    public boolean existsByGuid(UUID id) {
         return templateDao.existsByGuid(id);
     }
 
     @Override
-    public Optional<Template> findByGuid(String id) {
+    public Optional<Template> findByGuid(UUID id) {
         return templateDao
                 .findById(id)
                 .map(templateMapper::mapToBusiness);

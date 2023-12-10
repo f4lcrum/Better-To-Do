@@ -42,10 +42,6 @@ public class Category implements Entity{
                 '}';
     }
 
-    public UUID getId() {
-        return this.id;
-    }
-
     public String getName() {
         return this.name;
     }

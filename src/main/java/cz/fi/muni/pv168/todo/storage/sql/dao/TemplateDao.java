@@ -54,10 +54,10 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
-                String templateId;
+                UUID templateId;
 
                 if (keyResultSet.next()) {
-                    templateId = keyResultSet.getString(1);
+                    templateId = UUID.fromString(keyResultSet.getString(1));
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + newTemplate);
                 }
@@ -104,7 +104,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
     }
 
     @Override
-    public Optional<TemplateEntity> findById(String id) {
+    public Optional<TemplateEntity> findById(UUID id) {
         var sql = """
                 SELECT id,
                     name,
@@ -120,7 +120,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(templateFromResultSet(resultSet));
@@ -170,7 +170,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         var sql = """
                 DELETE FROM Template
                 WHERE id = ?
@@ -179,7 +179,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, id);
+            statement.setString(1, id.toString());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Template not found, guid: " + id);
@@ -207,7 +207,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
     }
 
     @Override
-    public boolean existsByGuid(String id) {
+    public boolean existsByGuid(UUID id) {
         var sql = """
                 SELECT id
                 FROM Template
@@ -217,7 +217,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, String.valueOf(id));
+            statement.setString(1, id.toString());
             try (var resultSet = statement.executeQuery()) {
                 return resultSet.next();
             }

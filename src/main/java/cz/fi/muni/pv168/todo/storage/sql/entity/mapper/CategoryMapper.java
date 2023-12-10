@@ -29,7 +29,7 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
         var color = entity.getColour();
 
         return new CategoryEntity(
-                entity.getId().toString(),
+                entity.getGuid().toString(),
                 entity.getName(),
                 color.getRed(),
                 color.getGreen(),
