@@ -56,7 +56,7 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TimeUnit timeUnit = (TimeUnit) o;
-        return timeUnit.id == this.id;
+        return Objects.equals(timeUnit.id, this.id);
     }
 
     @Override

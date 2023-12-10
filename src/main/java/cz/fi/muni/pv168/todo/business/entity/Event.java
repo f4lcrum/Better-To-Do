@@ -126,7 +126,7 @@ public class Event implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return event.id == this.id;
+        return Objects.equals(event.id, this.id);
     }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
