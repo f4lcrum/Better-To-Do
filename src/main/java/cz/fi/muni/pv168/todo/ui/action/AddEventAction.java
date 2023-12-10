@@ -48,6 +48,7 @@ public final class AddEventAction extends AbstractAction {
         var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false);
         dialog.show(todoTable, "Add Event")
                 .ifPresent(eventTableModel::addRow);
+        mainWindow.refreshEventListModel();
     }
 
     private Event createPrefilledEvent() {

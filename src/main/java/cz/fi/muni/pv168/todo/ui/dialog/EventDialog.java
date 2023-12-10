@@ -68,6 +68,7 @@ public final class EventDialog extends EntityDialog<Event> {
         description.setText(event.getDescription());
         categoryModel.setSelectedItem(event.getCategory());
         dateModel.setValue(event.getDate());
+        timeUnitModel.setSelectedItem(event.getTimeUnit());
         hourField.setText(Integer.toString(event.getStartTime().getHour()));
         minuteField.setText(Integer.toString(event.getStartTime().getMinute()));
     }
