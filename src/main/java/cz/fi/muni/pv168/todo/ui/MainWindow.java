@@ -22,6 +22,7 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
+import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
@@ -63,6 +64,7 @@ public class MainWindow {
     private final Action quitAction;
     private final Action exportAction;
     private final Action importAction;
+    private final EventListModel eventListModel;
     private final TemplateListModel templateListModel;
     private final CategoryListModel categoryListModel;
     private final TimeUnitListModel timeUnitListModel;
@@ -90,6 +92,7 @@ public class MainWindow {
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
+        this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
@@ -139,6 +142,10 @@ public class MainWindow {
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(statistics, BorderLayout.SOUTH);
         frame.pack();
+    }
+
+    public void refreshEventListModel() {
+        eventListModel.refresh();
     }
 
     public void refreshCategoryListModel() {
@@ -259,6 +266,10 @@ public class MainWindow {
 
     public void setButtonTabStrategy(ButtonTabStrategy buttonTabStrategy) {
         this.buttonTabStrategy = buttonTabStrategy;
+    }
+
+    public EventListModel getCEventListModel() {
+        return eventListModel;
     }
 
     public CategoryListModel getCategoryListModel() {

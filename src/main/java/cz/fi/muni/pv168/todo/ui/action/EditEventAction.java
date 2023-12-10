@@ -52,5 +52,6 @@ public class EditEventAction extends AbstractAction {
         var dialog = new EventDialog(employee, categoryListModel, timeUnitListModel, templateListModel, true);
         dialog.show(todoTable, "Edit Event")
                 .ifPresent(eventTableModel::updateRow);
+        mainWindow.refreshEventListModel();
     }
 }

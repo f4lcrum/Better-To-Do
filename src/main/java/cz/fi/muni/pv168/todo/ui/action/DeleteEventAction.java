@@ -38,5 +38,6 @@ public class DeleteEventAction extends AbstractAction {
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(eventTableModel::deleteRow);
+        mainWindow.refreshEventListModel();
     }
 }
