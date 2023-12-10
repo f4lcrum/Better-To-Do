@@ -2,8 +2,9 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
-import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -22,13 +23,19 @@ import java.util.UUID;
 public final class AddEventAction extends AbstractAction {
 
     private final JTable todoTable;
-
     private final ListModel<Category> categoryListModel;
+    private final ListModel<TimeUnit> timeUnitListModel;
+    private final ListModel<Template> templateListModel;
+    private final MainWindow mainWindow;
 
-    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
+    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
+                          ListModel<Template> templateListModel, MainWindow mainWindow) {
         super("Add event", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
+        this.timeUnitListModel = timeUnitListModel;
+        this.templateListModel = templateListModel;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
@@ -37,8 +44,10 @@ public final class AddEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel);
-        dialog.show(todoTable, "Add Event");
+        var eventTableModel = mainWindow.getEventTableModel();
+        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false);
+        dialog.show(todoTable, "Add Event")
+                .ifPresent(eventTableModel::addRow);
     }
 
     private Event createPrefilledEvent() {

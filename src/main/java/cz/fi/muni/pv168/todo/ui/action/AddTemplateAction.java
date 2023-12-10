@@ -44,6 +44,7 @@ public final class AddTemplateAction extends AbstractAction {
         var dialog = new TemplateDialog(createPrefilledTemplate(), categoryListModel, timeUnitListModel, false);
         dialog.show(templateTable, "Add Template")
                 .ifPresent(templateTableModel::addRow);
+        mainWindow.refreshTemplateListModel();
     }
 
     private Template createPrefilledTemplate() {
