@@ -1,35 +1,32 @@
---
--- Development data - used for development
---
+-- DROP TABLE Template;
+-- DROP TABLE Event;
+-- DROP TABLE Category;
+-- DROP TABLE TimeUnit;
 
---  Category
-INSERT INTO "Category" ("name", "r", "g", "b")
-VALUES ('Work', 255, 0, 0),
-       ('Personal', 0, 255, 0),
-       ('Health', 0, 0, 255),
-       ('Education', 255, 255, 0)
-;
+-- Insert data into Category table
+INSERT INTO "Category" ("id", "name", "r", "g", "b")
+VALUES
+    ('158d4716-eec2-4e03-bc4c-450e31d5d38a', 'Work', 255, 0, 0),
+    ('d6b0d956-bbf4-4641-afdf-63c9b4127201', 'Personal', 0, 128, 255),
+    ('e2e76751-b5be-4955-87e4-48f2403cd4ae', 'Family', 0, 255, 0);
 
---  TimeUnit
-INSERT INTO "TimeUnit" ("name", "hourCount", "minuteCount")
-VALUES ('One Hour', 1, 0),
-       ('Half Hour', 0, 30),
-       ('Two Hours', 2, 0),
-       ('Fifteen Minutes', 0, 15)
-;
+-- Insert data into TimeUnit table
+INSERT INTO "TimeUnit" ("id", "name", "hourCount", "minuteCount")
+VALUES
+    ('25aae21c-74f6-425d-8b52-b00cb6b34efb', 'Hours', 1, 0),
+    ('0e587bc6-83a1-44ac-a911-0bfe0df998e4', 'Minutes', 0, 1),
+    ('0381a409-6d77-45d5-9dac-02c91d0d41a0', 'Days', 24, 0);
 
---  Event
-INSERT INTO "Event"  ("name", "category", "duration", "startDateTime", "description")
-VALUES ('Team Meeting', 1, 1, '2023-11-27 09:00:00', 'Weekly team meeting to discuss project progress'),
-       ('Yoga Class', 3, 2, '2023-11-27 07:00:00', 'Morning yoga session for wellness'),
-       ('Study Session', 4, 3, '2023-11-27 18:00:00', 'Study session for upcoming exams'),
-       ('Doctor Appointment', 3, 4, '2023-11-28 10:30:00', 'Routine check-up with the doctor')
-;
+-- Insert data into Event table
+INSERT INTO "Event" ("id", "name", "category", "timeUnit", "timeUnitCount", "startDate", "startTime", "description")
+VALUES
+    ('365d67f6-5c6a-43a6-ace4-8b53ba5dc513', 'Meeting', '158d4716-eec2-4e03-bc4c-450e31d5d38a', '25aae21c-74f6-425d-8b52-b00cb6b34efb', 2, '2023-01-10', '09:00:00', 'Team meeting'),
+    ('c9813b91-b7b6-4dfa-9e0d-ad206a7f610c', 'Gym', 'd6b0d956-bbf4-4641-afdf-63c9b4127201', '0e587bc6-83a1-44ac-a911-0bfe0df998e4', 60, '2023-01-12', '17:30:00', 'Workout session'),
+    ('3fa1f956-40bf-49e7-8d12-48ed3498fe0d', 'Family Dinner', 'e2e76751-b5be-4955-87e4-48f2403cd4ae', '0381a409-6d77-45d5-9dac-02c91d0d41a0', 1, '2023-01-15', '18:00:00', 'Dinner with family');
 
---  Template
-INSERT INTO "Template"  ("name", "category", "startTime", "duration", "description")
-VALUES ('Workout Routine', 3, '06:30:00', 60, 'Morning workout session to stay fit'),
-       ('Daily Planning', 2, '08:00:00', 30, 'Planning the day ahead'),
-       ('Evening Reading', 4, '20:00:00', 45, 'Reading time to relax and learn'),
-       ('Weekly Review', 1, '17:00:00', 90, 'Weekly review of work tasks and goals')
-;
+-- -- Insert data into Template table
+INSERT INTO "Template" ("id", "name", "eventName", "category", "startTime", "timeUnit", "timeUnitCount", "description")
+VALUES
+    ('7ee351e5-a704-4685-9b02-017d28835ffb', 'Work Template', 'Work Task', '158d4716-eec2-4e03-bc4c-450e31d5d38a', '08:00:00', '25aae21c-74f6-425d-8b52-b00cb6b34efb', 8, 'Template for work tasks'),
+    ('703115ca-468d-4090-980a-8881fb52c995', 'Personal Template', 'Personal Task', 'd6b0d956-bbf4-4641-afdf-63c9b4127201', '10:00:00', '0e587bc6-83a1-44ac-a911-0bfe0df998e4', 30, 'Template for personal tasks'),
+    ('74b62cbc-df9b-4b75-a1f6-3ba5f708ff96', 'Family Template', 'Family Gathering', 'e2e76751-b5be-4955-87e4-48f2403cd4ae', '17:00:00', '0381a409-6d77-45d5-9dac-02c91d0d41a0', 1, 'Template for family gatherings');

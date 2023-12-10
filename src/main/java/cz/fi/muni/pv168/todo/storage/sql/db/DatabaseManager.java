@@ -23,6 +23,7 @@ public final class DatabaseManager {
     private final DataSource dataSource;
     private final SqlFileExecutor sqlFileExecutor;
     private final String databaseConnectionString;
+    private boolean isInitialized = false;
 
     private DatabaseManager(String jdbcUri) {
         // connection pool with empty credentials
@@ -40,9 +41,11 @@ public final class DatabaseManager {
     public static DatabaseManager createTestInstance() {
         String connectionString = "jdbc:h2:mem:%s;%s".formatted(PROJECT_NAME, DB_PROPERTIES_STRING);
         var databaseManager = new DatabaseManager(connectionString);
-        databaseManager.initSchema();
-        databaseManager.initData("test");
-
+        if (!databaseManager.isInitialized) {
+            databaseManager.initSchema();
+            databaseManager.initData("test");
+            databaseManager.isInitialized = true;
+        }
         return databaseManager;
     }
 
@@ -68,13 +71,19 @@ public final class DatabaseManager {
 
     public void destroySchema() {
         sqlFileExecutor.execute("drop.sql");
+        isInitialized = false;
     }
 
     public void initSchema() {
         sqlFileExecutor.execute("init.sql");
+        isInitialized = true;
     }
 
     public void initData(String environment) {
+        if (!isInitialized) {
+            sqlFileExecutor.execute("init.sql");
+            isInitialized = true;
+        }
         sqlFileExecutor.execute("data_%s.sql".formatted(environment));
     }
 
