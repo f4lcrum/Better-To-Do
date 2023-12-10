@@ -4,12 +4,15 @@ import cz.fi.muni.pv168.todo.data.TestDataGenerator;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
+import cz.fi.muni.pv168.todo.ui.action.AddTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
+import cz.fi.muni.pv168.todo.ui.action.DeleteTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.EditCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
+import cz.fi.muni.pv168.todo.ui.action.EditTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.ExportAction;
 import cz.fi.muni.pv168.todo.ui.action.ImportAction;
 import cz.fi.muni.pv168.todo.ui.action.QuitAction;
@@ -31,6 +34,7 @@ import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -45,8 +49,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-
-import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
