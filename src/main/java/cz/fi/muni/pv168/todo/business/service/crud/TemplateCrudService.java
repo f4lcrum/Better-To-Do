@@ -4,7 +4,9 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+
 import java.util.List;
+import java.util.UUID;
 
 public class TemplateCrudService implements CrudService<Template> {
 
@@ -25,7 +27,7 @@ public class TemplateCrudService implements CrudService<Template> {
     @Override
     public ValidationResult create(Template newEntity) {
         var validationResult = templateValidator.validate(newEntity);
-        if (templateRepository.existsByGuid(newEntity.getGuid().toString())) {
+        if (templateRepository.existsByGuid(newEntity.getGuid())) {
             throw new EntityAlreadyExistsException("Template with given id already exists: " + newEntity.getGuid());
         }
         if (validationResult.isValid()) {
@@ -44,7 +46,7 @@ public class TemplateCrudService implements CrudService<Template> {
     }
 
     @Override
-    public void deleteByGuid(String id) {
+    public void deleteByGuid(UUID id) {
         templateRepository.deleteByGuid(id);
     }
 

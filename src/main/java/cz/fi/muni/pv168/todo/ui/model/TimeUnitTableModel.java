@@ -1,10 +1,10 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
-import java.util.ArrayList;
+
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TimeUnitTableModel extends AbstractTableModel implements EntityTableModel<TimeUnit> {
@@ -61,7 +61,7 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
 
     public void deleteRow(int rowIndex) {
         var timeUnitToBeDeleted = getEntity(rowIndex);
-        timeUnitCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid().toString());
+        timeUnitCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid());
         timeUnits.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
@@ -78,6 +78,7 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
         timeUnitCrudService.update(timeUnit)
                 .intoException();
         int rowIndex = timeUnits.indexOf(timeUnit);
+        timeUnits.set(rowIndex, timeUnit);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
