@@ -1,8 +1,10 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,13 +18,19 @@ import java.awt.event.KeyEvent;
 public class EditEventAction extends AbstractAction {
 
     private final JTable todoTable;
-
     private final ListModel<Category> categoryListModel;
+    private final ListModel<TimeUnit> timeUnitListModel;
+    private final ListModel<Template> templateListModel;
+    private final MainWindow mainWindow;
 
-    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel) {
+    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
+                           ListModel<Template> templateListModel, MainWindow mainWindow) {
         super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
+        this.timeUnitListModel = timeUnitListModel;
+        this.templateListModel = templateListModel;
+        this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -38,10 +46,11 @@ public class EditEventAction extends AbstractAction {
         if (todoTable.isEditing()) {
             todoTable.getCellEditor().cancelCellEditing();
         }
-        var employeeTableModel = (EventTableModel) todoTable.getModel();
+        var eventTableModel = mainWindow.getEventTableModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
-        var employee = employeeTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(employee, categoryListModel);
-        dialog.show(todoTable, "Edit Event");
+        var employee = eventTableModel.getEntity(modelRow);
+        var dialog = new EventDialog(employee, categoryListModel, timeUnitListModel, templateListModel, true);
+        dialog.show(todoTable, "Edit Event")
+                .ifPresent(eventTableModel::updateRow);
     }
 }

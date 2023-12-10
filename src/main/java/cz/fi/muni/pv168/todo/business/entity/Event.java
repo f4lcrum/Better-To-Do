@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.awt.Color;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @JsonDeserialize(builder = Event.EventBuilder.class)
@@ -54,8 +54,7 @@ public class Event implements Entity {
     }
 
     public long getEventDuration() {
-        Duration duration = Duration.between(startTime, getEndTime());
-        return duration.toMinutes();
+        return (timeUnit.getHourCount() * timeUnitCount) * 60 + timeUnit.getMinuteCount() * timeUnitCount;
     }
 
     public LocalDateTime calculateStart() {
@@ -115,6 +114,19 @@ public class Event implements Entity {
 
     public int getTimeUnitCount() {
         return timeUnitCount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return event.id == this.id;
     }
 
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
@@ -192,7 +204,7 @@ public class Event implements Entity {
         }
 
         public String toString() {
-            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit  + ", timeUnitCount=" + this.timeUnitCount + ", description=" + this.description + ")";
+            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", timeUnitCount=" + this.timeUnitCount + ", description=" + this.description + ")";
         }
     }
 }

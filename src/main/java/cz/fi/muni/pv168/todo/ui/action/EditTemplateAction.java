@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 public class EditTemplateAction extends AbstractAction {
 
     private final JTable templateTable;
-
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final MainWindow mainWindow;
@@ -52,5 +51,6 @@ public class EditTemplateAction extends AbstractAction {
         var dialog = new TemplateDialog(template, categoryListModel, timeUnitListModel, true);
         dialog.show(templateTable, "Edit Template")
                 .ifPresent(templateTableModel::updateRow);
+        mainWindow.refreshTemplateListModel();
     }
 }

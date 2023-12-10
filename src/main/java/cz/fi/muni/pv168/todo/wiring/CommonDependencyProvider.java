@@ -1,20 +1,25 @@
 package cz.fi.muni.pv168.todo.wiring;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.EventCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
+import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
+import cz.fi.muni.pv168.todo.storage.sql.EventSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TemplateSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
+import cz.fi.muni.pv168.todo.storage.sql.dao.EventDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.TemplateDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.TimeUnitDao;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
@@ -23,6 +28,7 @@ import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutorImpl;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionManagerImpl;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.CategoryMapper;
+import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EventMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TemplateMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TimeUnitMapper;
 
@@ -35,9 +41,11 @@ public class CommonDependencyProvider implements DependencyProvider {
 
     private final DatabaseManager databaseManager;
     private final TransactionExecutor transactionExecutor;
+    private final Repository<Event> eventRepository;
     private final Repository<TimeUnit> timeUnitRepository;
     private final Repository<Category> categoryRepository;
     private final Repository<Template> templateRepository;
+    private final CrudService<Event> eventCrudService;
     private final CrudService<Category> categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final CrudService<Template> templateCrudService;
@@ -74,6 +82,15 @@ public class CommonDependencyProvider implements DependencyProvider {
                 templateMapper
         );
         this.templateCrudService = new TemplateCrudService(this.templateRepository, templateValidator);
+
+        var eventDao = new EventDao(transactionConnectionSupplier);
+        var eventMapper = new EventMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
+        var eventValidator = new EventValidator();
+        this.eventRepository = new EventSqlRepository(
+                eventDao,
+                eventMapper
+        );
+        this.eventCrudService = new EventCrudService(this.eventRepository, eventValidator);
     }
 
     @Override
@@ -82,8 +99,13 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
+    public Repository<Event> getEventRepository() {
+        return eventRepository;
+    }
+
+    @Override
     public Repository<Category> getCategoryRepository() {
-        return this.categoryRepository;
+        return categoryRepository;
     }
 
     @Override
@@ -94,6 +116,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public Repository<Template> getTemplateRepository() {
         return templateRepository;
+    }
+
+    @Override
+    public CrudService<Event> getEventCrudService() {
+        return eventCrudService;
     }
 
     @Override

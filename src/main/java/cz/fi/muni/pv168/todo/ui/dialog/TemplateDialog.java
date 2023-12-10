@@ -5,10 +5,8 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
-import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
-import org.jdatepicker.DateModel;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -17,7 +15,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import java.awt.Font;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public final class TemplateDialog extends EntityDialog<Template> {
@@ -30,7 +27,6 @@ public final class TemplateDialog extends EntityDialog<Template> {
     private final JTextField minuteField = new JTextField();
     private final ComboBoxModel<Category> categoryModel;
     private final ComboBoxModel<TimeUnit> timeUnitModel;
-    private final DateModel<LocalDate> dateModel = new LocalDateModel();
 
     private final Template template;
 

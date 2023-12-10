@@ -53,10 +53,10 @@ public final class EventDao implements DataAccessObject<EventEntity> {
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
-                UUID timeUnitId;
+                UUID eventId;
 
                 if (keyResultSet.next()) {
-                    timeUnitId = UUID.fromString(keyResultSet.getString(1));
+                    eventId = UUID.fromString(keyResultSet.getString(1));
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + entity);
                 }
@@ -65,7 +65,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     throw new DataStorageException("Multiple keys returned for: " + entity);
                 }
 
-                return findById(timeUnitId).orElseThrow();
+                return findById(eventId).orElseThrow();
             }
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to store: " + entity, ex);
@@ -84,7 +84,6 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     startDate,
                     startTime,
                     description
-                )
                 FROM Event
                 """;
         try (var connection = connections.get();
@@ -118,7 +117,6 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     startDate,
                     startTime,
                     description
-                )
                 FROM Event
                 WHERE id = ?
                 """;
@@ -141,16 +139,14 @@ public final class EventDao implements DataAccessObject<EventEntity> {
     @Override
     public EventEntity update(EventEntity entity) {
         var sql = """
-                SELECT
-                    name = ?,
+                UPDATE Event
+                SET name = ?,
                     category = ?,
                     timeUnit = ?,
                     timeUnitCount = ?,
                     startDate = ?,
                     startTime = ?,
                     description = ?
-                )
-                FROM Event
                 WHERE id = ?
                 """;
         try (var connection = connections.get();
@@ -168,7 +164,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
             var rowsUpdatedCount = statement.executeUpdate();
 
             if (rowsUpdatedCount == 0) {
-                throw new DataStorageException("Event not found, seeked ID: " + entity.id());
+                throw new DataStorageException("Event not found, sought ID: " + entity.id());
             }
 
             if (rowsUpdatedCount > 1) {
