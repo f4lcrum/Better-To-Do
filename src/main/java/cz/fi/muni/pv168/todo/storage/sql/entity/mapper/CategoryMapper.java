@@ -11,7 +11,7 @@ import java.util.UUID;
 public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
 
-    public CategoryMapper() {};
+    public CategoryMapper() {}
 
     @Override
     public Category mapToBusiness(CategoryEntity entity) {

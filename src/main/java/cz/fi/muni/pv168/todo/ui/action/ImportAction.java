@@ -20,7 +20,7 @@ public class ImportAction extends AbstractAction {
         super("Import", Icons.IMPORT_ICON);
         this.eventTablePanel = Objects.requireNonNull(eventTablePanel);
 
-        putValue(SHORT_DESCRIPTION, "Imports employees from a file");
+        putValue(SHORT_DESCRIPTION, "Imports events from a file");
         putValue(MNEMONIC_KEY, KeyEvent.VK_I);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl I"));
     }

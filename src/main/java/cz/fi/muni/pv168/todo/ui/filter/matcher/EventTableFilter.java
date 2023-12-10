@@ -25,11 +25,11 @@ import java.util.stream.Stream;
  */
 public final class EventTableFilter {
 
-    private final EventCompoundMatcher employeeCompoundMatcher;
+    private final EventCompoundMatcher eventCompoundMatcher;
 
     public EventTableFilter(TableRowSorter<EventTableModel> rowSorter) {
-        employeeCompoundMatcher = new EventCompoundMatcher(rowSorter);
-        rowSorter.setRowFilter(employeeCompoundMatcher);
+        eventCompoundMatcher = new EventCompoundMatcher(rowSorter);
+        rowSorter.setRowFilter(eventCompoundMatcher);
     }
 
     public void filterStatus(List<Either<SpecialFilterStatusValues, Status>> selectedItems) {
@@ -38,7 +38,7 @@ public final class EventTableFilter {
                 l -> matchers.add(l.getMatcher()),
                 r -> matchers.add(new EventStatusMatcher(r))
         ));
-        employeeCompoundMatcher.setStatusMatcher(new EventStatusCompoundMatcher(matchers));
+        eventCompoundMatcher.setStatusMatcher(new EventStatusCompoundMatcher(matchers));
     }
 
     public void filterCategory(List<Either<SpecialFilterCategoryValues, Category>> selectedItems) {
@@ -47,7 +47,7 @@ public final class EventTableFilter {
                 l -> matchers.add(l.getMatcher()),
                 r -> matchers.add(new EventCategoryMatcher(r))
         ));
-        employeeCompoundMatcher.setCategoryMatcher(new EventCategoryCompoundMatcher(matchers));
+        eventCompoundMatcher.setCategoryMatcher(new EventCategoryCompoundMatcher(matchers));
     }
 
     /**

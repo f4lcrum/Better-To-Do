@@ -56,7 +56,6 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        return;
     }
 
     public void deleteRow(int rowIndex) {

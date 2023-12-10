@@ -80,7 +80,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
             return categories;
         } catch (SQLException ex) {
-            throw new DataStorageException("Failed to load all departments", ex);
+            throw new DataStorageException("Failed to load all categories", ex);
         }
     }
 
@@ -105,7 +105,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
             return resultSet.next() ? Optional.of(categoryFromResultSet(resultSet)) : Optional.empty();
         } catch (SQLException ex) {
-            throw new DataStorageException("Failed to load department by ID", ex);
+            throw new DataStorageException("Failed to load category by ID", ex);
         }
     }
 

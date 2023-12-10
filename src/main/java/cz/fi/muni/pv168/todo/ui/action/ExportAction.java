@@ -20,7 +20,7 @@ public class ExportAction extends AbstractAction {
         super("Export", Icons.EXPORT_ICON);
         this.parent = Objects.requireNonNull(parent);
 
-        putValue(SHORT_DESCRIPTION, "Exports employees to a file");
+        putValue(SHORT_DESCRIPTION, "Exports events to a file");
         putValue(MNEMONIC_KEY, KeyEvent.VK_X);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl X"));
     }
