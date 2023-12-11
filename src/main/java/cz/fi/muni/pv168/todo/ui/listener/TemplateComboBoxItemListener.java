@@ -7,12 +7,12 @@ import javax.swing.JComboBox;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class TemplateComboBoxItemListnener implements ItemListener {
+public class TemplateComboBoxItemListener implements ItemListener {
 
     private final JComboBox<Template> templateJComboBox;
     private final EventDialog eventDialog;
 
-    public TemplateComboBoxItemListnener(JComboBox<Template> templateJComboBox, EventDialog eventDialog) {
+    public TemplateComboBoxItemListener(JComboBox<Template> templateJComboBox, EventDialog eventDialog) {
         super();
         this.templateJComboBox = templateJComboBox;
         this.eventDialog = eventDialog;

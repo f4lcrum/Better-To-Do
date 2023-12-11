@@ -58,7 +58,7 @@ public final class AddEventAction extends AbstractAction {
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalDate.now(),
                 LocalTime.now(),
-                new TimeUnit(UUID.randomUUID(), "CoffeBreak", 0, 10),
+                new TimeUnit(UUID.randomUUID(), "CoffeeBreak", 0, 10),
                 5,
                 "Dinner with parents"
         );

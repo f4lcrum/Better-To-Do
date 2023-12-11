@@ -29,7 +29,7 @@ abstract class EntityDialog<E> {
         panel.add(component, "wmin 250lp, grow");
     }
 
-    void addDescritpion(String labelText, JComponent component) {
+    void addDescription(String labelText, JComponent component) {
         var label = new JLabel(String.format("%s: ", labelText));
         panel.add(label);
         panel.add(component, "wmin 250lp, hmin 100lp, grow");
