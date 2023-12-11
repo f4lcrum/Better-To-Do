@@ -6,7 +6,6 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import javax.swing.JColorChooser;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Font;
 
 public final class CategoryDialog extends EntityDialog<Category> {
 

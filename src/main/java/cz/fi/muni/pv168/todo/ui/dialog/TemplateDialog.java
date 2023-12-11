@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
-import java.awt.Font;
 import java.time.LocalTime;
 
 public final class TemplateDialog extends EntityDialog<Template> {

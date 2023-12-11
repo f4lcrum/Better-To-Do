@@ -3,7 +3,6 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 
 import javax.swing.JTextField;
-import java.awt.Font;
 
 public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 

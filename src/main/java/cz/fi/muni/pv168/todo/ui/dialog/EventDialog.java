@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
-import java.awt.Font;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
