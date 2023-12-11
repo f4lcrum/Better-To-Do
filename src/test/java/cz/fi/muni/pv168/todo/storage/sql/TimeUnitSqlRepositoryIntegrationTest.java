@@ -4,7 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.TimeUnitRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
-import cz.fi.muni.pv168.todo.wiring.TestDependencyProvider;
+import cz.fi.muni.pv168.todo.wiring.TestingDependencyProvider;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +29,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
     @BeforeEach
     void setUp() {
         databaseManager = DatabaseManager.createTestInstance();
-        var dependencyProvider = new TestDependencyProvider(databaseManager);
+        var dependencyProvider = new TestingDependencyProvider(databaseManager);
         timeUnitRepository = dependencyProvider.getTimeUnitRepository();
     }
 
