@@ -23,15 +23,9 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt("Sprint", nameField, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
-        var hourHint = new TextPrompt("4", hourField, TextPrompt.Show.FOCUS_LOST);
-        hourHint.changeAlpha(0.5f);
-        hourHint.changeStyle(Font.ITALIC);
-        var minuteHint = new TextPrompt("30", minuteField, TextPrompt.Show.FOCUS_LOST);
-        minuteHint.changeAlpha(0.5f);
-        minuteHint.changeStyle(Font.ITALIC);
+        new TextPrompt("Sprint", nameField);
+        new TextPrompt("4", hourField);
+        new TextPrompt("30", minuteField);
     }
 
     private void setDialogValues() {

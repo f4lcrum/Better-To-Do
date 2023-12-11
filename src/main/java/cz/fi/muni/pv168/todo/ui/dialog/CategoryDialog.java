@@ -25,9 +25,7 @@ public final class CategoryDialog extends EntityDialog<Category> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt("School", nameField, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
+        new TextPrompt("School", nameField);
     }
 
     private void setValues() {

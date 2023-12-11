@@ -51,15 +51,9 @@ public final class EventDialog extends EntityDialog<Event> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt("Party at John's", nameField, TextPrompt.Show.FOCUS_LOST);
-        var durationHint = new TextPrompt("5", duration, TextPrompt.Show.FOCUS_LOST);
-        var descriptionHint = new TextPrompt("A weekend party at John's place.", description, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        durationHint.changeAlpha(0.5f);
-        descriptionHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
-        durationHint.changeStyle(Font.ITALIC);
-        descriptionHint.changeStyle(Font.ITALIC);
+        new TextPrompt("Party at John's", nameField);
+        new TextPrompt("5", duration);
+        new TextPrompt("A weekend party at John's place.", description);
     }
 
     private void setValues() {

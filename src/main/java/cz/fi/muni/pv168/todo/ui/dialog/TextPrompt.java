@@ -8,6 +8,7 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -26,26 +27,12 @@ import java.awt.event.FocusListener;
 public class TextPrompt extends JLabel
         implements FocusListener, DocumentListener {
 
-    public enum Show {
-        ALWAYS,
-        FOCUS_GAINED,
-        FOCUS_LOST
-    }
-
     private final JTextComponent component;
     private final Document document;
-
-    private Show show;
-    private boolean showPromptOnce;
     private int focusLost;
 
     public TextPrompt(String text, JTextComponent component) {
-        this(text, component, Show.ALWAYS);
-    }
-
-    public TextPrompt(String text, JTextComponent component, Show show) {
         this.component = component;
-        setShow(show);
         document = component.getDocument();
 
         setText(text);
@@ -60,6 +47,8 @@ public class TextPrompt extends JLabel
         component.setLayout(new BorderLayout());
         component.add(this);
         checkForPrompt();
+        changeStyle(Font.ITALIC);
+        changeAlpha(0.5f);
     }
 
     /**
@@ -68,7 +57,7 @@ public class TextPrompt extends JLabel
      *
      * @param alpha value in the range of 0 - 1.0.
      */
-    public void changeAlpha(float alpha) {
+    private void changeAlpha(float alpha) {
         changeAlpha((int) (alpha * 255));
     }
 
@@ -78,7 +67,7 @@ public class TextPrompt extends JLabel
      *
      * @param alpha value in the range of 0 - 255.
      */
-    public void changeAlpha(int alpha) {
+    private void changeAlpha(int alpha) {
         alpha = alpha > 255 ? 255 : alpha < 0 ? 0 : alpha;
 
         Color foreground = getForeground();
@@ -97,53 +86,8 @@ public class TextPrompt extends JLabel
      *
      * @param style value representing the the new style of the Font.
      */
-    public void changeStyle(int style) {
+    private void changeStyle(int style) {
         setFont(getFont().deriveFont(style));
-    }
-
-    /**
-     * Get the Show property
-     *
-     * @return the Show property.
-     */
-    public Show getShow() {
-        return show;
-    }
-
-    /**
-     * Set the prompt Show property to control when the promt is shown.
-     * Valid values are:
-     * <p>
-     * Show.AWLAYS (default) - always show the prompt
-     * Show.Focus_GAINED - show the prompt when the component gains focus
-     * (and hide the prompt when focus is lost)
-     * Show.Focus_LOST - show the prompt when the component loses focus
-     * (and hide the prompt when focus is gained)
-     *
-     * @param show a valid Show enum
-     */
-    public void setShow(Show show) {
-        this.show = show;
-    }
-
-    /**
-     * Get the showPromptOnce property
-     *
-     * @return the showPromptOnce property.
-     */
-    public boolean getShowPromptOnce() {
-        return showPromptOnce;
-    }
-
-    /**
-     * Show the prompt once. Once the component has gained/lost focus
-     * once, the prompt will not be shown again.
-     *
-     * @param showPromptOnce when true the prompt will only be shown once,
-     *                       otherwise it will be shown repeatedly.
-     */
-    public void setShowPromptOnce(boolean showPromptOnce) {
-        this.showPromptOnce = showPromptOnce;
     }
 
     /**
@@ -158,23 +102,11 @@ public class TextPrompt extends JLabel
             return;
         }
 
-        //  Prompt has already been shown once, remove it
-
-        if (showPromptOnce && focusLost > 0) {
-            setVisible(false);
-            return;
-        }
 
         //  Check the Show property and component focus to determine if the
         //  prompt should be displayed.
 
-        if (component.hasFocus()) {
-            setVisible(show == Show.ALWAYS
-                    || show == Show.FOCUS_GAINED);
-        } else {
-            setVisible(show == Show.ALWAYS
-                    || show == Show.FOCUS_LOST);
-        }
+        setVisible(!component.hasFocus());
     }
 
 //  Implement FocusListener
