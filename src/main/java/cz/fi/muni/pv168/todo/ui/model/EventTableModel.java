@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.model;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
@@ -22,8 +23,12 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
             Column.readonly("Start date and Time", LocalDateTime.class, Event::calculateStart),
             Column.readonly("Category", Category.class, Event::getCategory),
             Column.readonly("Status", Status.class, Event::getStatus),
-            Column.readonly("Duration (minutes)", Long.class, Event::getEventDuration)
+            Column.readonly("Duration (minutes)", String.class, this::getDuration)
     );
+
+    private String getDuration(Event event) {
+        return String.format("%d %s", event.getTimeUnitCount(), event.getTimeUnit().getName());
+    }
 
     public EventTableModel(CrudService<Event> eventCrudService) {
         this.eventCrudService = eventCrudService;
