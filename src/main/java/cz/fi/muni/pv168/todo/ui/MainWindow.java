@@ -205,10 +205,16 @@ public class MainWindow {
         templateMenu.add(new EditTemplateAction(templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
         templateMenu.add(new DeleteTemplateAction(templateTablePanel.getEventTable(), this));
 
+        var timeUnitMenu = new JMenu("Time Unit");
+        timeUnitMenu.add(new AddTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
+        timeUnitMenu.add(new EditTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
+        timeUnitMenu.add(new DeleteTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
+
         menuBar.add(fileMenu);
         menuBar.add(eventMenu);
         menuBar.add(categoryMenu);
         menuBar.add(templateMenu);
+        menuBar.add(timeUnitMenu);
         return menuBar;
     }
 
