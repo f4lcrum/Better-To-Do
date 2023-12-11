@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
-import java.awt.Font;
 import java.time.LocalTime;
 
 public final class TemplateDialog extends EntityDialog<Template> {
@@ -43,24 +42,12 @@ public final class TemplateDialog extends EntityDialog<Template> {
     }
 
     private void setHints() {
-        var nameHint = new TextPrompt("Doctor's appointment", nameField, TextPrompt.Show.FOCUS_LOST);
-        var eventNameHint = new TextPrompt("Annual doctor's visit", eventNameField, TextPrompt.Show.FOCUS_LOST);
-        var durationHint = new TextPrompt("5", duration, TextPrompt.Show.FOCUS_LOST);
-        var descriptionHint = new TextPrompt("Template for creating various doctor's appointments", description, TextPrompt.Show.FOCUS_LOST);
-        var hourHint = new TextPrompt("5", hourField, TextPrompt.Show.FOCUS_LOST);
-        var minuteHint = new TextPrompt("30", minuteField, TextPrompt.Show.FOCUS_LOST);
-        nameHint.changeAlpha(0.5f);
-        eventNameHint.changeAlpha(0.5f);
-        durationHint.changeAlpha(0.5f);
-        descriptionHint.changeAlpha(0.5f);
-        hourHint.changeAlpha(0.5f);
-        minuteHint.changeAlpha(0.5f);
-        nameHint.changeStyle(Font.ITALIC);
-        eventNameHint.changeAlpha(Font.ITALIC);
-        durationHint.changeStyle(Font.ITALIC);
-        descriptionHint.changeStyle(Font.ITALIC);
-        hourHint.changeStyle(Font.ITALIC);
-        minuteHint.changeStyle(Font.ITALIC);
+        new TextPrompt("Doctor's appointment", nameField);
+        new TextPrompt("Annual doctor's visit", eventNameField);
+        new TextPrompt("5", duration);
+        new TextPrompt("Template for creating various doctor's appointments", description);
+        new TextPrompt("5", hourField);
+        new TextPrompt("30", minuteField);
     }
 
     private void setValues() {
