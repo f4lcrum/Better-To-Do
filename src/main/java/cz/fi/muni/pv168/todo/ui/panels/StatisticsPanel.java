@@ -25,7 +25,7 @@ public class StatisticsPanel extends JPanel {
 
     private void setContent(JPanel left, JPanel right) {
         setRow(left, right, "Total", 80, 80000, "Planned", 12);
-        setRow(left, right, "Filtered", 62, 62000, "In Progess", 4);
+        setRow(left, right, "Filtered", 62, 62000, "In Progress", 4);
         setRow(left, right, "Today", 6, 6000, "Done", 64);
     }
 

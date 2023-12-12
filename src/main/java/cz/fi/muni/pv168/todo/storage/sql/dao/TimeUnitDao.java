@@ -141,7 +141,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
             }
 
             if (rowsUpdatedCount > 1) {
-                throw new DataStorageException("More than 1 time unit has been updated, despite having unique ID constaint!");
+                throw new DataStorageException("More than 1 time unit has been updated, despite having unique ID constraint!");
             }
 
             return entity;

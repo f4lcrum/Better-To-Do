@@ -1,8 +1,6 @@
 package cz.fi.muni.pv168.todo.storage.sql.entity.mapper;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
-import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.entity.CategoryEntity;
 
 import java.awt.Color;

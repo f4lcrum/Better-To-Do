@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public final class TimeUnitCrudService implements CrudService<TimeUnit> {
+public class TimeUnitCrudService implements CrudService<TimeUnit> {
 
     private final Repository<TimeUnit> timeUnitRepository;
     private final Validator<TimeUnit> timeUnitValidator;

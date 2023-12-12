@@ -4,7 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListnener;
+import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListener;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
@@ -73,7 +73,7 @@ public final class EventDialog extends EntityDialog<Event> {
         timeUnitComboBox.setRenderer(new TimeUnitRenderer());
         var templateComboBox = new JComboBox<>(templateModel);
         templateComboBox.setRenderer(new TemplateRenderer());
-        templateComboBox.addItemListener(new TemplateComboBoxItemListnener(templateComboBox, this));
+        templateComboBox.addItemListener(new TemplateComboBoxItemListener(templateComboBox, this));
 
         add("Name of the event", nameField, true);
         add("Template", templateComboBox, false);
@@ -84,7 +84,7 @@ public final class EventDialog extends EntityDialog<Event> {
         add("Time unit count", duration, true);
         description.setLineWrap(true);
         JScrollPane descriptionPane = new JScrollPane(description);
-        addDescritpion("Description", descriptionPane);
+        addDescription("Description", descriptionPane);
     }
 
     @Override

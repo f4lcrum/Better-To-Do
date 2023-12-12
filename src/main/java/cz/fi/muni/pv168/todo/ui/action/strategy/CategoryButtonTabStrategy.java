@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.Main;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;

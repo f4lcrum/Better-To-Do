@@ -4,7 +4,6 @@ package cz.fi.muni.pv168.todo.storage.sql.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Representation of Event entity in a SQL database.

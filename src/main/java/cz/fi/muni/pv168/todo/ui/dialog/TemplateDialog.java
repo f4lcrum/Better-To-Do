@@ -75,7 +75,7 @@ public final class TemplateDialog extends EntityDialog<Template> {
         add("Time unit count", duration, true);
         description.setLineWrap(true);
         JScrollPane descriptionPane = new JScrollPane(description);
-        addDescritpion("Description", descriptionPane);
+        addDescription("Description", descriptionPane);
     }
 
     @Override
