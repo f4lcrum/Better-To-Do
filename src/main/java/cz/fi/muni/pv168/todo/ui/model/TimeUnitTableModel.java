@@ -13,9 +13,9 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     private final CrudService<TimeUnit> timeUnitCrudService;
 
     private final List<Column<TimeUnit, ?>> columns = List.of(
-            Column.readonly("Name", String.class, TimeUnit::getName),
-            Column.readonly("Hour count", Long.class, TimeUnit::getHourCount),
-            Column.readonly("Minute count", Long.class, TimeUnit::getMinuteCount)
+            new Column<>("Name", String.class, TimeUnit::getName),
+            new Column<>("Hour count", Long.class, TimeUnit::getHourCount),
+            new Column<>("Minute count", Long.class, TimeUnit::getMinuteCount)
     );
 
     public TimeUnitTableModel(CrudService<TimeUnit> timeUnitCrudService) {
@@ -47,11 +47,6 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columns.get(columnIndex).getColumnType();
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).isEditable();
     }
 
     @Override

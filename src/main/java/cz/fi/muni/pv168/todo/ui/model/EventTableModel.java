@@ -18,13 +18,13 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
     private final CrudService<Event> eventCrudService;
 
     private final List<Column<Event, ?>> columns = List.of(
-            Column.readonly(" ", Color.class, Event::getColour),
-            Column.readonly("Name of the event", String.class, Event::getName),
-            Column.readonly("Start date and Time", LocalDateTime.class, Event::calculateStart),
-            Column.readonly("Category", Category.class, Event::getCategory),
-            Column.readonly("Status", Status.class, Event::getStatus),
-            Column.readonly("Duration (minutes)", String.class, this::getDuration)
-    );
+            new Column<>(" ", Color.class, Event::getColour),
+            new Column<>("Name of the event", String.class, Event::getName),
+            new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart),
+            new Column<>("Category", Category.class, Event::getCategory),
+            new Column<>("Status", Status.class, Event::getStatus),
+            new Column<>("Duration (minutes)", String.class, this::getDuration)
+            );
 
     private String getDuration(Event event) {
         return String.format("%d %s", event.getTimeUnitCount(), event.getTimeUnit().getName());
@@ -60,11 +60,6 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columns.get(columnIndex).getColumnType();
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).isEditable();
     }
 
     public void deleteRow(int rowIndex) {
