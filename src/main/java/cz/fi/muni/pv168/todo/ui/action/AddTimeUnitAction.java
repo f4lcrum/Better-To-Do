@@ -19,10 +19,10 @@ public class AddTimeUnitAction extends AbstractAction {
     private final MainWindow mainWindow;
 
     public AddTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
-        super("Add duration unit", Icons.ADD_ICON);
+        super("Add time unit", Icons.ADD_ICON);
         this.timeUnitTable = timeUnitTable;
         this.mainWindow = mainWindow;
-        putValue(SHORT_DESCRIPTION, "Adds new duration unit");
+        putValue(SHORT_DESCRIPTION, "Adds new time unit");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
         putValue(Action.SMALL_ICON, Icons.ADD_ICON);
