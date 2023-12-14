@@ -5,11 +5,8 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
-import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
-import cz.fi.muni.pv168.todo.business.service.crud.EventCrudService;
-import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
-import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.CrudServiceImplementation;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
@@ -63,7 +60,7 @@ public class CommonDependencyProvider implements DependencyProvider {
                 timeUnitDao,
                 timeUnitMapper
         );
-        this.timeUnitCrudService = new TimeUnitCrudService(this.timeUnitRepository, timeUnitValidator);
+        this.timeUnitCrudService = new CrudServiceImplementation<>(this.timeUnitRepository, timeUnitValidator, "TimeUnit");
 
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
         var categoryMapper = new CategoryMapper();
@@ -72,7 +69,7 @@ public class CommonDependencyProvider implements DependencyProvider {
                 categoryDao,
                 categoryMapper
         );
-        this.categoryCrudService = new CategoryCrudService(this.categoryRepository, categoryValidator);
+        this.categoryCrudService = new CrudServiceImplementation<>(this.categoryRepository, categoryValidator, "Category");
 
         var templateDao = new TemplateDao(transactionConnectionSupplier);
         var templateMapper = new TemplateMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
@@ -81,7 +78,7 @@ public class CommonDependencyProvider implements DependencyProvider {
                 templateDao,
                 templateMapper
         );
-        this.templateCrudService = new TemplateCrudService(this.templateRepository, templateValidator);
+        this.templateCrudService = new CrudServiceImplementation<>(this.templateRepository, templateValidator, "Template");
 
         var eventDao = new EventDao(transactionConnectionSupplier);
         var eventMapper = new EventMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
@@ -90,7 +87,7 @@ public class CommonDependencyProvider implements DependencyProvider {
                 eventDao,
                 eventMapper
         );
-        this.eventCrudService = new EventCrudService(this.eventRepository, eventValidator);
+        this.eventCrudService = new CrudServiceImplementation<>(this.eventRepository, eventValidator, "Event");
     }
 
     @Override
