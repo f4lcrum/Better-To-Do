@@ -40,6 +40,7 @@ public class AddTimeUnitAction extends AbstractAction {
     private TimeUnit createPrefilledTimeUnit() {
         return new TimeUnit(
                 UUID.randomUUID(),
+                false,
                 "Sprint",
                 14 * 24, // 14 days,
                 0

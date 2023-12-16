@@ -54,7 +54,7 @@ public final class AddTemplateAction extends AbstractAction {
                 "Restaurant",
                 new Category(UUID.randomUUID(), "Social", Color.BLACK),
                 LocalTime.now(),
-                new TimeUnit(UUID.randomUUID(), "CoffeeBreak", 0, 10),
+                new TimeUnit(UUID.randomUUID(), false, "CoffeeBreak", 0, 10),
                 5,
                 "Short description."
         );

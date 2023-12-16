@@ -14,6 +14,8 @@ public class Template implements Entity {
     @JsonProperty
     private final UUID id;
     @JsonProperty
+    private final boolean isDefault;
+    @JsonProperty
     private final String name;
     @JsonProperty
     private final String eventName;
@@ -30,6 +32,7 @@ public class Template implements Entity {
     public Template(UUID id, String name, String eventName, Category category,
                     LocalTime startTime, TimeUnit timeUnit, int duration, String description) {
         this.id = id;
+        this.isDefault = false;
         this.name = name;
         this.eventName = eventName;
         this.description = description;
@@ -46,6 +49,11 @@ public class Template implements Entity {
     @Override
     public UUID getGuid() {
         return this.id;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
     }
 
     public Color getColour() {
@@ -103,6 +111,7 @@ public class Template implements Entity {
     public static class TemplateBuilder {
 
         private UUID id;
+        private boolean isDefault;
         private String name;
         private String eventName;
         private String description;
@@ -117,6 +126,12 @@ public class Template implements Entity {
         @JsonProperty
         public TemplateBuilder id(UUID id) {
             this.id = id;
+            return this;
+        }
+
+        @JsonProperty
+        public TemplateBuilder isDefault(boolean isDefault) {
+            this.isDefault = isDefault;
             return this;
         }
 
@@ -167,7 +182,7 @@ public class Template implements Entity {
         }
 
         public String toString() {
-            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", eventName=" + this.eventName + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ")";
+            return "Template.TemplateBuilder(id=" + this.id + ", isDefault=" + this.isDefault + ", name=" + this.name + ", eventName=" + this.eventName + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ")";
         }
     }
 }
