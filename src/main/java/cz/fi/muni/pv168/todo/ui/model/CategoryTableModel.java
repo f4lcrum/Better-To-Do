@@ -15,7 +15,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
     private final CrudService<Category> categoryCrudService;
 
     private final List<Column<Category, ?>> columns = List.of(
-            new Column<>(" ", Color.class, Category::getColour),
+            new Column<>(" ", Color.class, Category::getColor),
             new Column<>("Name", String.class, Category::getName)
     );
 
