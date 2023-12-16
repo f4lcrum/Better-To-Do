@@ -11,7 +11,7 @@ VALUES
     ('e2e76751-b5be-4955-87e4-48f2403cd4ae', 'Family', 0, 255, 0);
 
 -- Insert data into TimeUnit table
-INSERT INTO "TimeUnit" ("id", "name", "hourCount", "minuteCount")
+INSERT INTO "TimeUnit" ("id", "name", "hours", "minutes")
 VALUES
     ('25aae21c-74f6-425d-8b52-b00cb6b34efb', 'Hours', 1, 0),
     ('0e587bc6-83a1-44ac-a911-0bfe0df998e4', 'Minutes', 0, 1),

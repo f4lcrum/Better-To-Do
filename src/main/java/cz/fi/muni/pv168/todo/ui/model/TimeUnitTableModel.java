@@ -14,8 +14,8 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
 
     private final List<Column<TimeUnit, ?>> columns = List.of(
             new Column<>("Name", String.class, TimeUnit::getName),
-            new Column<>("Hour count", Long.class, TimeUnit::getHourCount),
-            new Column<>("Minute count", Long.class, TimeUnit::getMinuteCount)
+            new Column<>("Hour count", Long.class, TimeUnit::getHours),
+            new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
     );
 
     public TimeUnitTableModel(CrudService<TimeUnit> timeUnitCrudService) {

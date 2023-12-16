@@ -17,8 +17,8 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
         return new TimeUnit(
                 UUID.fromString(entity.id()),
                 entity.name(),
-                entity.hourCount(),
-                entity.minuteCount()
+                entity.hours(),
+                entity.minutes()
         );
     }
 
@@ -27,8 +27,8 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
         return new TimeUnitEntity(
                 entity.getGuid().toString(),
                 entity.getName(),
-                entity.getHourCount(),
-                entity.getMinuteCount()
+                entity.getHours(),
+                entity.getMinutes()
         );
     }
 
@@ -37,8 +37,8 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
         return new TimeUnitEntity(
                 dbId,
                 entity.getName(),
-                entity.getHourCount(),
-                entity.getMinuteCount()
+                entity.getHours(),
+                entity.getMinutes()
         );
     }
 }
