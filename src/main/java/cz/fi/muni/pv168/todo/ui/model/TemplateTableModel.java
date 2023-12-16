@@ -23,7 +23,7 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
     );
 
     private String getDuration(Template template) {
-        return String.format("%d %s", template.getTimeUnitCount(), template.getTimeUnit().getName());
+        return String.format("%d %s", template.getDuration(), template.getTimeUnit().getName());
     }
 
     public TemplateTableModel(CrudService<Template> templateCrudService) {

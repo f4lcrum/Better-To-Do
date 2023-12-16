@@ -3,7 +3,6 @@ package cz.fi.muni.pv168.todo.ui.model;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
@@ -27,7 +26,7 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
     );
 
     private String getDuration(Event event) {
-        return String.format("%d %s", event.getTimeUnitCount(), event.getTimeUnit().getName());
+        return String.format("%d %s", event.getDuration(), event.getTimeUnit().getName());
     }
 
     public EventTableModel(CrudService<Event> eventCrudService) {

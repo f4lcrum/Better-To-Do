@@ -53,7 +53,7 @@ public final class TemplateDialog extends EntityDialog<Template> {
     private void setValues() {
         nameField.setText(template.getName());
         eventNameField.setText(template.getEventName());
-        duration.setText(Long.toString(template.getTimeUnitCount()));
+        duration.setText(Long.toString(template.getDuration()));
         description.setText(template.getDescription());
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());
@@ -71,8 +71,8 @@ public final class TemplateDialog extends EntityDialog<Template> {
         add("Name of event", eventNameField, true);
         add("Category", categoryComboBox, false);
         addTime("Start time: ", hourField, minuteField);
+        add("Duration", duration, true);
         add("Time unit", timeUnitComboBox, true);
-        add("Time unit count", duration, true);
         description.setLineWrap(true);
         JScrollPane descriptionPane = new JScrollPane(description);
         addDescription("Description", descriptionPane);
