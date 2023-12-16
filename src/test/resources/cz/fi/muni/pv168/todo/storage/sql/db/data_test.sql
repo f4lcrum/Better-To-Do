@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS "TimeUnit"
 (
     `id`           CHAR(36) PRIMARY KEY,
     `name`         VARCHAR(128) NOT NULL,
-    `hourCount`    INT NOT NULL,
-    `minuteCount`  INT NOT NULL
+    `hours`    INT NOT NULL,
+    `minutes`  INT NOT NULL
 );
 
 --

@@ -73,8 +73,8 @@ public class Template implements Entity {
     }
 
     public LocalTime getEndTime() {
-        var hours = timeUnit.getHourCount() * timeUnitCount;
-        var minutes = timeUnit.getMinuteCount() * timeUnitCount;
+        var hours = timeUnit.getHours() * timeUnitCount;
+        var minutes = timeUnit.getMinutes() * timeUnitCount;
         return this.startTime.plusHours(hours).plusMinutes(minutes);
     }
 
