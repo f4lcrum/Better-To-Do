@@ -60,6 +60,9 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
 
     public void deleteRow(int rowIndex) {
         var timeUnitToBeDeleted = getEntity(rowIndex);
+        if (timeUnitToBeDeleted.isDefault()) {
+            return;
+        }
         timeUnitCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid());
         timeUnits.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
@@ -74,6 +77,9 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     }
 
     public void updateRow(TimeUnit timeUnit) {
+        if (timeUnit.isDefault()) {
+            return;
+        }
         timeUnitCrudService.update(timeUnit)
                 .intoException();
         int rowIndex = timeUnits.indexOf(timeUnit);
