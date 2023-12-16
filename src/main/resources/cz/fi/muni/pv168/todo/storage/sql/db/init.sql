@@ -5,7 +5,13 @@ CREATE TABLE IF NOT EXISTS "Category"
 (
     `id`            CHAR(36) PRIMARY KEY,
     `name`          VARCHAR(128) NOT NULL,
+<<<<<<< HEAD
     `color`         INT NOT NULL
+=======
+    `r`             SMALLINT NOT NULL,
+    `g`             SMALLINT NOT NULL,
+    `b`             SMALLINT NOT NULL
+>>>>>>> 4856d30 (fix: timeUnitCount -> duration)
 );
 
 --
