@@ -52,7 +52,7 @@ public final class EventDialog extends EntityDialog<Event> {
 
     private void setValues() {
         nameField.setText(event.getName());
-        duration.setText(String.valueOf(event.getTimeUnitCount()));
+        duration.setText(String.valueOf(event.getDuration()));
         description.setText(event.getDescription());
         categoryModel.setSelectedItem(event.getCategory());
         dateModel.setValue(event.getDate());
@@ -100,6 +100,6 @@ public final class EventDialog extends EntityDialog<Event> {
         minuteField.setText(Integer.toString(template.getStartTime().getMinute()));
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());
-        duration.setText(Integer.toString(template.getTimeUnitCount()));
+        duration.setText(Integer.toString(template.getDuration()));
     }
 }

@@ -14,7 +14,7 @@ public record EventEntity(String id,
                           LocalDate date,
                           LocalTime startTime,
                           String timeUnitId,
-                          int timeUnitCount,
+                          int duration,
                           String description) {
     public EventEntity(
             String id,
@@ -23,7 +23,7 @@ public record EventEntity(String id,
             LocalDate date,
             LocalTime startTime,
             String timeUnitId,
-            int timeUnitCount,
+            int duration,
             String description) {
         this.id = id;
         this.name = Objects.requireNonNull(name, "guid must not be null");
@@ -31,7 +31,7 @@ public record EventEntity(String id,
         this.date = Objects.requireNonNull(date, "date must not be null");
         this.startTime = Objects.requireNonNull(startTime, "start time must not be null");
         this.timeUnitId = timeUnitId;
-        this.timeUnitCount = timeUnitCount;
+        this.duration = duration;
         this.description = description;
     }
 
@@ -41,8 +41,8 @@ public record EventEntity(String id,
             LocalDate date,
             LocalTime startTime,
             String timeUnitId,
-            int timeUnitCount,
+            int duration,
             String description) {
-        this(null, name, categoryId, date, startTime, timeUnitId, timeUnitCount, description);
+        this(null, name, categoryId, date, startTime, timeUnitId, duration, description);
     }
 }

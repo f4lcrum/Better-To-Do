@@ -43,7 +43,7 @@ public final class TemplateDialog extends EntityDialog<Template> {
     private void setValues() {
         nameField.setText(template.getName());
         eventNameField.setText(template.getEventName());
-        duration.setText(Long.toString(template.getTimeUnitCount()));
+        duration.setText(Long.toString(template.getDuration()));
         description.setText(template.getDescription());
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());

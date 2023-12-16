@@ -34,7 +34,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                     eventName,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startTime,
                     description
                 )
@@ -49,7 +49,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(3, newTemplate.eventName());
             statement.setString(4, newTemplate.categoryId());
             statement.setString(5, newTemplate.timeUnitId());
-            statement.setInt(6, newTemplate.timeUnitCount());
+            statement.setInt(6, newTemplate.duration());
             statement.setTime(7, Time.valueOf(newTemplate.startTime()));
             statement.setString(8, newTemplate.description());
             statement.executeUpdate();
@@ -83,7 +83,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                     eventName,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startTime,
                     description
                 FROM Template
@@ -115,7 +115,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                     eventName,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startTime,
                     description
                 FROM Template
@@ -146,7 +146,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                     eventName = ?,
                     category = ?,
                     timeUnit = ?,
-                    timeUnitCount = ?,
+                    duration = ?,
                     startTime = ?,
                     description = ?
                 WHERE id = ?
@@ -159,7 +159,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(2, entity.eventName());
             statement.setString(3, entity.categoryId());
             statement.setString(4, entity.timeUnitId());
-            statement.setInt(5, entity.timeUnitCount());
+            statement.setInt(5, entity.duration());
             statement.setTime(6, Time.valueOf(entity.startTime()));
             statement.setString(7, entity.description());
             statement.setString(8, entity.id());
@@ -242,7 +242,7 @@ public final class TemplateDao implements DataAccessObject<TemplateEntity> {
                 resultSet.getString("category"),
                 resultSet.getTimestamp("startTime").toLocalDateTime().toLocalTime(),
                 resultSet.getString("timeUnit"),
-                resultSet.getInt("timeUnitCount"),
+                resultSet.getInt("duration"),
                 resultSet.getString("description")
         );
     }

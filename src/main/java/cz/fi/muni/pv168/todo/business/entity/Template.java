@@ -23,12 +23,12 @@ public class Template implements Entity {
     private final LocalTime startTime;
     private final TimeUnit timeUnit;
     @JsonProperty
-    private final int timeUnitCount;
+    private final int duration;
     @JsonProperty
     private final String description;
 
     public Template(UUID id, String name, String eventName, Category category,
-                    LocalTime startTime, TimeUnit timeUnit, int timeUnitCount, String description) {
+                    LocalTime startTime, TimeUnit timeUnit, int duration, String description) {
         this.id = id;
         this.name = name;
         this.eventName = eventName;
@@ -36,7 +36,7 @@ public class Template implements Entity {
         this.category = category;
         this.startTime = startTime;
         this.timeUnit = timeUnit;
-        this.timeUnitCount = timeUnitCount;
+        this.duration = duration;
     }
 
     public static TemplateBuilder builder() {
@@ -73,8 +73,8 @@ public class Template implements Entity {
     }
 
     public LocalTime getEndTime() {
-        var hours = timeUnit.getHours() * timeUnitCount;
-        var minutes = timeUnit.getMinutes() * timeUnitCount;
+        var hours = timeUnit.getHours() * duration;
+        var minutes = timeUnit.getMinutes() * duration;
         return this.startTime.plusHours(hours).plusMinutes(minutes);
     }
 
@@ -82,8 +82,8 @@ public class Template implements Entity {
         return timeUnit;
     }
 
-    public int getTimeUnitCount() {
-        return timeUnitCount;
+    public int getDuration() {
+        return duration;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Template implements Entity {
         private Category category;
         private LocalTime startTime;
         private TimeUnit timeUnit;
-        private int timeUnitCount;
+        private int duration;
 
         TemplateBuilder() {
         }
@@ -157,17 +157,17 @@ public class Template implements Entity {
         }
 
         @JsonProperty
-        public TemplateBuilder timeUnitCount(int timeUnitCount) {
-            this.timeUnitCount = timeUnitCount;
+        public TemplateBuilder duration(int duration) {
+            this.duration = duration;
             return this;
         }
 
         public Template build() {
-            return new Template(this.id, this.name, this.eventName, this.category, this.startTime, this.timeUnit, this.timeUnitCount, this.description);
+            return new Template(this.id, this.name, this.eventName, this.category, this.startTime, this.timeUnit, this.duration, this.description);
         }
 
         public String toString() {
-            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", eventName=" + this.eventName + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + ", timeUnit=" + this.timeUnit + ", timeUnitCount=" + this.timeUnitCount + ")";
+            return "Template.TemplateBuilder(id=" + this.id + ", name=" + this.name + ", eventName=" + this.eventName + ", description=" + this.description + ", category=" + this.category + ", startTime=" + this.startTime + ", endTime=" + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ")";
         }
     }
 }
