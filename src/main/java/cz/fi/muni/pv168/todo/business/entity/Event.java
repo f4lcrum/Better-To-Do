@@ -67,7 +67,7 @@ public class Event implements Entity {
     }
 
     public Color getColour() {
-        return this.category.getColour();
+        return this.category.getColor();
     }
 
     public String getName() {

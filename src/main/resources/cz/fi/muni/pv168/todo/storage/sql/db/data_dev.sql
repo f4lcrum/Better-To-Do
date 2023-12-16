@@ -4,11 +4,11 @@
 -- DROP TABLE TimeUnit;
 
 -- Insert data into Category table
-INSERT INTO "Category" ("id", "name", "r", "g", "b")
+INSERT INTO "Category" ("id", "name", "color")
 VALUES
-    ('158d4716-eec2-4e03-bc4c-450e31d5d38a', 'Work', 255, 0, 0),
-    ('d6b0d956-bbf4-4641-afdf-63c9b4127201', 'Personal', 0, 128, 255),
-    ('e2e76751-b5be-4955-87e4-48f2403cd4ae', 'Family', 0, 255, 0);
+    ('158d4716-eec2-4e03-bc4c-450e31d5d38a', 'Work', -65536),
+    ('d6b0d956-bbf4-4641-afdf-63c9b4127201', 'Personal', -16711936),
+    ('e2e76751-b5be-4955-87e4-48f2403cd4ae', 'Family', -16776961);
 
 -- Insert data into TimeUnit table
 INSERT INTO "TimeUnit" ("id", "name", "hours", "minutes")

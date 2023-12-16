@@ -23,7 +23,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
     @Override
     public CategoryEntity create(CategoryEntity newCategory) {
-        var sql = "INSERT INTO Category (id, name, r, g, b) VALUES (?, ?, ?, ?, ?);";
+        var sql = "INSERT INTO Category (id, name, color) VALUES (?, ?, ?);";
 
         try (
                 var connection = connections.get();
@@ -31,9 +31,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         ) {
             statement.setString(1, newCategory.id());
             statement.setString(2, newCategory.name());
-            statement.setInt(3, newCategory.r());
-            statement.setInt(4, newCategory.g());
-            statement.setInt(5, newCategory.b());
+            statement.setInt(3, newCategory.color());
             statement.executeUpdate();
 
             try (ResultSet keyResultSet = statement.getGeneratedKeys()) {
@@ -60,9 +58,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 SELECT id,
                        name,
-                       r,
-                       g,
-                       b
+                       color
                 FROM Category
                 """;
         try (
@@ -89,9 +85,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 SELECT id,
                        name,
-                       r,
-                       g,
-                       b
+                       color
                 FROM Category
                 WHERE id = ?
                 """;
@@ -114,9 +108,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 UPDATE Category
                 SET name = ?,
-                    r = ?,
-                    g = ?,
-                    b = ?
+                    color = ?,
                 WHERE id = ?
                 """;
 
@@ -125,10 +117,8 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, categoryEntity.name());
-            statement.setInt(2, categoryEntity.r());
-            statement.setInt(3, categoryEntity.g());
-            statement.setInt(4, categoryEntity.b());
-            statement.setString(5, categoryEntity.id());
+            statement.setInt(2, categoryEntity.color());
+            statement.setString(3, categoryEntity.id());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Category not found, id: " + categoryEntity.id());
@@ -201,9 +191,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         return new CategoryEntity(
                 resultSet.getString("id"),
                 resultSet.getString("name"),
-                resultSet.getInt("r"),
-                resultSet.getInt("g"),
-                resultSet.getInt("b")
+                resultSet.getInt("color")
         );
     }
 }
