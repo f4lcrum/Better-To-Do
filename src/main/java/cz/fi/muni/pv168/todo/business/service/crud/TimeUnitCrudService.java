@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
-public class TimeUnitCrudService extends CrudServiceImplementation<TimeUnit> {
+public class TimeUnitCrudService extends CrudServiceImpl<TimeUnit> {
 
     public TimeUnitCrudService(Repository<TimeUnit> repository, Validator<TimeUnit> validator) {
         super(repository, validator);

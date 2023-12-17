@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
-public class CategoryCrudService extends CrudServiceImplementation<Category> {
+public class CategoryCrudService extends CrudServiceImpl<Category> {
 
     public CategoryCrudService(Repository<Category> repository, Validator<Category> validator) {
         super(repository, validator);

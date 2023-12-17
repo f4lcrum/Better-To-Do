@@ -5,7 +5,7 @@ import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
-public class EventCrudService extends CrudServiceImplementation<Event> {
+public class EventCrudService extends CrudServiceImpl<Event> {
 
     public EventCrudService(Repository<Event> repository, Validator<Event> validator) {
         super(repository, validator);

@@ -8,12 +8,12 @@ import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class CrudServiceImplementation<T extends Entity> implements CrudService<T> {
+public abstract class CrudServiceImpl<T extends Entity> implements CrudService<T> {
 
     protected final Repository<T> repository;
     protected final Validator<T> validator;
 
-    public CrudServiceImplementation(Repository<T> repository, Validator<T> validator) {
+    public CrudServiceImpl(Repository<T> repository, Validator<T> validator) {
         this.repository = repository;
         this.validator = validator;
     }
