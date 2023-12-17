@@ -2,14 +2,14 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
 import javax.swing.JColorChooser;
-import javax.swing.JTextField;
 import java.awt.Color;
 
 public final class CategoryDialog extends EntityDialog<Category> {
 
-    private final JTextField nameField = new JTextField();
+    private final PlaceholderTextField nameField = new PlaceholderTextField();
     private final JColorChooser color = new JColorChooser(Color.BLACK);
 
     private final Category category;
@@ -20,11 +20,6 @@ public final class CategoryDialog extends EntityDialog<Category> {
         if (edit) {
             setValues();
         }
-        setHints();
-    }
-
-    private void setHints() {
-        new TextPrompt("School", nameField);
     }
 
     private void setValues() {
@@ -32,8 +27,8 @@ public final class CategoryDialog extends EntityDialog<Category> {
     }
 
     private void addFields() {
-        add("Name of category: ", nameField, true);
-        add("Color: ", color, true);
+        add("Name of category: ", "School", nameField);
+        addMandatory("Color: ", color);
     }
 
     @Override
