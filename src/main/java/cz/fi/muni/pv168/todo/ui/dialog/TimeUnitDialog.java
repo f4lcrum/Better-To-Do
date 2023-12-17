@@ -1,14 +1,13 @@
 package cz.fi.muni.pv168.todo.ui.dialog;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-
-import javax.swing.JTextField;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
 public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
-    private final JTextField nameField = new JTextField();
-    private final JTextField hourField = new JTextField();
-    private final JTextField minuteField = new JTextField();
+    private final PlaceholderTextField nameField = new PlaceholderTextField();
+    private final PlaceholderTextField hourField = new PlaceholderTextField();
+    private final PlaceholderTextField minuteField = new PlaceholderTextField();
 
     private final TimeUnit timeUnit;
 
@@ -18,13 +17,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         if (edit) {
             setDialogValues();
         }
-        setHints();
-    }
-
-    private void setHints() {
-        new TextPrompt("Sprint", nameField);
-        new TextPrompt("4", hourField);
-        new TextPrompt("30", minuteField);
     }
 
     private void setDialogValues() {
@@ -34,9 +26,9 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     }
 
     private void addDialogFields() {
-        add("Name of the unit", nameField, true);
-        add("Hours unit represents", hourField, true);
-        add("Minutes unit represents", minuteField, true);
+        add("Name of the unit", "Sprint", nameField);
+        add("Hours unit represents", "4", hourField);
+        add("Minutes unit represents", "30", minuteField);
     }
 
 
