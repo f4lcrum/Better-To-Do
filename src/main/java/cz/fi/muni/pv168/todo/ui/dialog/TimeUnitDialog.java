@@ -3,6 +3,10 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import java.util.Objects;
+import javax.swing.JTextField;
+
 public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     private final PlaceholderTextField nameField = new PlaceholderTextField();
@@ -11,7 +15,8 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     private final TimeUnit timeUnit;
 
-    public TimeUnitDialog(TimeUnit timeUnit, boolean edit) {
+    public TimeUnitDialog(TimeUnit timeUnit, boolean edit, Validator<TimeUnit> entityValidator) {
+        super(Objects.requireNonNull(entityValidator));
         this.timeUnit = timeUnit;
         if (edit) {
             setDialogValues();
@@ -29,6 +34,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         add("Name of the unit", "Sprint", nameField);
         add("Hours unit represents", "4", hourField);
         add("Minutes unit represents", "30", minuteField);
+        addErrorPanel();
     }
 
 

@@ -6,12 +6,14 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListener;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.model.LocalDateModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TemplateRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
+import java.util.Objects;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
@@ -39,7 +41,8 @@ public final class EventDialog extends EntityDialog<Event> {
     private final Event event;
 
     public EventDialog(Event event, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
-                       ListModel<Template> templateListModel, boolean edit) {
+                       ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator) {
+        super(Objects.requireNonNull(entityValidator));
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
@@ -78,6 +81,7 @@ public final class EventDialog extends EntityDialog<Event> {
         addMandatory("Time unit", timeUnitComboBox);
         add("Time unit count", "5", duration);;
         addDescription("Description", "A weekend party at John's place.", description);
+        addErrorPanel();
     }
 
     @Override
