@@ -51,5 +51,4 @@ public class FilterPanel<L extends Enum<L>, R> {
                 .setFilter(eventTableFilter::filterCategory)
                 .build();
     }
-
 }
