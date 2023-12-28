@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
@@ -65,7 +66,35 @@ public final class TemplateDialog extends EntityDialog<Template> {
         add("Name of event", "Annual doctor's visit", eventNameField);
         addOptional("Category", categoryComboBox);
         addTime("Start time: ", hourField, minuteField);
+        add("Time unit count", "5", duration);
+        addMandatory("Time unit", timeUnitComboBox);
+        addDescription("Description", "Template for creating various doctor's appointments", description);
         addErrorPanel();
+    }
+
+    @Override
+    ValidationResult isValid() {
+        var result = new ValidationResult();
+
+        try {
+            Integer.parseInt(hourField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into hours field");
+        }
+
+        try {
+            Integer.parseInt(minuteField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        try {
+            Integer.parseInt(duration.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into time unit count field");
+        }
+
+        return result;
     }
 
     @Override

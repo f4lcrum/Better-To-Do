@@ -6,6 +6,7 @@ import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderLabel;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import java.util.List;
 import java.util.Objects;
@@ -76,6 +77,7 @@ abstract class EntityDialog<E> {
     }
 
     abstract E getEntity();
+    abstract ValidationResult isValid();
 
     private void showErrorMessages(List<String> messages) {
         errors.removeAll();
@@ -93,15 +95,21 @@ abstract class EntityDialog<E> {
         int result = JOptionPane.showOptionDialog(parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
 
         while (result == OK_OPTION) {
-            var entity = getEntity();
-            var validation = entityValidator.validate(entity);
+            var validateFields = isValid();
+            if (validateFields.isValid()) {
+                var entity = getEntity();
+                var validation = entityValidator.validate(entity);
 
-            if (validation.isValid()) {
-                return Optional.of(entity);
+                if (validation.isValid()) {
+                    return Optional.of(entity);
+                }
+
+                showErrorMessages(validation.getValidationErrors());
+                result = showOptionDialog(parentComponent, title);
+            } else {
+                showErrorMessages(validateFields.getValidationErrors());
+                result = showOptionDialog(parentComponent, title);
             }
-
-            showErrorMessages(validation.getValidationErrors());
-            result = showOptionDialog(parentComponent, title);
         }
 
         return Optional.empty();

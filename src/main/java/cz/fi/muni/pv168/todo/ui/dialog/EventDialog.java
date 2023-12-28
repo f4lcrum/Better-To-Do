@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListener;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
@@ -82,6 +83,31 @@ public final class EventDialog extends EntityDialog<Event> {
         add("Time unit count", "5", duration);;
         addDescription("Description", "A weekend party at John's place.", description);
         addErrorPanel();
+    }
+
+    @Override
+    ValidationResult isValid() {
+        var result = new ValidationResult();
+
+        try {
+            Integer.parseInt(hourField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into hours field");
+        }
+
+        try {
+            Integer.parseInt(minuteField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        try {
+            Integer.parseInt(duration.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into time unit count field");
+        }
+
+        return result;
     }
 
     @Override

@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import java.util.Objects;
 import javax.swing.JTextField;
@@ -37,6 +38,24 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         addErrorPanel();
     }
 
+    @Override
+    ValidationResult isValid() {
+        var result = new ValidationResult();
+
+        try {
+            Long.parseLong(hourField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into hours field");
+        }
+
+        try {
+            Long.parseLong(minuteField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        return result;
+    }
 
     @Override
     public TimeUnit getEntity() {

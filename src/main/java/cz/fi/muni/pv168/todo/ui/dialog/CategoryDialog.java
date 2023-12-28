@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import java.util.Objects;
 import javax.swing.JColorChooser;
@@ -34,6 +35,11 @@ public final class CategoryDialog extends EntityDialog<Category> {
         add("Name of category: ", "School", nameField);
         addMandatory("Color: ", color);
         addErrorPanel();
+    }
+
+    @Override
+    ValidationResult isValid() {
+        return new ValidationResult();
     }
 
     @Override
