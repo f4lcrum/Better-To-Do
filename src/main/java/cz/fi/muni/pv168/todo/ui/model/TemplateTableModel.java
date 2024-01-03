@@ -16,14 +16,14 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
     private final CrudService<Template> templateCrudService;
 
     private final List<Column<Template, ?>> columns = List.of(
-            Column.readonly(" ", Color.class, Template::getColour),
-            Column.readonly("Template name", String.class, Template::getName),
-            Column.readonly("Category", Category.class, Template::getCategory),
-            Column.readonly("Duration", String.class, this::getDuration)
+            new Column<>(" ", Color.class, Template::getColour),
+            new Column<>("Template name", String.class, Template::getName),
+            new Column<>("Category", Category.class, Template::getCategory),
+            new Column<>("Duration", String.class, this::getDuration)
     );
 
     private String getDuration(Template template) {
-        return String.format("%d %s", template.getTimeUnitCount(), template.getTimeUnit().getName());
+        return String.format("%d %s", template.getDuration(), template.getTimeUnit().getName());
     }
 
     public TemplateTableModel(CrudService<Template> templateCrudService) {
@@ -55,11 +55,6 @@ public class TemplateTableModel extends AbstractTableModel implements EntityTabl
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columns.get(columnIndex).getColumnType();
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).isEditable();
     }
 
     @Override
