@@ -18,6 +18,7 @@ public class PlaceholderTextField extends JTextField {
     public void setPlaceholder(PlaceholderLabel label) {
         placeholder = label;
         add(label);
+        placeholder.setVisible(getText().isEmpty());
     }
 
     private class PlaceholderFocusListener implements FocusListener {

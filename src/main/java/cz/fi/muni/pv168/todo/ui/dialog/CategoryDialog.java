@@ -16,10 +16,10 @@ public final class CategoryDialog extends EntityDialog<Category> {
 
     public CategoryDialog(Category category, boolean edit) {
         this.category = category;
-        addFields();
         if (edit) {
             setValues();
         }
+        addFields();
     }
 
     private void setValues() {
