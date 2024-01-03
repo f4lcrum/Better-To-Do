@@ -92,7 +92,6 @@ public class MainWindow {
     private final StatisticsPanel statistics;
 
     public MainWindow(DependencyProvider dependencyProvider) {
-        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService());
 
         this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
         this.eventTablePanel = new EventTablePanel(eventTableModel);
@@ -105,6 +104,7 @@ public class MainWindow {
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
+        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
         this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService(), this.statistics);
         this.eventValidator = dependencyProvider.getEventValidator();
         this.categoryValidator = dependencyProvider.getCategoryValidator();

@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.panels;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.ui.MainWindow;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 
+// TODO: muzu si sem dat event table model/main window s metodou getEvents
 public class StatisticsPanel extends JPanel {
     CrudService<Event> eventCrudService;
     JPanel leftPanel;
@@ -27,7 +29,10 @@ public class StatisticsPanel extends JPanel {
     JLabel todayEventCount = new JLabel("0");
     JLabel todayEventDuration = new JLabel("0");
     JLabel doneCount = new JLabel("0");
-    public StatisticsPanel(CrudService<Event> eventCrudService) {
+    private final MainWindow mainWindow;
+
+    public StatisticsPanel(CrudService<Event> eventCrudService, MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
         setLayout(new BorderLayout());
         this.leftPanel = new JPanel(new MigLayout("wrap 3"));
         this.rightPanel = new JPanel(new MigLayout("wrap 2"));
@@ -80,8 +85,8 @@ public class StatisticsPanel extends JPanel {
         int todayCount = todayEvents.size();
         long todayDuration = getEventListDuration(todayEvents);
 
-        int filteredCount = 0;
-        int filteredDuration = 6200;
+        int filteredCount = this.mainWindow.getEventTableModel().getRowCount();
+        long filteredDuration = getEventListDuration(this.mainWindow.getEventTableModel().getEvents());
 
         Map<Status, List<Event>> sortedByStatus = sortByStatus(events);
 
