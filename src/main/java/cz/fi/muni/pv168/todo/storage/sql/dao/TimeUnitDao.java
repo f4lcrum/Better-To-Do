@@ -26,19 +26,21 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         var sql = """
                 INSERT INTO TimeUnit(
                     id,
+                    isDefault,
                     name,
                     hours,
                     minutes
                 )
-                VALUES (?, ?, ?, ?);
+                VALUES (?, ?, ?, ?, ?);
                 """;
         try (var connection = connections.get();
              var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, newTimeUnit.id());
-            statement.setString(2, newTimeUnit.name());
-            statement.setLong(3, newTimeUnit.hours());
-            statement.setLong(4, newTimeUnit.minutes());
+            statement.setBoolean(2, newTimeUnit.isDefault());
+            statement.setString(3, newTimeUnit.name());
+            statement.setLong(4, newTimeUnit.hours());
+            statement.setLong(5, newTimeUnit.minutes());
 
             statement.executeUpdate();
 
@@ -67,6 +69,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     public Collection<TimeUnitEntity> findAll() {
         var sql = """
                 SELECT id,
+                       isDefault,
                        name,
                        hours,
                        minutes
@@ -95,6 +98,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     public Optional<TimeUnitEntity> findById(UUID id) {
         var sql = """
                 SELECT id,
+                       isDefault,
                        name,
                        hours,
                        minutes
@@ -122,6 +126,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         var sql = """
                 UPDATE TimeUnit
                 SET name = ?,
+                    isDefault = ?,
                     hours = ?,
                     minutes = ?
                 WHERE id = ?
@@ -130,9 +135,10 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
              var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, entity.name());
-            statement.setLong(2, entity.hours());
-            statement.setLong(3, entity.minutes());
-            statement.setString(4, entity.id());
+            statement.setBoolean(2, entity.isDefault());
+            statement.setLong(3, entity.hours());
+            statement.setLong(4, entity.minutes());
+            statement.setString(5, entity.id());
 
             var rowsUpdatedCount = statement.executeUpdate();
 
@@ -211,6 +217,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     private static TimeUnitEntity timeUnitFromResultSet(ResultSet resultSet) throws SQLException {
         return new TimeUnitEntity(
                 resultSet.getString("id"),
+                resultSet.getBoolean("isDefault"),
                 resultSet.getString("name"),
                 resultSet.getLong("hours"),
                 resultSet.getLong("minutes")

@@ -11,6 +11,9 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     private final UUID id;
 
     @JsonProperty
+    private final boolean isDefault;
+
+    @JsonProperty
     private final String name;
 
     @JsonProperty
@@ -19,8 +22,9 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     @JsonProperty
     private final long minutes;
 
-    public TimeUnit(UUID id, String name, long hours, long minutes) {
+    public TimeUnit(UUID id, boolean isDefault, String name, long hours, long minutes) {
         this.id = id;
+        this.isDefault = isDefault;
         this.name = name;
         this.hours = hours;
         this.minutes = minutes;
@@ -37,6 +41,11 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     @Override
     public UUID getGuid() {
         return id;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
     }
 
     public String getName() {

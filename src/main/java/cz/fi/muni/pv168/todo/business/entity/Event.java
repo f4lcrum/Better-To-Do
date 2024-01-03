@@ -16,7 +16,8 @@ public class Event implements Entity {
 
     @JsonProperty
     private final UUID id;
-
+    @JsonProperty
+    private final boolean isDefault;
     @JsonProperty
     private final String name;
 
@@ -40,6 +41,7 @@ public class Event implements Entity {
 
     public Event(UUID id, String name, Category category, LocalDate date, LocalTime startTime, TimeUnit timeUnit, int duration, String description) {
         this.id = id;
+        this.isDefault = false;
         this.name = name;
         this.category = category;
         this.date = date;
@@ -64,6 +66,11 @@ public class Event implements Entity {
     @Override
     public UUID getGuid() {
         return this.id;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
     }
 
     public Color getColour() {
@@ -133,6 +140,7 @@ public class Event implements Entity {
     public static class EventBuilder {
 
         private UUID id;
+        private boolean isDefault;
         private UUID userId;
         private String name;
         private Category category;
@@ -148,6 +156,12 @@ public class Event implements Entity {
         @JsonProperty
         public EventBuilder id(UUID id) {
             this.id = id;
+            return this;
+        }
+
+        @JsonProperty
+        public EventBuilder isDefault(boolean isDefault) {
+            this.isDefault = isDefault;
             return this;
         }
 
@@ -204,7 +218,7 @@ public class Event implements Entity {
         }
 
         public String toString() {
-            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ", description=" + this.description + ")";
+            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", isDefault=" + this.isDefault + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ", description=" + this.description + ")";
         }
     }
 }

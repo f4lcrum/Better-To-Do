@@ -38,6 +38,9 @@ public class EditTimeUnitAction extends AbstractAction {
         var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
         int modelRow = timeUnitTable.convertRowIndexToModel(selectedRows[0]);
         var timeUnit = timeUnitTableModel.getEntity(modelRow);
+        if (timeUnit.isDefault()) {
+            return;
+        }
         var dialog = new TimeUnitDialog(timeUnit, true);
         dialog.show(timeUnitTable, "Edit time unit")
                 .ifPresent(timeUnitTableModel::updateRow);

@@ -14,12 +14,15 @@ public class Category implements Entity {
     @JsonProperty
     private final UUID id;
     @JsonProperty
+    private final boolean isDefault;
+    @JsonProperty
     private final String name;
     @JsonProperty
     private final Color color;
 
     public Category(UUID id, String name, Color color) {
         this.id = id;
+        this.isDefault = false;
         this.name = name;
         this.color = color;
     }
@@ -31,6 +34,11 @@ public class Category implements Entity {
     @Override
     public UUID getGuid() {
         return this.id;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
     }
 
     @Override
@@ -67,6 +75,7 @@ public class Category implements Entity {
     @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
     public static class CategoryBuilder {
         private UUID id;
+        private boolean isDefault;
         private String name;
         private Color color;
 
@@ -76,6 +85,12 @@ public class Category implements Entity {
         @JsonProperty
         public CategoryBuilder id(UUID id) {
             this.id = id;
+            return this;
+        }
+
+        @JsonProperty
+        public CategoryBuilder isDefault(boolean isDefault) {
+            this.isDefault = isDefault;
             return this;
         }
 
@@ -96,7 +111,7 @@ public class Category implements Entity {
         }
 
         public String toString() {
-            return "Category.CategoryBuilder(id=" + this.id + ", name=" + this.name + ", colour=" + this.color + ")";
+            return "Category.CategoryBuilder(id=" + this.id + ", isDefault=" + this.isDefault + ", name=" + this.name + ", colour=" + this.color + ")";
         }
     }
 }

@@ -48,7 +48,7 @@ public final class TestDataGenerator {
         LocalDate eventStart = createRandomDate();
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
+        TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
         return new Event(UUID.randomUUID(), name, category, eventStart, startDateTime.toLocalTime(), timeUnit, RAND_GEN.nextInt(5), description);
     }
 
@@ -70,7 +70,7 @@ public final class TestDataGenerator {
         LocalDate eventStart = createRandomDate();
         LocalDateTime startDateTime = eventStart.atTime(RAND_GEN.nextInt(23), RAND_GEN.nextInt(59));
         LocalDateTime endDateTime = startDateTime.plusMinutes(RAND_GEN.nextInt(120));
-        TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
+        TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "Default", RAND_GEN.nextInt(5), RAND_GEN.nextInt(60));
         return new Template(UUID.randomUUID(), name, name, category, startDateTime.toLocalTime(), timeUnit, RAND_GEN.nextInt(5), description);
     }
 

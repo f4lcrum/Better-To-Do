@@ -7,4 +7,7 @@ import java.util.UUID;
 public interface Entity {
     @JsonIgnore
     UUID getGuid();
+
+    @JsonIgnore
+    boolean isDefault();
 }
