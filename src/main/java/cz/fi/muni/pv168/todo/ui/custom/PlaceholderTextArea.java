@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.custom;
 
 import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -13,6 +15,7 @@ public class PlaceholderTextArea extends JTextArea {
         super();
         setLayout(new BorderLayout());
         addFocusListener(new PlaceholderFocusListener());
+        getDocument().addDocumentListener(new PlaceholderDocumentListnener());
     }
 
     public void setPlaceholder(PlaceholderLabel label) {
@@ -27,6 +30,24 @@ public class PlaceholderTextArea extends JTextArea {
         }
 
         public void focusLost(FocusEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+    }
+
+    private class PlaceholderDocumentListnener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
             placeholder.setVisible(getText().isEmpty());
         }
     }
