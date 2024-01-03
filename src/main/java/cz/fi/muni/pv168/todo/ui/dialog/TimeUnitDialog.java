@@ -1,47 +1,64 @@
 package cz.fi.muni.pv168.todo.ui.dialog;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import java.util.Objects;
 import javax.swing.JTextField;
 
 public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
-    private final JTextField nameField = new JTextField();
-    private final JTextField hourField = new JTextField();
-    private final JTextField minuteField = new JTextField();
+    private final PlaceholderTextField nameField = new PlaceholderTextField();
+    private final PlaceholderTextField hourField = new PlaceholderTextField();
+    private final PlaceholderTextField minuteField = new PlaceholderTextField();
 
     private final TimeUnit timeUnit;
 
-    public TimeUnitDialog(TimeUnit timeUnit, boolean edit) {
+    public TimeUnitDialog(TimeUnit timeUnit, boolean edit, Validator<TimeUnit> entityValidator) {
+        super(Objects.requireNonNull(entityValidator));
         this.timeUnit = timeUnit;
-        addDialogFields();
         if (edit) {
             setDialogValues();
         }
-        setHints();
-    }
-
-    private void setHints() {
-        new TextPrompt("Sprint", nameField);
-        new TextPrompt("4", hourField);
-        new TextPrompt("30", minuteField);
+        addDialogFields();
     }
 
     private void setDialogValues() {
         nameField.setText(timeUnit.getName());
-        hourField.setText(String.valueOf(timeUnit.getHourCount()));
-        minuteField.setText(String.valueOf(timeUnit.getMinuteCount()));
+        hourField.setText(String.valueOf(timeUnit.getHours()));
+        minuteField.setText(String.valueOf(timeUnit.getMinutes()));
     }
 
     private void addDialogFields() {
-        add("Name of the unit", nameField, true);
-        add("Hours unit represents", hourField, true);
-        add("Minutes unit represents", minuteField, true);
+        add("Name of the unit", "Sprint", nameField);
+        add("Hours unit represents", "4", hourField);
+        add("Minutes unit represents", "30", minuteField);
+        addErrorPanel();
     }
 
+    @Override
+    ValidationResult isValid() {
+        var result = new ValidationResult();
+
+        try {
+            Long.parseLong(hourField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into hours field");
+        }
+
+        try {
+            Long.parseLong(minuteField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        return result;
+    }
 
     @Override
     public TimeUnit getEntity() {
-        return new TimeUnit(timeUnit.getGuid(), nameField.getText(), Long.parseLong(hourField.getText()), Long.parseLong(minuteField.getText()));
+        return new TimeUnit(timeUnit.getGuid(), false, nameField.getText(), Long.parseLong(hourField.getText()), Long.parseLong(minuteField.getText()));
     }
 }

@@ -13,7 +13,7 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public Category mapToBusiness(CategoryEntity entity) {
-        var color = new Color(entity.r(), entity.g(), entity.b());
+        var color = new Color(entity.color());
         return new Category(
                 UUID.fromString(entity.id()),
                 entity.name(),
@@ -24,28 +24,24 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
     @Override
     public CategoryEntity mapNewEntityToDatabase(Category entity) {
-        var color = entity.getColour();
+        var color = entity.getColor();
 
         return new CategoryEntity(
                 entity.getGuid().toString(),
                 entity.getName(),
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
+                color.getRGB()
         );
 
     }
 
     @Override
     public CategoryEntity mapExistingEntityToDatabase(Category entity, String dbId) {
-        var color = entity.getColour();
+        var color = entity.getColor();
 
         return new CategoryEntity(
                 dbId,
                 entity.getName(),
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
+                color.getRGB()
         );
     }
 

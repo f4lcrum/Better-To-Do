@@ -1,9 +1,13 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -14,11 +18,13 @@ import java.awt.event.KeyEvent;
 public class EditTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
+    private final Validator<TimeUnit> timeUnitValidator;
     private final MainWindow mainWindow;
 
     public EditTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
         super("Edit time unit", Icons.EDIT_ICON);
         this.timeUnitTable = timeUnitTable;
+        this.timeUnitValidator = Objects.requireNonNull(mainWindow.getTimeUnitValidator());
         this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
@@ -38,7 +44,10 @@ public class EditTimeUnitAction extends AbstractAction {
         var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
         int modelRow = timeUnitTable.convertRowIndexToModel(selectedRows[0]);
         var timeUnit = timeUnitTableModel.getEntity(modelRow);
-        var dialog = new TimeUnitDialog(timeUnit, true);
+        if (timeUnit.isDefault()) {
+            return;
+        }
+        var dialog = new TimeUnitDialog(timeUnit, true, timeUnitValidator);
         dialog.show(timeUnitTable, "Edit time unit")
                 .ifPresent(timeUnitTableModel::updateRow);
         mainWindow.refreshTimeUnitListModel();

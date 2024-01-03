@@ -1,5 +1,10 @@
 package cz.fi.muni.pv168.todo.ui;
 
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
@@ -79,6 +84,11 @@ public class MainWindow {
     private final CategoryTableModel categoryTableModel;
     private final TimeUnitTableModel timeUnitTableModel;
     private final TemplateTableModel templateTableModel;
+    private final Validator<Event> eventValidator;
+    private final Validator<Category> categoryValidator;
+    private final Validator<TimeUnit> timeUnitValidator;
+    private final Validator<Template> templateValidator;
+
 
     public MainWindow(DependencyProvider dependencyProvider) {
         this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
@@ -93,6 +103,10 @@ public class MainWindow {
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
         this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
+        this.eventValidator = dependencyProvider.getEventValidator();
+        this.categoryValidator = dependencyProvider.getCategoryValidator();
+        this.timeUnitValidator = dependencyProvider.getTimeUnitValidator();
+        this.templateValidator = dependencyProvider.getTemplateValidator();
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
@@ -333,4 +347,21 @@ public class MainWindow {
     public TemplateTableModel getTemplateTableModel() {
         return templateTableModel;
     }
+
+    public Validator<Event> getEventValidator() {
+        return eventValidator;
+    }
+
+    public Validator<Category> getCategoryValidator() {
+        return categoryValidator;
+    }
+
+    public Validator<TimeUnit> getTimeUnitValidator() {
+        return timeUnitValidator;
+    }
+
+    public Validator<Template> getTemplateValidator() {
+        return templateValidator;
+    }
+
 }

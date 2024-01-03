@@ -54,7 +54,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void createOneTimeUnitSucceeds() {
-        final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), "TestTU", 10, 120);
+        final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final Optional<TimeUnit> retrievedTimeUnit;
 
         timeUnitRepository.create(newTimeUnit);
@@ -66,8 +66,8 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void updateOfInsertedTimeUnitSucceeds() {
-        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "TestTU", 10, 120);
-        final TimeUnit updatedTimeUnit = new TimeUnit(timeUnit.getGuid(), "UpdatedTestTu", 10, 210);
+        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
+        final TimeUnit updatedTimeUnit = new TimeUnit(timeUnit.getGuid(), false, "UpdatedTestTu", 10, 210);
         final Optional<TimeUnit> updateResult;
 
         timeUnitRepository.create(timeUnit);
@@ -80,7 +80,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void deleteByGuidOnExistingTimeUnitSucceeds() {
-        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "TestTU", 10, 120);
+        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
 
         timeUnitRepository.create(timeUnit);
 
@@ -92,9 +92,9 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void deleteAllSucceeds() {
-        final TimeUnit timeUnit1 = new TimeUnit(UUID.randomUUID(), "TestTU1", 10, 120);
-        final TimeUnit timeUnit2 = new TimeUnit(UUID.randomUUID(), "TestTU2", 101, 1201);
-        final TimeUnit timeUnit3 = new TimeUnit(UUID.randomUUID(), "TestTU3", 1, 11);
+        final TimeUnit timeUnit1 = new TimeUnit(UUID.randomUUID(), false, "TestTU1", 10, 120);
+        final TimeUnit timeUnit2 = new TimeUnit(UUID.randomUUID(), false, "TestTU2", 101, 1201);
+        final TimeUnit timeUnit3 = new TimeUnit(UUID.randomUUID(), false, "TestTU3", 1, 11);
         final Collection<TimeUnit> timeUnits;
 
         timeUnitRepository.create(timeUnit1);
@@ -109,7 +109,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void existsByGuidOnExistingTimeUnitSucceeds() {
-        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Lecture", 0, 100);
+        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "Lecture", 0, 100);
         final boolean existsTimeUnit;
 
         timeUnitRepository.create(timeUnit);
@@ -132,7 +132,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void findByGuidOnExistingTimeUnitSucceeds() {
-        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), "Lecture", 0, 100);
+        final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "Lecture", 0, 100);
         final Optional<TimeUnit> retrievedTimeUnit;
 
         timeUnitRepository.create(timeUnit);

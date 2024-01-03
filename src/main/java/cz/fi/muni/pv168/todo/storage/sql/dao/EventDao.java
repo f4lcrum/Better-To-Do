@@ -31,7 +31,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     name,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startDate,
                     startTime,
                     description
@@ -46,7 +46,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
             statement.setString(2, entity.name());
             statement.setString(3, entity.categoryId());
             statement.setString(4, entity.timeUnitId());
-            statement.setInt(5, entity.timeUnitCount());
+            statement.setInt(5, entity.duration());
             statement.setDate(6, Date.valueOf(entity.date()));
             statement.setTime(7, Time.valueOf(entity.startTime()));
             statement.setString(8, entity.description());
@@ -80,7 +80,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     name,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startDate,
                     startTime,
                     description
@@ -113,7 +113,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                     name,
                     category,
                     timeUnit,
-                    timeUnitCount,
+                    duration,
                     startDate,
                     startTime,
                     description
@@ -143,7 +143,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                 SET name = ?,
                     category = ?,
                     timeUnit = ?,
-                    timeUnitCount = ?,
+                    duration = ?,
                     startDate = ?,
                     startTime = ?,
                     description = ?
@@ -155,7 +155,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
             statement.setString(1, entity.name());
             statement.setString(2, entity.categoryId());
             statement.setString(3, entity.timeUnitId());
-            statement.setInt(4, entity.timeUnitCount());
+            statement.setInt(4, entity.duration());
             statement.setDate(5, Date.valueOf(entity.date()));
             statement.setTime(6, Time.valueOf(entity.startTime()));
             statement.setString(7, entity.description());
@@ -243,7 +243,7 @@ public final class EventDao implements DataAccessObject<EventEntity> {
                 resultSet.getTimestamp("startDate").toLocalDateTime().toLocalDate(),
                 resultSet.getTimestamp("startTime").toLocalDateTime().toLocalTime(),
                 resultSet.getString("timeUnit"),
-                resultSet.getInt("timeUnitCount"),
+                resultSet.getInt("duration"),
                 resultSet.getString("description")
         );
     }

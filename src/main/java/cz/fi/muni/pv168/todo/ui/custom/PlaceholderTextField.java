@@ -1,0 +1,54 @@
+package cz.fi.muni.pv168.todo.ui.custom;
+
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.BorderLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+public class PlaceholderTextField extends JTextField {
+
+    private PlaceholderLabel placeholder;
+
+    public PlaceholderTextField() {
+        super();
+        setLayout(new BorderLayout());
+        addFocusListener(new PlaceholderFocusListener());
+        getDocument().addDocumentListener(new PlaceholderDocumentListnener());
+    }
+
+    public void setPlaceholder(PlaceholderLabel label) {
+        placeholder = label;
+        add(label);
+        placeholder.setVisible(getText().isEmpty());
+    }
+
+    private class PlaceholderFocusListener implements FocusListener {
+        public void focusGained(FocusEvent e) {
+            placeholder.setVisible(false);
+        }
+
+        public void focusLost(FocusEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+    }
+
+    private class PlaceholderDocumentListnener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            placeholder.setVisible(getText().isEmpty());
+        }
+    }
+}

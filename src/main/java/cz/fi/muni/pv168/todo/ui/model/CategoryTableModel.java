@@ -15,8 +15,8 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
     private final CrudService<Category> categoryCrudService;
 
     private final List<Column<Category, ?>> columns = List.of(
-            Column.readonly(" ", Color.class, Category::getColour),
-            Column.readonly("Name", String.class, Category::getName)
+            new Column<>(" ", Color.class, Category::getColor),
+            new Column<>("Name", String.class, Category::getName)
     );
 
     public CategoryTableModel(CrudService<Category> categoryCrudService) {
@@ -48,11 +48,6 @@ public class CategoryTableModel extends AbstractTableModel implements EntityTabl
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columns.get(columnIndex).getColumnType();
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).isEditable();
     }
 
     @Override

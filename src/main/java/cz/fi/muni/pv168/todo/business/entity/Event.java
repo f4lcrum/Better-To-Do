@@ -16,7 +16,8 @@ public class Event implements Entity {
 
     @JsonProperty
     private final UUID id;
-
+    @JsonProperty
+    private final boolean isDefault;
     @JsonProperty
     private final String name;
 
@@ -33,19 +34,20 @@ public class Event implements Entity {
     private final TimeUnit timeUnit;
 
     @JsonProperty
-    private final int timeUnitCount;
+    private final int duration;
 
     @JsonProperty
     private final String description;
 
-    public Event(UUID id, String name, Category category, LocalDate date, LocalTime startTime, TimeUnit timeUnit, int timeUnitCount, String description) {
+    public Event(UUID id, String name, Category category, LocalDate date, LocalTime startTime, TimeUnit timeUnit, int duration, String description) {
         this.id = id;
+        this.isDefault = false;
         this.name = name;
         this.category = category;
         this.date = date;
         this.startTime = startTime;
         this.timeUnit = timeUnit;
-        this.timeUnitCount = timeUnitCount;
+        this.duration = duration;
         this.description = description;
     }
 
@@ -54,7 +56,7 @@ public class Event implements Entity {
     }
 
     public long getEventDuration() {
-        return (timeUnit.getHourCount() * timeUnitCount) * 60 + timeUnit.getMinuteCount() * timeUnitCount;
+        return (timeUnit.getHours() * duration) * 60 + timeUnit.getMinutes() * duration;
     }
 
     public LocalDateTime calculateStart() {
@@ -66,8 +68,13 @@ public class Event implements Entity {
         return this.id;
     }
 
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
+    }
+
     public Color getColour() {
-        return this.category.getColour();
+        return this.category.getColor();
     }
 
     public String getName() {
@@ -99,8 +106,8 @@ public class Event implements Entity {
     }
 
     public LocalTime getEndTime() {
-        var hours = timeUnit.getHourCount() * timeUnitCount;
-        var minutes = timeUnit.getMinuteCount() * timeUnitCount;
+        var hours = timeUnit.getHours() * duration;
+        var minutes = timeUnit.getMinutes() * duration;
         return this.startTime.plusHours(hours).plusMinutes(minutes);
     }
 
@@ -112,8 +119,8 @@ public class Event implements Entity {
         return timeUnit;
     }
 
-    public int getTimeUnitCount() {
-        return timeUnitCount;
+    public int getDuration() {
+        return duration;
     }
 
     @Override
@@ -133,13 +140,14 @@ public class Event implements Entity {
     public static class EventBuilder {
 
         private UUID id;
+        private boolean isDefault;
         private UUID userId;
         private String name;
         private Category category;
         private LocalDate date;
         private LocalTime startTime;
         private TimeUnit timeUnit;
-        private int timeUnitCount;
+        private int duration;
         private String description;
 
         EventBuilder() {
@@ -148,6 +156,12 @@ public class Event implements Entity {
         @JsonProperty
         public EventBuilder id(UUID id) {
             this.id = id;
+            return this;
+        }
+
+        @JsonProperty
+        public EventBuilder isDefault(boolean isDefault) {
+            this.isDefault = isDefault;
             return this;
         }
 
@@ -188,8 +202,8 @@ public class Event implements Entity {
         }
 
         @JsonProperty
-        public EventBuilder timeUnitCount(int timeUnitCount) {
-            this.timeUnitCount = timeUnitCount;
+        public EventBuilder duration(int duration) {
+            this.duration = duration;
             return this;
         }
 
@@ -200,11 +214,11 @@ public class Event implements Entity {
         }
 
         public Event build() {
-            return new Event(this.id, this.name, this.category, this.date, this.startTime, this.timeUnit, this.timeUnitCount, this.description);
+            return new Event(this.id, this.name, this.category, this.date, this.startTime, this.timeUnit, this.duration, this.description);
         }
 
         public String toString() {
-            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", timeUnitCount=" + this.timeUnitCount + ", description=" + this.description + ")";
+            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", isDefault=" + this.isDefault + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ", description=" + this.description + ")";
         }
     }
 }

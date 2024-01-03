@@ -11,25 +11,29 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
     private final UUID id;
 
     @JsonProperty
+    private final boolean isDefault;
+
+    @JsonProperty
     private final String name;
 
     @JsonProperty
-    private final long hourCount;
+    private final long hours;
 
     @JsonProperty
-    private final long minuteCount;
+    private final long minutes;
 
-    public TimeUnit(UUID id, String name, long hourCount, long minuteCount) {
+    public TimeUnit(UUID id, boolean isDefault, String name, long hours, long minutes) {
         this.id = id;
+        this.isDefault = isDefault;
         this.name = name;
-        this.hourCount = hourCount;
-        this.minuteCount = minuteCount;
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
     @Override
     public int compareTo(TimeUnit other) {
-        long totalMinutes = this.hourCount * 60 + this.minuteCount;
-        long otherTotalMinutes = other.hourCount * 60 + other.minuteCount;
+        long totalMinutes = this.hours * 60 + this.minutes;
+        long otherTotalMinutes = other.hours * 60 + other.minutes;
 
         return Long.compare(totalMinutes, otherTotalMinutes);
     }
@@ -39,16 +43,21 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
         return id;
     }
 
+    @Override
+    public boolean isDefault() {
+        return this.isDefault;
+    }
+
     public String getName() {
         return name;
     }
 
-    public long getHourCount() {
-        return hourCount;
+    public long getHours() {
+        return hours;
     }
 
-    public long getMinuteCount() {
-        return minuteCount;
+    public long getMinutes() {
+        return minutes;
     }
 
     @Override

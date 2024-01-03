@@ -1,11 +1,17 @@
 package cz.fi.muni.pv168.todo.ui.listener;
 
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.strategy.CategoryButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.TimeUnitButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
+import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 

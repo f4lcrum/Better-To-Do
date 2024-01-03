@@ -6,8 +6,10 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
 import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
+import java.sql.Time;
 
 public interface DependencyProvider {
     DatabaseManager getDatabaseManager();
@@ -29,5 +31,10 @@ public interface DependencyProvider {
     CrudService<TimeUnit> getTimeUnitCrudService();
 
     TransactionExecutor getTransactionExecutor();
+
+    Validator<Event> getEventValidator();
+    Validator<Template> getTemplateValidator();
+    Validator<TimeUnit> getTimeUnitValidator();
+    Validator<Category> getCategoryValidator();
 
 }

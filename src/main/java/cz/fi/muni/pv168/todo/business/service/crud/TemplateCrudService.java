@@ -5,53 +5,23 @@ import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
-import java.util.List;
-import java.util.UUID;
+public class TemplateCrudService extends CrudServiceImpl<Template> {
 
-public class TemplateCrudService implements CrudService<Template> {
-
-    private final Repository<Template> templateRepository;
-    private final Validator<Template> templateValidator;
-
-    public TemplateCrudService(Repository<Template> templateRepository,
-                               Validator<Template> templateValidator) {
-        this.templateRepository = templateRepository;
-        this.templateValidator = templateValidator;
-    }
-
-    @Override
-    public List<Template> findAll() {
-        return templateRepository.findAll();
+    public TemplateCrudService(Repository<Template> repository, Validator<Template> validator) {
+        super(repository, validator);
     }
 
     @Override
     public ValidationResult create(Template newEntity) {
-        var validationResult = templateValidator.validate(newEntity);
-        if (templateRepository.existsByGuid(newEntity.getGuid())) {
-            throw new EntityAlreadyExistsException("Template with given id already exists: " + newEntity.getGuid());
+        var validationResult = validator.validate(newEntity);
+        if (newEntity.getGuid().toString() == null || newEntity.getGuid().toString().isBlank()) {
+            throw new EntityNoUUIDException("Template does not have assigned UUID");
+        } else if (repository.existsByGuid(newEntity.getGuid())) {
+            throw new EntityAlreadyExistsException("Template with given guid already exists: " + newEntity.getGuid());
         }
         if (validationResult.isValid()) {
-            templateRepository.create(newEntity);
+            repository.create(newEntity);
         }
         return validationResult;
-    }
-
-    @Override
-    public ValidationResult update(Template entity) {
-        var validationResult = templateValidator.validate(entity);
-        if (validationResult.isValid()) {
-            templateRepository.update(entity);
-        }
-        return validationResult;
-    }
-
-    @Override
-    public void deleteByGuid(UUID id) {
-        templateRepository.deleteByGuid(id);
-    }
-
-    @Override
-    public void deleteAll() {
-        templateRepository.deleteAll();
     }
 }

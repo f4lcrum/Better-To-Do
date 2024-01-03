@@ -13,9 +13,9 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     private final CrudService<TimeUnit> timeUnitCrudService;
 
     private final List<Column<TimeUnit, ?>> columns = List.of(
-            Column.readonly("Name", String.class, TimeUnit::getName),
-            Column.readonly("Hour count", Long.class, TimeUnit::getHourCount),
-            Column.readonly("Minute count", Long.class, TimeUnit::getMinuteCount)
+            new Column<>("Name", String.class, TimeUnit::getName),
+            new Column<>("Hour count", Long.class, TimeUnit::getHours),
+            new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
     );
 
     public TimeUnitTableModel(CrudService<TimeUnit> timeUnitCrudService) {
@@ -50,16 +50,14 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).isEditable();
-    }
-
-    @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
     }
 
     public void deleteRow(int rowIndex) {
         var timeUnitToBeDeleted = getEntity(rowIndex);
+        if (timeUnitToBeDeleted.isDefault()) {
+            return;
+        }
         timeUnitCrudService.deleteByGuid(timeUnitToBeDeleted.getGuid());
         timeUnits.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
@@ -74,6 +72,9 @@ public class TimeUnitTableModel extends AbstractTableModel implements EntityTabl
     }
 
     public void updateRow(TimeUnit timeUnit) {
+        if (timeUnit.isDefault()) {
+            return;
+        }
         timeUnitCrudService.update(timeUnit)
                 .intoException();
         int rowIndex = timeUnits.indexOf(timeUnit);

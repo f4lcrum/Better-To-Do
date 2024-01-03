@@ -16,9 +16,10 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
     public TimeUnit mapToBusiness(TimeUnitEntity entity) {
         return new TimeUnit(
                 UUID.fromString(entity.id()),
+                entity.isDefault(),
                 entity.name(),
-                entity.hourCount(),
-                entity.minuteCount()
+                entity.hours(),
+                entity.minutes()
         );
     }
 
@@ -26,9 +27,10 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
     public TimeUnitEntity mapNewEntityToDatabase(TimeUnit entity) {
         return new TimeUnitEntity(
                 entity.getGuid().toString(),
+                entity.isDefault(),
                 entity.getName(),
-                entity.getHourCount(),
-                entity.getMinuteCount()
+                entity.getHours(),
+                entity.getMinutes()
         );
     }
 
@@ -36,9 +38,10 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
     public TimeUnitEntity mapExistingEntityToDatabase(TimeUnit entity, String dbId) {
         return new TimeUnitEntity(
                 dbId,
+                entity.isDefault(),
                 entity.getName(),
-                entity.getHourCount(),
-                entity.getMinuteCount()
+                entity.getHours(),
+                entity.getMinutes()
         );
     }
 }

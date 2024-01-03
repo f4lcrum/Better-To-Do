@@ -1,5 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
