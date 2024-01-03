@@ -57,7 +57,7 @@ public final class EventDialog extends EntityDialog<Event> {
 
     private void setValues() {
         nameField.setText(event.getName());
-        duration.setText(String.valueOf(event.getTimeUnitCount()));
+        duration.setText(String.valueOf(event.getDuration()));
         description.setText(event.getDescription());
         categoryModel.setSelectedItem(event.getCategory());
         dateModel.setValue(event.getDate());
@@ -80,8 +80,8 @@ public final class EventDialog extends EntityDialog<Event> {
         add("Start date of the event", new JDatePicker(dateModel), true);
         addTime("Start time of event: ", hourField, minuteField);
         add("Category", categoryComboBox, false);
+        add("Duration", duration, true);
         add("Time unit", timeUnitComboBox, true);
-        add("Time unit count", duration, true);
         description.setLineWrap(true);
         JScrollPane descriptionPane = new JScrollPane(description);
         addDescription("Description", descriptionPane);
@@ -107,6 +107,6 @@ public final class EventDialog extends EntityDialog<Event> {
         minuteField.setText(Integer.toString(template.getStartTime().getMinute()));
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());
-        duration.setText(Integer.toString(template.getTimeUnitCount()));
+        duration.setText(Integer.toString(template.getDuration()));
     }
 }

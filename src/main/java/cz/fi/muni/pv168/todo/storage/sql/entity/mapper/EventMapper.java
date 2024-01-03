@@ -50,7 +50,7 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
                 entity.date(),
                 entity.startTime(),
                 timeUnit,
-                entity.timeUnitCount(),
+                entity.duration(),
                 entity.description()
         );
     }
@@ -72,7 +72,7 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
                 entity.getDate(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),
-                entity.getTimeUnitCount(),
+                entity.getDuration(),
                 entity.getDescription()
         );
     }
@@ -94,7 +94,7 @@ public class EventMapper implements EntityMapper<EventEntity, Event> {
                 entity.getDate(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),
-                entity.getTimeUnitCount(),
+                entity.getDuration(),
                 entity.getDescription()
         );
     }

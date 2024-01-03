@@ -29,8 +29,8 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     private void setDialogValues() {
         nameField.setText(timeUnit.getName());
-        hourField.setText(String.valueOf(timeUnit.getHourCount()));
-        minuteField.setText(String.valueOf(timeUnit.getMinuteCount()));
+        hourField.setText(String.valueOf(timeUnit.getHours()));
+        minuteField.setText(String.valueOf(timeUnit.getMinutes()));
     }
 
     private void addDialogFields() {

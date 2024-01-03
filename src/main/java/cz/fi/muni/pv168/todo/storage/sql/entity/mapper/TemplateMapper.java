@@ -49,7 +49,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 category,
                 entity.startTime(),
                 timeUnit,
-                entity.timeUnitCount(),
+                entity.duration(),
                 entity.description()
         );
     }
@@ -71,7 +71,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 categoryEntity.id(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),
-                entity.getTimeUnitCount(),
+                entity.getDuration(),
                 entity.getDescription()
         );
     }
@@ -93,7 +93,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 categoryEntity.id(),
                 entity.getStartTime(),
                 timeUnitEntity.id(),
-                entity.getTimeUnitCount(),
+                entity.getDuration(),
                 entity.getDescription()
         );
     }
