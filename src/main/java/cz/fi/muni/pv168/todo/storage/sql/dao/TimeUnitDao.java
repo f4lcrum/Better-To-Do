@@ -126,10 +126,7 @@ public final class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         var sql = """
                 UPDATE TimeUnit
                 SET name = ?,
-<<<<<<< HEAD
                     isDefault = ?,
-=======
->>>>>>> bf44a9e (fix: time unit hourCount -> hours; minuteCount -> minutes)
                     hours = ?,
                     minutes = ?
                 WHERE id = ?
