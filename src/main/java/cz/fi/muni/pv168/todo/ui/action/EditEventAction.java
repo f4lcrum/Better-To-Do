@@ -1,12 +1,15 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -21,6 +24,7 @@ public class EditEventAction extends AbstractAction {
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final ListModel<Template> templateListModel;
+    private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
 
     public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
@@ -30,6 +34,7 @@ public class EditEventAction extends AbstractAction {
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateListModel = templateListModel;
+        this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
         this.mainWindow = mainWindow;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
@@ -49,7 +54,7 @@ public class EditEventAction extends AbstractAction {
         var eventTableModel = mainWindow.getEventTableModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(event, categoryListModel, timeUnitListModel, templateListModel, true);
+        var dialog = new EventDialog(event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
         dialog.show(todoTable, "Edit Event")
                 .ifPresent(eventTableModel::updateRow);
         mainWindow.refreshEventListModel();

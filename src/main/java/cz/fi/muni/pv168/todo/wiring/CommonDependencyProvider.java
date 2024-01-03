@@ -14,6 +14,7 @@ import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.EventSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TemplateSqlRepository;
@@ -49,6 +50,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final CrudService<Category> categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final CrudService<Template> templateCrudService;
+    private final Validator<Event> eventValidator;
+    private final Validator<Category> categoryValidator;
+    private final Validator<TimeUnit> timeUnitValidator;
+    private final Validator<Template> templateValidator;
+
 
     public CommonDependencyProvider(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
@@ -58,7 +64,7 @@ public class CommonDependencyProvider implements DependencyProvider {
 
         var timeUnitDao = new TimeUnitDao(transactionConnectionSupplier);
         var timeUnitMapper = new TimeUnitMapper();
-        var timeUnitValidator = new TimeUnitValidator();
+        this.timeUnitValidator = new TimeUnitValidator();
         this.timeUnitRepository = new TimeUnitSqlRepository(
                 timeUnitDao,
                 timeUnitMapper
@@ -67,7 +73,7 @@ public class CommonDependencyProvider implements DependencyProvider {
 
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
         var categoryMapper = new CategoryMapper();
-        var categoryValidator = new CategoryValidator();
+        this.categoryValidator = new CategoryValidator();
         this.categoryRepository = new CategorySqlRepository(
                 categoryDao,
                 categoryMapper
@@ -76,7 +82,7 @@ public class CommonDependencyProvider implements DependencyProvider {
 
         var templateDao = new TemplateDao(transactionConnectionSupplier);
         var templateMapper = new TemplateMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
-        var templateValidator = new TemplateValidator();
+        this.templateValidator = new TemplateValidator();
         this.templateRepository = new TemplateSqlRepository(
                 templateDao,
                 templateMapper
@@ -85,7 +91,7 @@ public class CommonDependencyProvider implements DependencyProvider {
 
         var eventDao = new EventDao(transactionConnectionSupplier);
         var eventMapper = new EventMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
-        var eventValidator = new EventValidator();
+        this.eventValidator = new EventValidator();
         this.eventRepository = new EventSqlRepository(
                 eventDao,
                 eventMapper
@@ -141,5 +147,25 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public TransactionExecutor getTransactionExecutor() {
         return transactionExecutor;
+    }
+
+    @Override
+    public Validator<Event> getEventValidator() {
+        return eventValidator;
+    }
+
+    @Override
+    public Validator<Template> getTemplateValidator() {
+        return templateValidator;
+    }
+
+    @Override
+    public Validator<TimeUnit> getTimeUnitValidator() {
+        return timeUnitValidator;
+    }
+
+    @Override
+    public Validator<Category> getCategoryValidator() {
+        return categoryValidator;
     }
 }

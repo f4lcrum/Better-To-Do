@@ -4,10 +4,12 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -26,12 +28,14 @@ public final class AddEventAction extends AbstractAction {
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final ListModel<Template> templateListModel;
+    private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
 
     public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
                           ListModel<Template> templateListModel, MainWindow mainWindow) {
         super("Add event", Icons.ADD_ICON);
         this.todoTable = todoTable;
+        this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateListModel = templateListModel;
@@ -45,7 +49,7 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false);
+        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
         dialog.show(todoTable, "Add Event")
                 .ifPresent(eventTableModel::addRow);
         mainWindow.refreshEventListModel();

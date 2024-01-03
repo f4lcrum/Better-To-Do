@@ -2,14 +2,18 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
+import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
+import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
 
+import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -30,7 +34,8 @@ public final class TemplateDialog extends EntityDialog<Template> {
     private final Template template;
 
     public TemplateDialog(Template template, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
-                          boolean edit) {
+                          boolean edit, Validator<Template> entityValidator) {
+        super(Objects.requireNonNull(entityValidator));
         this.template = template;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
@@ -64,6 +69,32 @@ public final class TemplateDialog extends EntityDialog<Template> {
         add("Time unit count", "5", duration);
         addMandatory("Time unit", timeUnitComboBox);
         addDescription("Description", "Template for creating various doctor's appointments", description);
+        addErrorPanel();
+    }
+
+    @Override
+    ValidationResult isValid() {
+        var result = new ValidationResult();
+
+        try {
+            Integer.parseInt(hourField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into hours field");
+        }
+
+        try {
+            Integer.parseInt(minuteField.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        try {
+            Integer.parseInt(duration.getText());
+        } catch (NumberFormatException e) {
+            result.add("Incorrect field: insert integer value into time unit count field");
+        }
+
+        return result;
     }
 
     @Override
