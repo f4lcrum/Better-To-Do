@@ -44,10 +44,10 @@ public final class EventDialog extends EntityDialog<Event> {
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
         this.templateModel = new ComboBoxModelAdapter<>(templateListModel);
-        addFields();
         if (edit) {
             setValues();
         }
+        addFields();
     }
 
     private void setValues() {

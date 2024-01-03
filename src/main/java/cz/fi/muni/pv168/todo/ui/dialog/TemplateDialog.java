@@ -34,10 +34,10 @@ public final class TemplateDialog extends EntityDialog<Template> {
         this.template = template;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
-        addFields();
         if (edit) {
             setValues();
         }
+        addFields();
     }
 
     private void setValues() {

@@ -18,6 +18,7 @@ public class PlaceholderTextArea extends JTextArea {
     public void setPlaceholder(PlaceholderLabel label) {
         placeholder = label;
         add(label);
+        placeholder.setVisible(getText().isEmpty());
     }
 
     private class PlaceholderFocusListener implements FocusListener {

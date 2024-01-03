@@ -13,10 +13,10 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     public TimeUnitDialog(TimeUnit timeUnit, boolean edit) {
         this.timeUnit = timeUnit;
-        addDialogFields();
         if (edit) {
             setDialogValues();
         }
+        addDialogFields();
     }
 
     private void setDialogValues() {
