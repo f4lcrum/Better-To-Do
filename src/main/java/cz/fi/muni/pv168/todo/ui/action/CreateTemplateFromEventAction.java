@@ -56,7 +56,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         var event = eventTableModel.getEntity(modelRow);
 
         var dialog = new TemplateDialog(createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
-        dialog.show(templateTable, "Add Template")
+        dialog.show(templateTable, "Create Template from event")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();
     }
