@@ -38,17 +38,23 @@ public class PlaceholderTextField extends JTextField {
 
         @Override
         public void insertUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            if (placeholder != null) {
+                placeholder.setVisible(getText().isEmpty());
+            }
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            if (placeholder != null) {
+                placeholder.setVisible(getText().isEmpty());
+            }
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            if (placeholder != null) {
+                placeholder.setVisible(getText().isEmpty());
+            }
         }
     }
 }
