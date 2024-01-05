@@ -125,7 +125,7 @@ public class MainWindow {
         var rowSorter = new TableRowSorter<>(eventTableModel);
         rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
 
-        var eventTableFilter = new EventTableFilter(rowSorter);
+        var eventTableFilter = new EventTableFilter(rowSorter, statistics);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
 
         this.tabbedPane = new JTabbedPane();
@@ -288,10 +288,6 @@ public class MainWindow {
 
     public void setButtonTabStrategy(ButtonTabStrategy buttonTabStrategy) {
         this.buttonTabStrategy = buttonTabStrategy;
-    }
-
-    public EventListModel getCEventListModel() {
-        return eventListModel;
     }
 
     public CategoryListModel getCategoryListModel() {

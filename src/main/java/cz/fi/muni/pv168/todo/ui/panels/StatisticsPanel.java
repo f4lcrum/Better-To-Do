@@ -4,16 +4,17 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 // TODO: muzu si sem dat event table model/main window s metodou getEvents
 public class StatisticsPanel extends JPanel {
@@ -85,23 +86,28 @@ public class StatisticsPanel extends JPanel {
         int todayCount = todayEvents.size();
         long todayDuration = getEventListDuration(todayEvents);
 
-        int filteredCount = this.mainWindow.getEventTableModel().getRowCount();
-        long filteredDuration = getEventListDuration(this.mainWindow.getEventTableModel().getEvents());
 
         Map<Status, List<Event>> sortedByStatus = sortByStatus(events);
 
-        long plannedCount = getEventListDuration(sortedByStatus.get(Status.PLANNED));
-        long doneCount = getEventListDuration(sortedByStatus.get(Status.DONE));
-        long inProgressCount = getEventListDuration(sortedByStatus.get(Status.IN_PROGRESS));
+        long plannedCount = sortedByStatus.get(Status.PLANNED) != null ? sortedByStatus.get(Status.PLANNED).size() : 0;
+        long doneCount = sortedByStatus.get(Status.DONE) != null ? sortedByStatus.get(Status.DONE).size() : 0;
+        long inProgressCount = sortedByStatus.get(Status.IN_PROGRESS) != null ? sortedByStatus.get(Status.IN_PROGRESS).size() : 0;
         this.totalEventCount.setText(String.valueOf(totalCount));
         this.totalEventDuration.setText(String.valueOf(totalDuration));
         this.plannedCount.setText(String.valueOf(plannedCount));
-        this.filteredEventCount.setText(String.valueOf(filteredCount));
-        this.filteredEventDuration.setText(String.valueOf(filteredDuration));
         this.inProgressCount.setText(String.valueOf(inProgressCount));
         this.todayEventCount.setText(String.valueOf(todayCount));
         this.todayEventDuration.setText(String.valueOf(todayDuration));
         this.doneCount.setText(String.valueOf(doneCount));
+    }
+
+    public void setFilter(List<Integer> indices) {
+        var events = new ArrayList<Event>();
+        for (Integer index : indices) {
+            events.add(mainWindow.getEventTableModel().getEntity(index));
+        }
+        filteredEventCount.setText(Integer.toString(events.size()));
+        filteredEventDuration.setText(Long.toString(getEventListDuration(events)));
     }
 
     private void setRow(String label, JLabel count, JLabel duration, String labelStatus, JLabel countStatus) {
@@ -124,5 +130,9 @@ public class StatisticsPanel extends JPanel {
 
     public void refresh() {
         setContent();
+    }
+
+    public void refreshFilter(List<Integer> indices) {
+        setFilter(indices);
     }
 }

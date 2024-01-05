@@ -10,7 +10,9 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
+import cz.fi.muni.pv168.todo.ui.listener.CustomRowSorterListener;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
+import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.util.Either;
 
 import javax.swing.table.TableRowSorter;
@@ -27,8 +29,8 @@ public final class EventTableFilter {
 
     private final EventCompoundMatcher eventCompoundMatcher;
 
-    public EventTableFilter(TableRowSorter<EventTableModel> rowSorter) {
-        eventCompoundMatcher = new EventCompoundMatcher(rowSorter);
+    public EventTableFilter(TableRowSorter<EventTableModel> rowSorter, StatisticsPanel statisticsPanel) {
+        eventCompoundMatcher = new EventCompoundMatcher(rowSorter, statisticsPanel);
         rowSorter.setRowFilter(eventCompoundMatcher);
     }
 
@@ -64,14 +66,18 @@ public final class EventTableFilter {
         private EntityMatcher<Event> statusMatcher = EntityMatchers.all();
         private EntityMatcher<Event> categoryMatcher = EntityMatchers.all();
 
-        private EventCompoundMatcher(TableRowSorter<EventTableModel> rowSorter) {
+        private EventCompoundMatcher(TableRowSorter<EventTableModel> rowSorter, StatisticsPanel statisticsPanel) {
             this.rowSorter = rowSorter;
+            rowSorter.addRowSorterListener(new CustomRowSorterListener(statisticsPanel, rowSorter));
         }
 
 
         private void setStatusMatcher(EntityMatcher<Event> statusMatcher) {
             this.statusMatcher = statusMatcher;
             rowSorter.sort();
+            System.out.println();
+            //rowSorter.getModelRowCount();
+            //rowSorter.convertRowIn
         }
 
         private void setCategoryMatcher(EntityMatcher<Event> categoryMatcher) {
