@@ -24,13 +24,19 @@ public class PlaceholderTextField extends JTextField {
         placeholder.setVisible(getText().isEmpty());
     }
 
+    private void checkVisibility() {
+        if (placeholder != null) {
+            placeholder.setVisible(!hasFocus() && getText().isEmpty());
+        }
+    }
+
     private class PlaceholderFocusListener implements FocusListener {
         public void focusGained(FocusEvent e) {
-            placeholder.setVisible(false);
+            checkVisibility();
         }
 
         public void focusLost(FocusEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            checkVisibility();
         }
     }
 
@@ -38,17 +44,17 @@ public class PlaceholderTextField extends JTextField {
 
         @Override
         public void insertUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            checkVisibility();
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            checkVisibility();
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            placeholder.setVisible(getText().isEmpty());
+            checkVisibility();
         }
     }
 }

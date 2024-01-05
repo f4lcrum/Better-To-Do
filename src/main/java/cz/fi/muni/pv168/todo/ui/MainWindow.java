@@ -41,6 +41,7 @@ import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -56,8 +57,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-
-import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
@@ -110,8 +109,8 @@ public class MainWindow {
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
-        exportAction = new ExportAction(eventTablePanel);
-        importAction = new ImportAction(eventTablePanel);
+        exportAction = new ExportAction(eventTablePanel, dependencyProvider);
+        importAction = new ImportAction(eventTablePanel, categoryTablePanel, templateTablePanel, timeUnitTablePanel, dependencyProvider);
 
         // Apply popup menu bindings
         eventTablePanel.getEventTable().setComponentPopupMenu(createEventTablePopupMenu());
