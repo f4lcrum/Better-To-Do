@@ -32,7 +32,6 @@ import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
@@ -85,7 +84,7 @@ public class MainWindow {
     private final EventTableModel eventTableModel;
 
     private final TableModel<Category> categoryTableModel;
-    private final TimeUnitTableModel timeUnitTableModel;
+    private final TableModel<TimeUnit> timeUnitTableModel;
     private final TableModel<Template> templateTableModel;
     private final Validator<Event> eventValidator;
     private final Validator<Category> categoryValidator;
@@ -108,7 +107,11 @@ public class MainWindow {
                 new Column<>("Name", String.class, Category::getName)
         ));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
-        this.timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
+        this.timeUnitTableModel = new TableModel<>(dependencyProvider.getTimeUnitCrudService(), List.of(
+                new Column<>("Name", String.class, TimeUnit::getName),
+                new Column<>("Hour count", Long.class, TimeUnit::getHours),
+                new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
+        ));
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
@@ -351,7 +354,7 @@ public class MainWindow {
         return categoryTableModel;
     }
 
-    public TimeUnitTableModel getTimeUnitTableModel() {
+    public TableModel<TimeUnit> getTimeUnitTableModel() {
         return timeUnitTableModel;
     }
 

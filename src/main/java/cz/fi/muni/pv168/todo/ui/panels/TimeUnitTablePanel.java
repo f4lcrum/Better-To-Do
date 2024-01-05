@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.panels;
 
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,13 +12,13 @@ public class TimeUnitTablePanel extends JPanel {
 
     private final JTable timeUnitTable;
 
-    public TimeUnitTablePanel(TimeUnitTableModel timeUnitTableModel) {
+    public TimeUnitTablePanel(TableModel<TimeUnit> timeUnitTableModel) {
         setLayout(new BorderLayout());
         this.timeUnitTable = setUpTable(timeUnitTableModel);
         add(new JScrollPane(timeUnitTable), BorderLayout.CENTER);
     }
 
-    private JTable setUpTable(TimeUnitTableModel timeUnitTableModel) {
+    private JTable setUpTable(TableModel<TimeUnit> timeUnitTableModel) {
         var table = new JTable(timeUnitTableModel);
 
         table.setAutoCreateRowSorter(true);
