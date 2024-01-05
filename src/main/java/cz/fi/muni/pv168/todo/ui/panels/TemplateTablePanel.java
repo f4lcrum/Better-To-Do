@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.panels;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.ui.action.DetailClick;
-import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.LocalDateRenderer;
@@ -18,9 +18,9 @@ import java.time.LocalDate;
 public class TemplateTablePanel extends JPanel {
 
     private final JTable eventTable;
-    private final TemplateTableModel templateTableModel;
+    private final TableModel<Template> templateTableModel;
 
-    public TemplateTablePanel(TemplateTableModel templateTableModel) {
+    public TemplateTablePanel(TableModel<Template> templateTableModel) {
         setLayout(new BorderLayout());
         eventTable = setUpTable(templateTableModel);
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
@@ -28,7 +28,7 @@ public class TemplateTablePanel extends JPanel {
         this.templateTableModel = templateTableModel;
     }
 
-    private JTable setUpTable(TemplateTableModel templateTableModel) {
+    private JTable setUpTable(TableModel<Template> templateTableModel) {
         var table = new JTable(templateTableModel);
 
         table.setAutoCreateRowSorter(true);

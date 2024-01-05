@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.panels;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;

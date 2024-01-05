@@ -86,6 +86,10 @@ public class Template implements Entity {
         return this.startTime.plusHours(hours).plusMinutes(minutes);
     }
 
+    public String getDurationString() {
+        return String.format("%d %s", getDuration(), getTimeUnit().getName());
+    }
+
     public TimeUnit getTimeUnit() {
         return timeUnit;
     }

@@ -31,7 +31,6 @@ import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
-import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
@@ -87,7 +86,7 @@ public class MainWindow {
 
     private final TableModel<Category> categoryTableModel;
     private final TimeUnitTableModel timeUnitTableModel;
-    private final TemplateTableModel templateTableModel;
+    private final TableModel<Template> templateTableModel;
     private final Validator<Event> eventValidator;
     private final Validator<Category> categoryValidator;
     private final Validator<TimeUnit> timeUnitValidator;
@@ -97,7 +96,12 @@ public class MainWindow {
     public MainWindow(DependencyProvider dependencyProvider) {
         this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
         this.eventTablePanel = new EventTablePanel(eventTableModel);
-        this.templateTableModel = new TemplateTableModel(dependencyProvider.getTemplateCrudService());
+        this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
+                new Column<>(" ", Color.class, Template::getColour),
+                new Column<>("Template name", String.class, Template::getName),
+                new Column<>("Category", Category.class, Template::getCategory),
+                new Column<>("Duration", String.class, Template::getDurationString)
+        ));
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
         this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
                 new Column<>(" ", Color.class, Category::getColor),
@@ -351,7 +355,7 @@ public class MainWindow {
         return timeUnitTableModel;
     }
 
-    public TemplateTableModel getTemplateTableModel() {
+    public TableModel<Template> getTemplateTableModel() {
         return templateTableModel;
     }
 
