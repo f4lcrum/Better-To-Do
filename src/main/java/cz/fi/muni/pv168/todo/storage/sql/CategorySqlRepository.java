@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CategorySqlRepository implements Repository<Category> {
+public class CategorySqlRepository implements CategoryRepository {
 
     private final DataAccessObject<CategoryEntity> categoryDao;
     private final EntityMapper<CategoryEntity, Category> categoryEntityMapper;
