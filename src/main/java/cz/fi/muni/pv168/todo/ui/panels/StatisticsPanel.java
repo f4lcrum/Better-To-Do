@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// TODO: muzu si sem dat event table model/main window s metodou getEvents
 public class StatisticsPanel extends JPanel {
     CrudService<Event> eventCrudService;
     JPanel leftPanel;

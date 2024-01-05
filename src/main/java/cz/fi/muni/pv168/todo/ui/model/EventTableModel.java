@@ -84,16 +84,6 @@ public class EventTableModel extends AbstractTableModel implements EntityTableMo
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
-    public List<Event> getEvents() {
-        return this.events;
-    }
-
-
-    public void refresh() {
-        this.events = new ArrayList<>(eventCrudService.findAll());
-        fireTableDataChanged();
-    }
-
     @Override
     public Event getEntity(int rowIndex) {
         return events.get(rowIndex);

@@ -105,7 +105,7 @@ public class MainWindow {
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
         this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
-        this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService(), this.statistics);
+        this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
         this.eventValidator = dependencyProvider.getEventValidator();
         this.categoryValidator = dependencyProvider.getCategoryValidator();
         this.timeUnitValidator = dependencyProvider.getTimeUnitValidator();

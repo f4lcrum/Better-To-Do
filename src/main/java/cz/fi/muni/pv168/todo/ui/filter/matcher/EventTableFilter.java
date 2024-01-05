@@ -75,9 +75,6 @@ public final class EventTableFilter {
         private void setStatusMatcher(EntityMatcher<Event> statusMatcher) {
             this.statusMatcher = statusMatcher;
             rowSorter.sort();
-            System.out.println();
-            //rowSorter.getModelRowCount();
-            //rowSorter.convertRowIn
         }
 
         private void setCategoryMatcher(EntityMatcher<Event> categoryMatcher) {
