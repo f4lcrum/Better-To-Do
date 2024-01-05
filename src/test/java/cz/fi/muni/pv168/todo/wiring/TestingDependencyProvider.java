@@ -21,6 +21,7 @@ public final class TestingDependencyProvider {
 
     private final TimeUnitRepository timeUnits;
     private final CategoryRepository categories;
+    private final TemplateRepository templates;
 
     public TestingDependencyProvider(DatabaseManager databaseManager) {
         var transactionManager = new TransactionManagerImpl(databaseManager);
@@ -29,6 +30,12 @@ public final class TestingDependencyProvider {
         var timeUnitMapper = new TimeUnitMapper();
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
         var categoryMapper = new CategoryMapper();
+        var templateMapper = new TemplateMapper(
+                new CategoryDao(transactionConnectionSupplier),
+                categoryMapper,
+                new TimeUnitDao(transactionConnectionSupplier),
+                timeUnitMapper
+        );
 
         this.timeUnits = new TimeUnitSqlRepository(
                 new TimeUnitDao(transactionConnectionSupplier),
@@ -39,6 +46,12 @@ public final class TestingDependencyProvider {
                 categoryDao,
                 categoryMapper
         );
+
+        this.templates = new TemplateSqlRepository(
+                new TemplateDao(transactionConnectionSupplier),
+                templateMapper
+        );
+
     }
 
     public TimeUnitRepository getTimeUnitRepository() {
@@ -46,6 +59,10 @@ public final class TestingDependencyProvider {
     }
     public CategoryRepository getCategoryRepository() {
         return categories;
+    }
+
+    public TemplateRepository getTemplateRepository() {
+        return templates;
     }
 }
 

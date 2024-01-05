@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
+import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.entity.TemplateEntity;
@@ -16,7 +17,7 @@ import java.util.UUID;
  *
  * @author Vojtech Sassmann
  */
-public class TemplateSqlRepository implements Repository<Template> {
+public class TemplateSqlRepository implements TemplateRepository {
 
     private final DataAccessObject<TemplateEntity> templateDao;
     private final EntityMapper<TemplateEntity, Template> templateMapper;
@@ -45,7 +46,7 @@ public class TemplateSqlRepository implements Repository<Template> {
     @Override
     public void update(Template entity) {
         var existingTemplate = templateDao.findById(entity.getGuid())
-                .orElseThrow(() -> new DataStorageException("Department not found, guid: " + entity.getGuid()));
+                .orElseThrow(() -> new DataStorageException("Template not found, guid: " + entity.getGuid()));
         var updatedDepartment = templateMapper.mapExistingEntityToDatabase(entity, existingTemplate.id());
 
         templateDao.update(updatedDepartment);
