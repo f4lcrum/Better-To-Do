@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.ui.panels;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 
@@ -16,9 +17,9 @@ public class CategoryTablePanel extends JPanel {
 
     private final JTable eventTable;
 
-    private final CategoryTableModel categoryTableModel;
+    private final TableModel<Category> categoryTableModel;
 
-    public CategoryTablePanel(CategoryTableModel categoryTableModel) {
+    public CategoryTablePanel(TableModel<Category> categoryTableModel) {
         setLayout(new BorderLayout());
         eventTable = setUpTable(categoryTableModel);
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
@@ -26,7 +27,7 @@ public class CategoryTablePanel extends JPanel {
         this.categoryTableModel = categoryTableModel;
     }
 
-    private JTable setUpTable(CategoryTableModel categoryTableModel) {
+    private JTable setUpTable(TableModel<Category> categoryTableModel) {
         var table = new JTable(categoryTableModel);
 
         // Renderers bind

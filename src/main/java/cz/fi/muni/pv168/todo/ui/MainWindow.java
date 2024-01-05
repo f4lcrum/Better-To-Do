@@ -26,7 +26,7 @@ import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
+import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
@@ -38,6 +38,7 @@ import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
@@ -54,8 +55,10 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.List;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
@@ -81,7 +84,8 @@ public class MainWindow {
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
     private final EventTableModel eventTableModel;
-    private final CategoryTableModel categoryTableModel;
+
+    private final TableModel<Category> categoryTableModel;
     private final TimeUnitTableModel timeUnitTableModel;
     private final TemplateTableModel templateTableModel;
     private final Validator<Event> eventValidator;
@@ -95,7 +99,10 @@ public class MainWindow {
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         this.templateTableModel = new TemplateTableModel(dependencyProvider.getTemplateCrudService());
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
-        this.categoryTableModel = new CategoryTableModel(dependencyProvider.getCategoryCrudService());
+        this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
+                new Column<>(" ", Color.class, Category::getColor),
+                new Column<>("Name", String.class, Category::getName)
+        ));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
         this.timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
@@ -336,7 +343,7 @@ public class MainWindow {
         return eventTableModel;
     }
 
-    public CategoryTableModel getCategoryTableModel() {
+    public TableModel<Category> getCategoryTableModel() {
         return categoryTableModel;
     }
 
