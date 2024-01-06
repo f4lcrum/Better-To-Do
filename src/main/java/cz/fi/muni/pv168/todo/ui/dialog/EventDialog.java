@@ -108,7 +108,7 @@ public final class EventDialog extends EntityDialog<Event> {
         }
 
         if (dateModel.getValue() == null) {
-            result.add("Incorrect field:; insert date value into date field");
+            result.add("Incorrect field: insert date value into date field");
         }
 
         return result;
