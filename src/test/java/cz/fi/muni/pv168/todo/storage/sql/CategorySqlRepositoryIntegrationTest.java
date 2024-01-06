@@ -38,7 +38,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void templateInitSucceeds() {
+    void categoryInitSucceeds() {
         Set<String> expectedCategoriesNames = new HashSet<>(Set.of("Work", "Family", "Personal"));
         final Collection<Category> retrievedCategories;
 
@@ -52,8 +52,8 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void createOneTemplateSucceeds() {
-        final Category newCategory = new Category(UUID.randomUUID(), "TestTemplate", Color.PINK);
+    void createOneCategorySucceeds() {
+        final Category newCategory = new Category(UUID.randomUUID(), "TestCategory", Color.PINK);
         final Optional<Category> retrievedCategory;
 
         categoryRepository.create(newCategory);
@@ -64,7 +64,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void updateOfInsertedTemplateSucceeds() {
+    void updateOfInsertedCategorySucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestCategory", Color.PINK);
         final Category updatedCategory = new Category(newCategory.getGuid(), "UpdatedCategory", Color.BLUE);
         final Optional<Category> updateResult;
@@ -78,7 +78,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void deleteByGuidOnExistingTemplateSucceeds() {
+    void deleteByGuidOnExistingCategorySucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestCategory", Color.BLACK);
 
         categoryRepository.create(newCategory);
@@ -107,7 +107,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void existsByGuidOnExistingTemplateSucceeds() {
+    void existsByGuidOnExistingCategorySucceeds() {
         final Category category = new Category(UUID.randomUUID(), "Money", Color.GREEN);
         final boolean existsCategory;
 
@@ -119,7 +119,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void existsByGuidOnNonExistingTemplateFails() {
+    void existsByGuidOnNonExistingCategoryFails() {
         final UUID randomUUID = UUID.fromString("d94ee5ef-0325-4ebe-a895-fa380c968f49");
         final boolean existsResult;
 
@@ -129,7 +129,7 @@ final class CategorySqlRepositoryIntegrationTest {
     }
 
     @Test
-    void findByGuidOnExistingTemplateSucceeds() {
+    void findByGuidOnExistingCategorySucceeds() {
         final Category category = new Category(UUID.randomUUID(), "Money", Color.GREEN);
         final Optional<Category> retrievedCategory;
 
