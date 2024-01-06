@@ -29,14 +29,14 @@ public class CreateTemplateFromEventAction extends AbstractAction {
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
     public CreateTemplateFromEventAction(JTable todoTable, JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
-        super("Create template", Icons.ADD_ICON);
+        super("Save as template", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.templateTable = templateTable;
         this.mainWindow = mainWindow;
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
-        putValue(SHORT_DESCRIPTION, "Adds new template");
+        putValue(SHORT_DESCRIPTION, "Save as template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
         putValue(Action.SMALL_ICON, Icons.ADD_ICON);
@@ -56,7 +56,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         var event = eventTableModel.getEntity(modelRow);
 
         var dialog = new TemplateDialog(createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
-        dialog.show(templateTable, "Create Template from event")
+        dialog.show(templateTable, "Save as template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();
     }
