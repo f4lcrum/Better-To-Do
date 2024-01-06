@@ -65,10 +65,10 @@ final class EventSqlRepositoryIntegrationTest {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
         categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
         final Optional<Event> retrievedCategory;
         final Event newEvent = new Event(UUID.randomUUID(), "Test Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event for work tasks");
 
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(newEvent);
 
         retrievedCategory = assertDoesNotThrow(() -> eventRepository.findByGuid(newEvent.getGuid()));
@@ -79,19 +79,18 @@ final class EventSqlRepositoryIntegrationTest {
     @Test
     void updateOfInsertedEventSucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
-        categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
-
-
         final Event newEvent = new Event(UUID.randomUUID(), "Test Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event for work tasks");
         final Event updateEvent = new Event(newEvent.getGuid(), "Updated Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Upfated event");
         final Optional<Event> updateResult;
 
+        categoryRepository.create(newCategory);
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(newEvent);
-        assertDoesNotThrow(() -> eventRepository.update(updateEvent));
-        updateResult = assertDoesNotThrow(() -> eventRepository.findByGuid(newEvent.getGuid()));
 
+        assertDoesNotThrow(() -> eventRepository.update(updateEvent));
+
+        updateResult = assertDoesNotThrow(() -> eventRepository.findByGuid(newEvent.getGuid()));
         assertTrue(updateResult.isPresent());
         assertEquals(updateEvent, updateResult.get());
     }
@@ -101,37 +100,33 @@ final class EventSqlRepositoryIntegrationTest {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
         categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
-
         final Event newEvent = new Event(UUID.randomUUID(), "Test Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event for work tasks");
 
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(newEvent);
 
         assertDoesNotThrow(() -> eventRepository.existsByGuid(newEvent.getGuid()));
         assertDoesNotThrow(() -> eventRepository.deleteByGuid(newEvent.getGuid()));
-
         assertThrows(DataStorageException.class, () -> eventRepository.deleteByGuid(newEvent.getGuid()));
     }
 
     @Test
     void deleteAllSucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
-        categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
-
         final Event newEvent1 = new Event(UUID.randomUUID(), "Test Event1", newCategory, LocalDate.now(),LocalTime.now(), newTimeUnit, 8, "Event1 for work tasks");
         final Event newEvent2 = new Event(UUID.randomUUID(), "Test Event2", newCategory, LocalDate.now(),LocalTime.now(), newTimeUnit, 8, "Event2 for work tasks");
         final Event newEvent3 = new Event(UUID.randomUUID(), "Test Event3", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event3 for work tasks");
-
         final Collection<Event> events;
 
+        categoryRepository.create(newCategory);
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(newEvent1);
         eventRepository.create(newEvent2);
         eventRepository.create(newEvent3);
+
         events = eventRepository.findAll();
         assertDoesNotThrow(() -> eventRepository.deleteAll());
-
         assertEquals(3 + 3, events.size());
         assertEquals(0, eventRepository.findAll().size());
     }
@@ -139,13 +134,12 @@ final class EventSqlRepositoryIntegrationTest {
     @Test
     void existsByGuidOnExistingEventSucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
-        categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
-
         final Event event = new Event(UUID.randomUUID(), "Test Event1", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event1 for work tasks");
         final boolean existsEvent;
 
+        categoryRepository.create(newCategory);
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(event);
         existsEvent = eventRepository.existsByGuid(event.getGuid());
 
@@ -159,23 +153,21 @@ final class EventSqlRepositoryIntegrationTest {
         final boolean existsResult;
 
         existsResult = assertDoesNotThrow(() -> eventRepository.existsByGuid(randomUUID));
-
         assertFalse(existsResult);
     }
 
     @Test
     void findByGuidOnExistingEventSucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
-        categoryRepository.create(newCategory);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
-        timeUnitRepository.create(newTimeUnit);
-
         final Event event = new Event(UUID.randomUUID(), "Test Event1", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event1 for work tasks");
         final Optional<Event> retrievedEvent;
 
+        categoryRepository.create(newCategory);
+        timeUnitRepository.create(newTimeUnit);
         eventRepository.create(event);
-        retrievedEvent = assertDoesNotThrow(() -> eventRepository.findByGuid(event.getGuid()));
 
+        retrievedEvent = assertDoesNotThrow(() -> eventRepository.findByGuid(event.getGuid()));
         assertTrue(retrievedEvent.isPresent());
         assertEquals(event, retrievedEvent.get());
     }

@@ -43,7 +43,6 @@ final class CategorySqlRepositoryIntegrationTest {
         final Collection<Category> retrievedCategories;
 
         retrievedCategories = categoryRepository.findAll();
-
         retrievedCategories.forEach(timeUnit -> expectedCategoriesNames.remove(timeUnit.getName()));
 
         // Expecting 4 initial time units - Minute, Hour, Day, Week
@@ -71,8 +70,8 @@ final class CategorySqlRepositoryIntegrationTest {
 
         categoryRepository.create(newCategory);
         assertDoesNotThrow(() -> categoryRepository.update(updatedCategory));
-        updateResult = assertDoesNotThrow(() -> categoryRepository.findByGuid(newCategory.getGuid()));
 
+        updateResult = assertDoesNotThrow(() -> categoryRepository.findByGuid(newCategory.getGuid()));
         assertTrue(updateResult.isPresent());
         assertEquals(updatedCategory, updateResult.get());
     }
