@@ -89,8 +89,10 @@ public class MainWindow {
     private final Validator<TimeUnit> timeUnitValidator;
     private final Validator<Template> templateValidator;
 
+    private final StatisticsPanel statistics;
 
     public MainWindow(DependencyProvider dependencyProvider) {
+
         this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         this.templateTableModel = new TemplateTableModel(dependencyProvider.getTemplateCrudService());
@@ -102,6 +104,7 @@ public class MainWindow {
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
+        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
         this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
         this.eventValidator = dependencyProvider.getEventValidator();
         this.categoryValidator = dependencyProvider.getCategoryValidator();
@@ -119,12 +122,10 @@ public class MainWindow {
         templateTablePanel.getEventTable().setComponentPopupMenu(createTemplateTablePopupMenu());
         timeUnitTablePanel.getEventTable().setComponentPopupMenu(createTimeUnitTablePopupMenu());
 
-        JPanel statistics = new StatisticsPanel();
-
         var rowSorter = new TableRowSorter<>(eventTableModel);
         rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
 
-        var eventTableFilter = new EventTableFilter(rowSorter);
+        var eventTableFilter = new EventTableFilter(rowSorter, statistics);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
 
         this.tabbedPane = new JTabbedPane();
@@ -154,12 +155,13 @@ public class MainWindow {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
-        frame.add(statistics, BorderLayout.SOUTH);
+        frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
     }
 
     public void refreshEventListModel() {
         eventListModel.refresh();
+        this.statistics.refresh();
     }
 
     public void refreshCategoryListModel() {
@@ -286,10 +288,6 @@ public class MainWindow {
 
     public void setButtonTabStrategy(ButtonTabStrategy buttonTabStrategy) {
         this.buttonTabStrategy = buttonTabStrategy;
-    }
-
-    public EventListModel getCEventListModel() {
-        return eventListModel;
     }
 
     public CategoryListModel getCategoryListModel() {
