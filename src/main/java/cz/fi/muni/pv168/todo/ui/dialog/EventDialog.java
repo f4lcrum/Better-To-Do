@@ -107,6 +107,10 @@ public final class EventDialog extends EntityDialog<Event> {
             result.add("Incorrect field: insert integer value into time unit count field");
         }
 
+        if (dateModel.getValue() == null) {
+            result.add("Incorrect field: insert date value into date field");
+        }
+
         return result;
     }
 
