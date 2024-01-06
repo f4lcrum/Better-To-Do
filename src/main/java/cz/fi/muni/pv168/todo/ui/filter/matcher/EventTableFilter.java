@@ -10,7 +10,6 @@ import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusCompoundMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.event.EventStatusMatcher;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.util.Either;
 

@@ -4,7 +4,6 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.action.DetailClick;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
