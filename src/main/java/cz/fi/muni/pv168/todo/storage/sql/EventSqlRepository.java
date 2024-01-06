@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.repository.EventRepository;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EventSqlRepository implements Repository<Event> {
+public class EventSqlRepository implements EventRepository {
 
     private final DataAccessObject<EventEntity> eventDao;
     private final EntityMapper<EventEntity, Event> eventMapper;
