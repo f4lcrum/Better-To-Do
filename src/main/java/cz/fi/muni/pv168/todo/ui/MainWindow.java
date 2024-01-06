@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.ui;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
@@ -28,7 +29,6 @@ import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
@@ -56,6 +56,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
@@ -81,7 +82,7 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
-    private final EventTableModel eventTableModel;
+    private final TableModel<Event> eventTableModel;
 
     private final TableModel<Category> categoryTableModel;
     private final TableModel<TimeUnit> timeUnitTableModel;
@@ -93,7 +94,14 @@ public class MainWindow {
 
 
     public MainWindow(DependencyProvider dependencyProvider) {
-        this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
+        this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
+                new Column<>(" ", Color.class, Event::getColour),
+                new Column<>("Name of the event", String.class, Event::getName),
+                new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart),
+                new Column<>("Category", Category.class, Event::getCategory),
+                new Column<>("Status", Status.class, Event::getStatus),
+                new Column<>("Duration (minutes)", String.class, Event::getDurationString)
+        ));
         this.eventTablePanel = new EventTablePanel(eventTableModel);
         this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
                 new Column<>(" ", Color.class, Template::getColour),
@@ -346,7 +354,7 @@ public class MainWindow {
         return timeUnitTablePanel;
     }
 
-    public EventTableModel getEventTableModel() {
+    public TableModel<Event> getEventTableModel() {
         return eventTableModel;
     }
 
