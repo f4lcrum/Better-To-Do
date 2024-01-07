@@ -9,6 +9,7 @@ import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTimeUnitAction;
+import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
@@ -210,6 +211,7 @@ public class MainWindow {
         eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
+        eventMenu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
 
         var categoryMenu = new JMenu("Category");
         categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
@@ -259,6 +261,7 @@ public class MainWindow {
         menu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
         menu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         menu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
+        menu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
         return menu;
     }
 
