@@ -28,6 +28,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
+
     public CreateTemplateFromEventAction(JTable todoTable, JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
         super("Save as template", Icons.ADD_ICON);
         this.todoTable = todoTable;
@@ -60,6 +61,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();
     }
+
     private Template createPrefilledTemplate(Event event) {
 
         return new Template(
