@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.panels;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.ui.action.DetailClick;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
@@ -34,7 +36,7 @@ public class CategoryTablePanel extends JPanel {
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
 
         table.setAutoCreateRowSorter(true);
-
+        table.addMouseListener(new DetailClick<>(categoryTableModel, Category::getName, "Category detail"));
         return table;
     }
 
