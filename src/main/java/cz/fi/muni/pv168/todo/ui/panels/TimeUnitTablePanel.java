@@ -1,6 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.panels;
 
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.action.DetailClick;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 
 import javax.swing.JPanel;
@@ -25,7 +27,7 @@ public class TimeUnitTablePanel extends JPanel {
         var table = new JTable(timeUnitTableModel);
 
         table.setAutoCreateRowSorter(true);
-
+        table.addMouseListener(new DetailClick<>(timeUnitTableModel, TimeUnit::getName, "Time Unit detail"));
         return table;
     }
 
