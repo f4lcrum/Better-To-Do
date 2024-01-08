@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import java.util.ArrayList;
 import java.util.List;

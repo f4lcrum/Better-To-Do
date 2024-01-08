@@ -10,6 +10,7 @@ import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTimeUnitAction;
+import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
@@ -40,6 +41,7 @@ import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -58,8 +60,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
@@ -92,6 +92,7 @@ public class MainWindow {
     private final Validator<TimeUnit> timeUnitValidator;
     private final Validator<Template> templateValidator;
 
+    private final StatisticsPanel statistics;
 
     public MainWindow(DependencyProvider dependencyProvider) {
         this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
@@ -124,6 +125,7 @@ public class MainWindow {
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
+        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
         this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
         this.eventValidator = dependencyProvider.getEventValidator();
         this.categoryValidator = dependencyProvider.getCategoryValidator();
@@ -132,8 +134,8 @@ public class MainWindow {
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
-        exportAction = new ExportAction(eventTablePanel);
-        importAction = new ImportAction(eventTablePanel);
+        exportAction = new ExportAction(eventTablePanel, dependencyProvider);
+        importAction = new ImportAction(eventTablePanel, categoryTablePanel, templateTablePanel, timeUnitTablePanel, dependencyProvider);
 
         // Apply popup menu bindings
         eventTablePanel.getEventTable().setComponentPopupMenu(createEventTablePopupMenu());
@@ -141,12 +143,10 @@ public class MainWindow {
         templateTablePanel.getEventTable().setComponentPopupMenu(createTemplateTablePopupMenu());
         timeUnitTablePanel.getEventTable().setComponentPopupMenu(createTimeUnitTablePopupMenu());
 
-        JPanel statistics = new StatisticsPanel();
-
         var rowSorter = new TableRowSorter<>(eventTableModel);
         rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
 
-        var eventTableFilter = new EventTableFilter(rowSorter);
+        var eventTableFilter = new EventTableFilter(rowSorter, statistics);
         eventTablePanel.getEventTable().setRowSorter(rowSorter);
 
         this.tabbedPane = new JTabbedPane();
@@ -176,12 +176,13 @@ public class MainWindow {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
-        frame.add(statistics, BorderLayout.SOUTH);
+        frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
     }
 
     public void refreshEventListModel() {
         eventListModel.refresh();
+        this.statistics.refresh();
     }
 
     public void refreshCategoryListModel() {
@@ -230,6 +231,7 @@ public class MainWindow {
         eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
+        eventMenu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
 
         var categoryMenu = new JMenu("Category");
         categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
@@ -279,6 +281,7 @@ public class MainWindow {
         menu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
         menu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
         menu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
+        menu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
         return menu;
     }
 
@@ -308,10 +311,6 @@ public class MainWindow {
 
     public void setButtonTabStrategy(ButtonTabStrategy buttonTabStrategy) {
         this.buttonTabStrategy = buttonTabStrategy;
-    }
-
-    public EventListModel getCEventListModel() {
-        return eventListModel;
     }
 
     public CategoryListModel getCategoryListModel() {

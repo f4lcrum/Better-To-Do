@@ -1,9 +1,5 @@
 package cz.fi.muni.pv168.todo.business.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,32 +7,16 @@ import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@JsonDeserialize(builder = Event.EventBuilder.class)
 public class Event implements Entity {
 
-    @JsonProperty
     private final UUID id;
-    @JsonProperty
     private final boolean isDefault;
-    @JsonProperty
     private final String name;
-
-    @JsonProperty
     private final Category category;
-
-    @JsonProperty
     private final LocalDate date;
-
-    @JsonProperty
     private final LocalTime startTime;
-
-    @JsonProperty
     private final TimeUnit timeUnit;
-
-    @JsonProperty
     private final int duration;
-
-    @JsonProperty
     private final String description;
 
     public Event(UUID id, String name, Category category, LocalDate date, LocalTime startTime, TimeUnit timeUnit, int duration, String description) {
@@ -49,10 +29,6 @@ public class Event implements Entity {
         this.timeUnit = timeUnit;
         this.duration = duration;
         this.description = description;
-    }
-
-    public static EventBuilder builder() {
-        return new EventBuilder();
     }
 
     public long getEventDuration() {
@@ -138,91 +114,5 @@ public class Event implements Entity {
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
         return Objects.equals(event.id, this.id);
-    }
-
-    @JsonPOJOBuilder(withPrefix = "", buildMethodName = "build")
-    public static class EventBuilder {
-
-        private UUID id;
-        private boolean isDefault;
-        private UUID userId;
-        private String name;
-        private Category category;
-        private LocalDate date;
-        private LocalTime startTime;
-        private TimeUnit timeUnit;
-        private int duration;
-        private String description;
-
-        EventBuilder() {
-        }
-
-        @JsonProperty
-        public EventBuilder id(UUID id) {
-            this.id = id;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder isDefault(boolean isDefault) {
-            this.isDefault = isDefault;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder userId(UUID userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder category(Category category) {
-            this.category = category;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder date(LocalDate date) {
-            this.date = date;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder startTime(LocalTime startTime) {
-            this.startTime = startTime;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder timeUnit(TimeUnit timeUnit) {
-            this.timeUnit = timeUnit;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder duration(int duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        @JsonProperty
-        public EventBuilder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Event build() {
-            return new Event(this.id, this.name, this.category, this.date, this.startTime, this.timeUnit, this.duration, this.description);
-        }
-
-        public String toString() {
-            return "Event.EventBuilder(id=" + this.id + ", userId=" + this.userId + ", isDefault=" + this.isDefault + ", name=" + this.name + ", category=" + this.category + ", date=" + this.date + ", startTime=" + this.startTime + ", timeUnit=" + this.timeUnit + ", duration=" + this.duration + ", description=" + this.description + ")";
-        }
     }
 }

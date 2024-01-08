@@ -74,4 +74,10 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
     public T getEntity(int rowIndex) {
         return content.get(rowIndex);
     }
+
+    public void refresh() {
+        this.content = new ArrayList<>(
+                crudService.findAll());
+        fireTableDataChanged();
+    }
 }

@@ -39,6 +39,7 @@ public class EventTablePanel extends JPanel {
         return event.getName() + " " + event.getCategory().getName() + " " + event.getStartTime();
     }
     private JTable setUpTable(TableModel<Event> eventTableModel) {
+
         var table = new JTable(eventTableModel);
 
         // Renderers bind
@@ -50,6 +51,10 @@ public class EventTablePanel extends JPanel {
         table.setAutoCreateRowSorter(true);
 
         return table;
+    }
+
+    public void refresh() {
+        eventTableModel.refresh();
     }
 
     public JTable getEventTable() {
