@@ -82,6 +82,7 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
+    private final JPanel durationFilterPanel;
     private final TableModel<Event> eventTableModel;
 
     private final TableModel<Category> categoryTableModel;
@@ -158,6 +159,7 @@ public class MainWindow {
         // Filters
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
         this.categoryFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
+        this.durationFilterPanel = FilterPanel.createDurationFilter(eventTableFilter);
 
         this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this);
 
@@ -175,7 +177,7 @@ public class MainWindow {
         frame = createFrame();
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
     }
@@ -204,6 +206,7 @@ public class MainWindow {
     public void applyButtonStrategy() {
         setPanelEnabled(getStatusFilterPanel(), buttonTabStrategy.statusFilterEnabled());
         setPanelEnabled(getCategoryFilterPanel(), buttonTabStrategy.categoryFilterEnabled());
+        setPanelEnabled(getDurationFilterPanel(), buttonTabStrategy.durationFilterEnabled());
         addButton.setAction(buttonTabStrategy.getAddAction());
         editButton.setAction(buttonTabStrategy.getEditAction());
         deleteButton.setAction(buttonTabStrategy.getDeleteAction());
@@ -331,6 +334,9 @@ public class MainWindow {
 
     public JPanel getCategoryFilterPanel() {
         return categoryFilterPanel;
+    }
+    public JPanel getDurationFilterPanel() {
+        return durationFilterPanel;
     }
 
     public JTabbedPane getTabbedPane() {
