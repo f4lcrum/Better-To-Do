@@ -38,6 +38,10 @@ public class CategoryTablePanel extends JPanel {
         return table;
     }
 
+    public void refresh() {
+        categoryTableModel.refresh();
+    }
+
     public JTable getEventTable() {
         return eventTable;
     }

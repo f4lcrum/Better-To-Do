@@ -40,6 +40,10 @@ public class TemplateTablePanel extends JPanel {
         return table;
     }
 
+    public void refresh() {
+        templateTableModel.refresh();
+    }
+
     public JTable getEventTable() {
         return eventTable;
     }

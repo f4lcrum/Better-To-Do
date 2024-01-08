@@ -1,25 +1,14 @@
 package cz.fi.muni.pv168.todo.business.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 import java.util.UUID;
 
 public class TimeUnit implements Entity, Comparable<TimeUnit> {
 
-    @JsonProperty
     private final UUID id;
-
-    @JsonProperty
     private final boolean isDefault;
-
-    @JsonProperty
     private final String name;
-
-    @JsonProperty
     private final long hours;
-
-    @JsonProperty
     private final long minutes;
 
     public TimeUnit(UUID id, boolean isDefault, String name, long hours, long minutes) {
