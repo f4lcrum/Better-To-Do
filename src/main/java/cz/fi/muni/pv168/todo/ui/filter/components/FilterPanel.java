@@ -58,9 +58,9 @@ public class FilterPanel<L extends Enum<L>, R> {
     public static JPanel createDurationFilter(EventTableFilter eventTableFilter) {
         JPanel durationPanel = new JPanel();
         JLabel minLabel = new JLabel("Min Duration:");
-        JTextField minDurationField = new JTextField(5); // 5 columns wide
+        JTextField minDurationField = new JTextField(5);
         JLabel maxLabel = new JLabel("Max Duration:");
-        JTextField maxDurationField = new JTextField(5); // 5 columns wide
+        JTextField maxDurationField = new JTextField(5);
         JButton applyFilterButton = new JButton("Apply");
 
         applyFilterButton.addActionListener(e -> {
