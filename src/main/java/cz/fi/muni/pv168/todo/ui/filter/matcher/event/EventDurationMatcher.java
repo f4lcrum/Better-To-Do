@@ -15,7 +15,7 @@ public class EventDurationMatcher extends EntityMatcher<Event> {
 
     @Override
     public boolean evaluate(Event event) {
-        long duration = event.getDuration() * event.getTimeUnit().getMinutes();
+        long duration = event.getDuration() * (event.getTimeUnit().getHours() * 60 + event.getTimeUnit().getMinutes());
         return duration >= minDuration && duration <= maxDuration;
     }
 }
