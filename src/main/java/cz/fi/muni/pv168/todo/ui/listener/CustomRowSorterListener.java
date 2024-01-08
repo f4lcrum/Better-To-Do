@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.listener;
 
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
+import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 
 import javax.swing.event.RowSorterEvent;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 public class CustomRowSorterListener implements RowSorterListener {
 
     private final StatisticsPanel statistics;
-    private final TableRowSorter<EventTableModel> rowSorter;
+    private final TableRowSorter<TableModel<Event>> rowSorter;
 
-    public CustomRowSorterListener(StatisticsPanel statistics, TableRowSorter<EventTableModel> rowSorter) {
+    public CustomRowSorterListener(StatisticsPanel statistics, TableRowSorter<TableModel<Event>> rowSorter) {
         super();
         this.statistics = statistics;
         this.rowSorter = rowSorter;

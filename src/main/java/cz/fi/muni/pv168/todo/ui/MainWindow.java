@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.ui;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
@@ -27,18 +28,16 @@ import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.todo.ui.model.CategoryTableModel;
+import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
-import cz.fi.muni.pv168.todo.ui.model.TemplateTableModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitTableModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
@@ -56,8 +55,11 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class MainWindow {
 
@@ -80,10 +82,11 @@ public class MainWindow {
     private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
-    private final EventTableModel eventTableModel;
-    private final CategoryTableModel categoryTableModel;
-    private final TimeUnitTableModel timeUnitTableModel;
-    private final TemplateTableModel templateTableModel;
+    private final TableModel<Event> eventTableModel;
+
+    private final TableModel<Category> categoryTableModel;
+    private final TableModel<TimeUnit> timeUnitTableModel;
+    private final TableModel<Template> templateTableModel;
     private final Validator<Event> eventValidator;
     private final Validator<Category> categoryValidator;
     private final Validator<TimeUnit> timeUnitValidator;
@@ -92,14 +95,32 @@ public class MainWindow {
     private final StatisticsPanel statistics;
 
     public MainWindow(DependencyProvider dependencyProvider) {
-
-        this.eventTableModel = new EventTableModel(dependencyProvider.getEventCrudService());
+        this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
+                new Column<>(" ", Color.class, Event::getColour),
+                new Column<>("Name of the event", String.class, Event::getName),
+                new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart),
+                new Column<>("Category", Category.class, Event::getCategory),
+                new Column<>("Status", Status.class, Event::getStatus),
+                new Column<>("Duration (minutes)", String.class, Event::getDurationString)
+        ));
         this.eventTablePanel = new EventTablePanel(eventTableModel);
-        this.templateTableModel = new TemplateTableModel(dependencyProvider.getTemplateCrudService());
+        this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
+                new Column<>(" ", Color.class, Template::getColour),
+                new Column<>("Template name", String.class, Template::getName),
+                new Column<>("Category", Category.class, Template::getCategory),
+                new Column<>("Duration", String.class, Template::getDurationString)
+        ));
         this.templateTablePanel = new TemplateTablePanel(templateTableModel);
-        this.categoryTableModel = new CategoryTableModel(dependencyProvider.getCategoryCrudService());
+        this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
+                new Column<>(" ", Color.class, Category::getColor),
+                new Column<>("Name", String.class, Category::getName)
+        ));
         this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
-        this.timeUnitTableModel = new TimeUnitTableModel(dependencyProvider.getTimeUnitCrudService());
+        this.timeUnitTableModel = new TableModel<>(dependencyProvider.getTimeUnitCrudService(), List.of(
+                new Column<>("Name", String.class, TimeUnit::getName),
+                new Column<>("Hour count", Long.class, TimeUnit::getHours),
+                new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
+        ));
         this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
@@ -332,19 +353,19 @@ public class MainWindow {
         return timeUnitTablePanel;
     }
 
-    public EventTableModel getEventTableModel() {
+    public TableModel<Event> getEventTableModel() {
         return eventTableModel;
     }
 
-    public CategoryTableModel getCategoryTableModel() {
+    public TableModel<Category> getCategoryTableModel() {
         return categoryTableModel;
     }
 
-    public TimeUnitTableModel getTimeUnitTableModel() {
+    public TableModel<TimeUnit> getTimeUnitTableModel() {
         return timeUnitTableModel;
     }
 
-    public TemplateTableModel getTemplateTableModel() {
+    public TableModel<Template> getTemplateTableModel() {
         return templateTableModel;
     }
 

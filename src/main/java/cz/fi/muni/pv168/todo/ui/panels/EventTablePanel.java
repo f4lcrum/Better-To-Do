@@ -4,7 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.action.DetailClick;
-import cz.fi.muni.pv168.todo.ui.model.EventTableModel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.LocalDateRenderer;
@@ -24,9 +24,9 @@ public class EventTablePanel extends JPanel {
 
     private final JTable eventTable;
 
-    private final EventTableModel eventTableModel;
+    private final TableModel<Event> eventTableModel;
 
-    public EventTablePanel(EventTableModel eventTableModel) {
+    public EventTablePanel(TableModel<Event> eventTableModel) {
         setLayout(new BorderLayout());
         eventTable = setUpTable(eventTableModel);
         eventTable.addMouseListener(new DetailClick<>(eventTableModel, this::formatEvent, "Event detail"));
@@ -38,8 +38,8 @@ public class EventTablePanel extends JPanel {
     private String formatEvent(Event event) {
         return event.getName() + " " + event.getCategory().getName() + " " + event.getStartTime();
     }
+    private JTable setUpTable(TableModel<Event> eventTableModel) {
 
-    private JTable setUpTable(EventTableModel eventTableModel) {
         var table = new JTable(eventTableModel);
 
         // Renderers bind

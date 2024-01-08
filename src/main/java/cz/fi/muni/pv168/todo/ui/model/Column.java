@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.model;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-class Column<E, T> {
+public class Column<E, T> {
 
     private final String name;
     private final Class<T> columnType;

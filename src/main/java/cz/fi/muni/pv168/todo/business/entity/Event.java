@@ -99,6 +99,10 @@ public class Event implements Entity {
         return duration;
     }
 
+    public String getDurationString() {
+        return String.format("%d %s", getDuration(), getTimeUnit().getName());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
