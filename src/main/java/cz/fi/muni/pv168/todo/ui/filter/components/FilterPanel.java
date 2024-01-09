@@ -13,11 +13,14 @@ import cz.fi.muni.pv168.todo.ui.renderer.SpecialFilterStatusRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.StatusRenderer;
 import cz.fi.muni.pv168.todo.util.Either;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import javax.swing.JTextField;
 
 
 public class FilterPanel<L extends Enum<L>, R> {
@@ -50,5 +53,33 @@ public class FilterPanel<L extends Enum<L>, R> {
                 .setValuesRenderer(new CategoryRenderer())
                 .setFilter(eventTableFilter::filterCategory)
                 .build();
+    }
+
+    public static JPanel createDurationFilter(EventTableFilter eventTableFilter) {
+        JPanel durationPanel = new JPanel();
+        JLabel minLabel = new JLabel("Min Duration:");
+        JTextField minDurationField = new JTextField(5);
+        JLabel maxLabel = new JLabel("Max Duration:");
+        JTextField maxDurationField = new JTextField(5);
+        JButton applyFilterButton = new JButton("Apply");
+
+        applyFilterButton.addActionListener(e -> {
+            try {
+                int minDuration = Integer.parseInt(minDurationField.getText());
+                int maxDuration = Integer.parseInt(maxDurationField.getText());
+                eventTableFilter.filterDuration(minDuration, maxDuration);
+            } catch (NumberFormatException ex) {
+                // Handle invalid input, perhaps with a dialog showing an error message
+                JOptionPane.showMessageDialog(durationPanel, "Please enter valid integer values for duration.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        durationPanel.add(minLabel);
+        durationPanel.add(minDurationField);
+        durationPanel.add(maxLabel);
+        durationPanel.add(maxDurationField);
+        durationPanel.add(applyFilterButton);
+
+        return durationPanel;
     }
 }
