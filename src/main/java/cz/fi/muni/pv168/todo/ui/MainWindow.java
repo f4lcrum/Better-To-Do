@@ -95,6 +95,8 @@ public class MainWindow {
 
     private final StatisticsPanel statistics;
 
+    TableRowSorter<TableModel<Event>> rowSorter;
+
     public MainWindow(DependencyProvider dependencyProvider) {
         this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
                 new Column<>(" ", Color.class, Event::getColour),
@@ -144,7 +146,7 @@ public class MainWindow {
         templateTablePanel.getEventTable().setComponentPopupMenu(createTemplateTablePopupMenu());
         timeUnitTablePanel.getEventTable().setComponentPopupMenu(createTimeUnitTablePopupMenu());
 
-        var rowSorter = new TableRowSorter<>(eventTableModel);
+        this.rowSorter = new TableRowSorter<>(eventTableModel);
         rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
 
         var eventTableFilter = new EventTableFilter(rowSorter, statistics);
@@ -185,6 +187,7 @@ public class MainWindow {
     public void refreshEventListModel() {
         eventListModel.refresh();
         this.statistics.refresh();
+        rowSorter.sort();
     }
 
     public void refreshCategoryListModel() {
