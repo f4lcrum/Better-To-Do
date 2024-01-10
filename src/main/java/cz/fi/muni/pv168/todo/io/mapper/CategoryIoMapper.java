@@ -10,6 +10,7 @@ public final class CategoryIoMapper implements IoMapper<Category, IoCategory> {
     public IoCategory mapToIo(Category entity) {
         return new IoCategory(
                 entity.getGuid(),
+                entity.isDefault(),
                 entity.getName(),
                 entity.getColor()
         );
@@ -19,6 +20,7 @@ public final class CategoryIoMapper implements IoMapper<Category, IoCategory> {
     public Category mapToBusiness(IoCategory entity) {
         return new Category(
                 entity.getId(),
+                entity.getIsDefault(),
                 entity.getName(),
                 entity.getColor()
         );

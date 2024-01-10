@@ -56,7 +56,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
 
-        var dialog = new TemplateDialog(createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Save as template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();

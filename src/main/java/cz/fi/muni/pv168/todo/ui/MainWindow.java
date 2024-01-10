@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
@@ -95,7 +96,10 @@ public class MainWindow {
 
     private final StatisticsPanel statistics;
 
+    private final CategoryCrudService categoryCrudService;
+
     public MainWindow(DependencyProvider dependencyProvider) {
+        this.categoryCrudService = dependencyProvider.getCategoryCrudService();
         this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
                 new Column<>(" ", Color.class, Event::getColour),
                 new Column<>("Name of the event", String.class, Event::getName),
@@ -391,4 +395,7 @@ public class MainWindow {
         return templateValidator;
     }
 
+    public CategoryCrudService getCategoryCrudService() {
+        return categoryCrudService;
+    }
 }

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
@@ -22,6 +23,7 @@ import java.time.LocalTime;
 
 public final class TemplateDialog extends EntityDialog<Template> {
 
+    private final CategoryCrudService categoryCrudService;
     private final PlaceholderTextField nameField = new PlaceholderTextField();
     private final PlaceholderTextField eventNameField = new PlaceholderTextField();
     private final PlaceholderTextField duration = new PlaceholderTextField();
@@ -33,9 +35,10 @@ public final class TemplateDialog extends EntityDialog<Template> {
 
     private final Template template;
 
-    public TemplateDialog(Template template, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
+    public TemplateDialog(CategoryCrudService categoryCrudService, Template template, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
                           boolean edit, Validator<Template> entityValidator) {
         super(Objects.requireNonNull(entityValidator));
+        this.categoryCrudService = categoryCrudService;
         this.template = template;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
@@ -103,7 +106,7 @@ public final class TemplateDialog extends EntityDialog<Template> {
                 template.getGuid(),
                 nameField.getText(),
                 eventNameField.getText(),
-                (Category) categoryModel.getSelectedItem(),
+                (categoryModel.getSelectedItem() != null ? ((Category) categoryModel.getSelectedItem()) : categoryCrudService.findDefault()),
                 LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText())),
                 (TimeUnit) timeUnitModel.getSelectedItem(),
                 Integer.parseInt(duration.getText()),

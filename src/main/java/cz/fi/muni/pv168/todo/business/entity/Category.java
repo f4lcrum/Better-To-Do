@@ -12,8 +12,12 @@ public class Category implements Entity {
     private final Color color;
 
     public Category(UUID id, String name, Color color) {
+        this(id, false, name, color);
+    }
+
+    public Category(UUID id, boolean isDefault, String name, Color color) {
         this.id = id;
-        this.isDefault = false;
+        this.isDefault = isDefault;
         this.name = name;
         this.color = color;
     }

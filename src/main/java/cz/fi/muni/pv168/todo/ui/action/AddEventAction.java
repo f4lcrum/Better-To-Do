@@ -49,7 +49,7 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
+        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
         dialog.show(todoTable, "Add Event")
                 .ifPresent(eventTableModel::addRow);
         mainWindow.refreshEventListModel();
