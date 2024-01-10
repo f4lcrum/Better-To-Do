@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.business.service.validation;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
-import cz.fi.muni.pv168.todo.business.service.validation.common.LongValueValidator;
+import cz.fi.muni.pv168.todo.business.service.validation.common.NumericalValueValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.common.StringLengthValidator;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class EventValidator implements Validator<Event> {
         var validators = List.of(
                 Validator.extracting(Event::getName, new StringLengthValidator(2, 128, "Event name")),
                 Validator.extracting(Event::getDescription, new StringLengthValidator(0, 1024, "Event description")),
-                Validator.extracting(Event::getEventDuration, new LongValueValidator(1, Long.MAX_VALUE, "Event duration"))
+                Validator.extracting(Event::getEventDuration, new NumericalValueValidator<>(1L, Long.MAX_VALUE, "Event duration"))
         );
 
         return Validator.compose(validators).validate(model);
