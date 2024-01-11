@@ -2,29 +2,31 @@ package cz.fi.muni.pv168.todo.business.service.validation.common;
 
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
-public final class LongValueValidator extends PropertyValidator<Long> {
-    private final long min;
+public class NumericalValueValidator<T extends Number> extends PropertyValidator<T > {
 
-    private final long max;
+    private final T min;
+    private final T max;
 
-    public LongValueValidator(long min, long max) {
+    public NumericalValueValidator(T min, T max) {
         this(min, max, null);
     }
 
-    public LongValueValidator(long min, long max, String name) {
+    public NumericalValueValidator(T min, T max, String name) {
         super(name);
         this.min = min;
         this.max = max;
     }
 
     @Override
-    public ValidationResult validate(Long value) {
+    public ValidationResult validate(T value) {
         var result = new ValidationResult();
-        if (min > value || value > max) {
+        if (min.longValue() > value.longValue() || value.longValue() > max.longValue()) {
             result.add("'%d' value is not between %d (inclusive) and %d (inclusive)"
                     .formatted(value, min, max)
             );
         }
         return result;
     }
+
+
 }
