@@ -53,6 +53,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -104,25 +106,25 @@ public class MainWindow {
                 new Column<>("Status", Status.class, Event::getStatus),
                 new Column<>("Duration (minutes)", String.class, Event::getDurationString)
         ));
-        this.eventTablePanel = new EventTablePanel(eventTableModel);
+        this.eventTablePanel = new EventTablePanel(eventTableModel, this::changeActionsState);
         this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
                 new Column<>(" ", Color.class, Template::getColour),
                 new Column<>("Template name", String.class, Template::getName),
                 new Column<>("Category", Category.class, Template::getCategory),
                 new Column<>("Duration", String.class, Template::getDurationString)
         ));
-        this.templateTablePanel = new TemplateTablePanel(templateTableModel);
+        this.templateTablePanel = new TemplateTablePanel(templateTableModel, this::changeActionsState);
         this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
                 new Column<>(" ", Color.class, Category::getColor),
                 new Column<>("Name", String.class, Category::getName)
         ));
-        this.categoryTablePanel = new CategoryTablePanel(categoryTableModel);
+        this.categoryTablePanel = new CategoryTablePanel(categoryTableModel, this::changeActionsState);
         this.timeUnitTableModel = new TableModel<>(dependencyProvider.getTimeUnitCrudService(), List.of(
                 new Column<>("Name", String.class, TimeUnit::getName),
                 new Column<>("Hour count", Long.class, TimeUnit::getHours),
                 new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
         ));
-        this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel);
+        this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
@@ -155,6 +157,7 @@ public class MainWindow {
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
         tabbedPane.addTab("Units", timeUnitTablePanel);
+        tabbedPane.addChangeListener(e -> changeActionsState(0));
 
         // Filters
         this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
@@ -180,11 +183,17 @@ public class MainWindow {
         frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
+        changeActionsState(0);
     }
 
     public void refreshEventListModel() {
         eventListModel.refresh();
         this.statistics.refresh();
+    }
+
+    private void changeActionsState(int selectedItemsCount) {
+        editButton.getAction().setEnabled(selectedItemsCount == 1);
+        deleteButton.getAction().setEnabled(selectedItemsCount >= 1);
     }
 
     public void refreshCategoryListModel() {

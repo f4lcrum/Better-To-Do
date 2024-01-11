@@ -14,24 +14,27 @@ import cz.fi.muni.pv168.todo.ui.renderer.StatusRenderer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
 
 
 public class EventTablePanel extends JPanel {
 
     private final JTable eventTable;
-
     private final TableModel<Event> eventTableModel;
+    private final Consumer<Integer> onSelectionChange;
 
-    public EventTablePanel(TableModel<Event> eventTableModel) {
+    public EventTablePanel(TableModel<Event> eventTableModel, Consumer<Integer> onSelectionChange) {
         setLayout(new BorderLayout());
+        this.onSelectionChange = onSelectionChange;
         eventTable = setUpTable(eventTableModel);
         eventTable.addMouseListener(new DetailClick<>(eventTableModel, this::formatEvent, "Event detail"));
         add(new JScrollPane(eventTable), BorderLayout.CENTER);
-
         this.eventTableModel = eventTableModel;
     }
 
@@ -50,6 +53,8 @@ public class EventTablePanel extends JPanel {
         table.setDefaultRenderer(LocalDateTime.class, new LocalDateTimeRenderer());
         table.setAutoCreateRowSorter(true);
 
+        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+
         return table;
     }
 
@@ -59,5 +64,13 @@ public class EventTablePanel extends JPanel {
 
     public JTable getEventTable() {
         return eventTable;
+    }
+
+    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
+        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
+        var count = selectionModel.getSelectedItemsCount();
+        if (onSelectionChange != null) {
+            onSelectionChange.accept(count);
+        }
     }
 }
