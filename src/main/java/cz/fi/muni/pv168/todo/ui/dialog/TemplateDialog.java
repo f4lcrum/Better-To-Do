@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
@@ -18,7 +17,6 @@ import java.awt.event.ItemEvent;
 import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 import javax.swing.ListModel;
 import java.time.LocalTime;
 
