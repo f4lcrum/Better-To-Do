@@ -14,6 +14,7 @@ import cz.fi.muni.pv168.todo.ui.model.ComboBoxModelAdapter;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
 
+import java.awt.event.ItemEvent;
 import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -62,6 +63,13 @@ public final class TemplateDialog extends EntityDialog<Template> {
     private void addFields() {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setRenderer(new CategoryRenderer());
+        categoryComboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                if (((Category) e.getItem()).isDefault()) {
+                    categoryComboBox.setSelectedItem(null);
+                }
+            }
+        });
         var timeUnitComboBox = new JComboBox<>(timeUnitModel);
         timeUnitComboBox.setRenderer(new TimeUnitRenderer());
 

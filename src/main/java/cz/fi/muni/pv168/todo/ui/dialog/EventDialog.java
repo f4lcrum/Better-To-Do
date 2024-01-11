@@ -21,6 +21,8 @@ import org.jdatepicker.JDatePicker;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.ListModel;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -68,6 +70,13 @@ public final class EventDialog extends EntityDialog<Event> {
     private void addFields() {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setRenderer(new CategoryRenderer());
+        categoryComboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                if (((Category) e.getItem()).isDefault()) {
+                    categoryComboBox.setSelectedItem(null);
+                }
+            }
+        });
         var timeUnitComboBox = new JComboBox<>(timeUnitModel);
         timeUnitComboBox.setRenderer(new TimeUnitRenderer());
         var templateComboBox = new JComboBox<>(templateModel);
