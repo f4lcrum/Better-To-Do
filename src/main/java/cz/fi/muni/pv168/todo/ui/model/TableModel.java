@@ -49,8 +49,11 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
     }
 
     public void deleteRow(int rowIndex) {
-        var categoryToBeDeleted = getEntity(rowIndex);
-        crudService.deleteByGuid(categoryToBeDeleted.getGuid());
+        var entityToBeDeleted = getEntity(rowIndex);
+        if (entityToBeDeleted.isDefault()) {
+            return;
+        }
+        crudService.deleteByGuid(entityToBeDeleted.getGuid());
         content.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
