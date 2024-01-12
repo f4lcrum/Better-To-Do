@@ -1,10 +1,11 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.business.entity.Template;
-import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
+import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
+import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
@@ -14,32 +15,30 @@ import javax.swing.JTable;
 
 public class TemplateButtonTabStrategy implements ButtonTabStrategy {
 
-    private final JTable table;
-    private final CategoryListModel categoryListModel;
-    private final TimeUnitListModel timeUnitListModel;
-    private final MainWindow mainWindow;
+    private final AddTemplateAction addAction;
+    private final EditTemplateAction editAction;
+    private final DeleteTemplateAction deleteAction;
 
     public TemplateButtonTabStrategy(JTable table, CategoryListModel categoryListModel,
                                      TimeUnitListModel timeUnitListModel, MainWindow mainWindow) {
-        this.table = table;
-        this.categoryListModel = categoryListModel;
-        this.timeUnitListModel = timeUnitListModel;
-        this.mainWindow = mainWindow;
+        this.addAction = new AddTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
+        this.editAction = new EditTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
+        this.deleteAction = new DeleteTemplateAction(table, mainWindow);
     }
 
     @Override
     public AbstractAction getAddAction() {
-        return new AddTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
+        return addAction;
     }
 
     @Override
     public AbstractAction getEditAction() {
-        return new EditTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
+        return editAction;
     }
 
     @Override
     public AbstractAction getDeleteAction() {
-        return new DeleteTemplateAction(table, mainWindow);
+        return deleteAction;
     }
 
     @Override
