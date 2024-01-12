@@ -55,7 +55,7 @@ public class FilterPanel<L extends Enum<L>, R> {
                 .build();
     }
 
-    public static JPanel createDurationFilter(EventTableFilter eventTableFilter) {
+    public static DurationFilterComponents createDurationFilter(EventTableFilter eventTableFilter) {
         JPanel durationPanel = new JPanel();
         JLabel minLabel = new JLabel("Min Duration:");
         JTextField minDurationField = new JTextField(5);
@@ -84,6 +84,13 @@ public class FilterPanel<L extends Enum<L>, R> {
         durationPanel.add(maxDurationField);
         durationPanel.add(applyFilterButton);
 
-        return durationPanel;
+        return new DurationFilterComponents(durationPanel, minDurationField, maxDurationField);
     }
+
+    public static JButton createResetFiltersButton(EventTableFilter eventTableFilter) {
+        JButton resetButton = new JButton("Reset All Filters");
+        resetButton.addActionListener(e -> eventTableFilter.resetAllFilters());
+        return resetButton;
+    }
+
 }

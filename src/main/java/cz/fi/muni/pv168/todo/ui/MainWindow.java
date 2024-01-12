@@ -24,8 +24,11 @@ import cz.fi.muni.pv168.todo.ui.action.ImportAction;
 import cz.fi.muni.pv168.todo.ui.action.QuitAction;
 import cz.fi.muni.pv168.todo.ui.action.strategy.ButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.filter.components.DurationFilterComponents;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
+import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
+import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.Column;
@@ -40,12 +43,15 @@ import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.util.Either;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -85,6 +91,7 @@ public class MainWindow {
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
     private final JPanel durationFilterPanel;
+    private final JButton resetFiltersButton;
     private final TableModel<Event> eventTableModel;
 
     private final TableModel<Category> categoryTableModel;
@@ -161,10 +168,17 @@ public class MainWindow {
         tabbedPane.addTab("Units", timeUnitTablePanel);
         tabbedPane.addChangeListener(e -> changeActionsState(0));
 
-        // Filters
-        this.statusFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createStatusFilter(eventTableFilter, statusListModel), "Status: ");
-        this.categoryFilterPanel = FilterPanel.createFilterPanel(FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel), "Category: ");
-        this.durationFilterPanel = FilterPanel.createDurationFilter(eventTableFilter);
+        JList<Either<SpecialFilterStatusValues, Status>> statusFilterList = FilterPanel.createStatusFilter(eventTableFilter, statusListModel);
+        JList<Either<SpecialFilterCategoryValues, Category>> categoryFilterList = FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel);
+        this.statusFilterPanel = FilterPanel.createFilterPanel(statusFilterList, "Status: ");
+        this.categoryFilterPanel = FilterPanel.createFilterPanel(categoryFilterList, "Category: ");
+        DurationFilterComponents durationComponents = FilterPanel.createDurationFilter(eventTableFilter);
+        this.durationFilterPanel = durationComponents.panel;
+        this.resetFiltersButton = createResetFiltersButton(eventTableFilter);
+        eventTableFilter.setUIComponents(durationComponents.minDurationField,
+                durationComponents.maxDurationField,
+                statusFilterList,
+                categoryFilterList);
 
         this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this);
 
@@ -182,7 +196,7 @@ public class MainWindow {
         frame = createFrame();
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar());
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel, resetFiltersButton), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
         changeActionsState(0);
