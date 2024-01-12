@@ -53,8 +53,14 @@ public final class EventTableFilter {
         eventCompoundMatcher.setCategoryMatcher(new EventCategoryCompoundMatcher(matchers));
     }
 
-    public void filterDuration(int minDuration, int maxDuration) {
-        eventCompoundMatcher.setDurationMatcher(new EventDurationMatcher(minDuration, maxDuration));
+    public void resetDurationFilter() {
+        eventCompoundMatcher.setDurationMatcher(EntityMatchers.all());
+    }
+
+    public void filterDuration(Integer minDuration, Integer maxDuration) {
+        int min = (minDuration != null) ? minDuration : Integer.MIN_VALUE;
+        int max = (maxDuration != null) ? maxDuration : Integer.MAX_VALUE;
+        eventCompoundMatcher.setDurationMatcher(new EventDurationMatcher(min, max));
     }
 
     /**
