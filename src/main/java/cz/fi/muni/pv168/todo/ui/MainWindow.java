@@ -6,24 +6,15 @@ import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
-import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
-import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.AddTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
-import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
-import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
-import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.DeleteTimeUnitAction;
-import cz.fi.muni.pv168.todo.ui.action.EditCategoryAction;
-import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
-import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.EditTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.ExportAction;
 import cz.fi.muni.pv168.todo.ui.action.ImportAction;
 import cz.fi.muni.pv168.todo.ui.action.QuitAction;
 import cz.fi.muni.pv168.todo.ui.action.strategy.ButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.action.strategy.CategoryButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.action.strategy.TimeUnitButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.filter.components.DurationFilterComponents;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
@@ -78,15 +69,12 @@ public class MainWindow {
     private final Action quitAction;
     private final Action exportAction;
     private final Action importAction;
+    private final Action templateFromEventAction;
     private final EventListModel eventListModel;
     private final TemplateListModel templateListModel;
     private final CategoryListModel categoryListModel;
     private final TimeUnitListModel timeUnitListModel;
     private final JTabbedPane tabbedPane;
-    private final EventTablePanel eventTablePanel;
-    private final CategoryTablePanel categoryTablePanel;
-    private final TemplateTablePanel templateTablePanel;
-    private final TimeUnitTablePanel timeUnitTablePanel;
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
     private final JPanel durationFilterPanel;
@@ -114,25 +102,25 @@ public class MainWindow {
                 new Column<>("Status", Status.class, Event::getStatus),
                 new Column<>("Duration (minutes)", String.class, Event::getDurationString)
         ));
-        this.eventTablePanel = new EventTablePanel(eventTableModel, this::changeActionsState);
+        EventTablePanel eventTablePanel = new EventTablePanel(eventTableModel, this::changeActionsState);
         this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
                 new Column<>(" ", Color.class, Template::getColour),
                 new Column<>("Template name", String.class, Template::getName),
                 new Column<>("Category", Category.class, Template::getCategory),
                 new Column<>("Duration", String.class, Template::getDurationString)
         ));
-        this.templateTablePanel = new TemplateTablePanel(templateTableModel, this::changeActionsState);
+        TemplateTablePanel templateTablePanel = new TemplateTablePanel(templateTableModel, this::changeActionsState);
         this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
                 new Column<>(" ", Color.class, Category::getColor),
                 new Column<>("Name", String.class, Category::getName)
         ));
-        this.categoryTablePanel = new CategoryTablePanel(categoryTableModel, this::changeActionsState);
+        CategoryTablePanel categoryTablePanel = new CategoryTablePanel(categoryTableModel, this::changeActionsState);
         this.timeUnitTableModel = new TableModel<>(dependencyProvider.getTimeUnitCrudService(), List.of(
                 new Column<>("Name", String.class, TimeUnit::getName),
                 new Column<>("Hour count", Long.class, TimeUnit::getHours),
                 new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
         ));
-        this.timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState);
+        TimeUnitTablePanel timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState, this::changeTimeUnitActionsState);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
@@ -147,18 +135,13 @@ public class MainWindow {
         quitAction = new QuitAction();
         exportAction = new ExportAction(eventTablePanel, dependencyProvider);
         importAction = new ImportAction(eventTablePanel, categoryTablePanel, templateTablePanel, timeUnitTablePanel, dependencyProvider);
-
-        // Apply popup menu bindings
-        eventTablePanel.getEventTable().setComponentPopupMenu(createEventTablePopupMenu());
-        categoryTablePanel.getEventTable().setComponentPopupMenu(createCategoryTablePopupMenu());
-        templateTablePanel.getEventTable().setComponentPopupMenu(createTemplateTablePopupMenu());
-        timeUnitTablePanel.getEventTable().setComponentPopupMenu(createTimeUnitTablePopupMenu());
+        templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel);
 
         this.rowSorter = new TableRowSorter<>(eventTableModel);
         rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
 
         var eventTableFilter = new EventTableFilter(rowSorter, statistics);
-        eventTablePanel.getEventTable().setRowSorter(rowSorter);
+        eventTablePanel.getTable().setRowSorter(rowSorter);
 
         this.tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
@@ -179,7 +162,17 @@ public class MainWindow {
                 statusFilterList,
                 categoryFilterList);
 
-        this.buttonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this);
+        var eventButtonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getTable(), categoryListModel, timeUnitListModel, templateListModel, this);
+        var templateButtonTabStrategy = new TemplateButtonTabStrategy(templateTablePanel.getTable(), categoryListModel, timeUnitListModel, this);
+        var categoryButtonTabStrategy = new CategoryButtonTabStrategy(categoryTablePanel.getTable(), this);
+        var timeUnitButtonTabStrategy = new TimeUnitButtonTabStrategy(timeUnitTablePanel.getTable(), this);
+        this.buttonTabStrategy = eventButtonTabStrategy;
+
+        // Apply popup menu bindings
+        eventTablePanel.getTable().setComponentPopupMenu(createEventTablePopupMenu(eventButtonTabStrategy));
+        categoryTablePanel.getTable().setComponentPopupMenu(createCategoryTablePopupMenu(categoryButtonTabStrategy));
+        templateTablePanel.getTable().setComponentPopupMenu(createTemplateTablePopupMenu(templateButtonTabStrategy));
+        timeUnitTablePanel.getTable().setComponentPopupMenu(createTimeUnitTablePopupMenu(timeUnitButtonTabStrategy));
 
         this.addButton = new JButton(Icons.ADD_ICON);
         this.editButton = new JButton(Icons.EDIT_ICON);
@@ -189,14 +182,25 @@ public class MainWindow {
         this.editButton.setAction(this.buttonTabStrategy.getEditAction());
         this.deleteButton.setAction(this.buttonTabStrategy.getDeleteAction());
 
-        applyButtonStrategy();
-        tabbedPane.addChangeListener(new PanelChangeListener(this));
+        var panelChangeListener = new PanelChangeListener(
+                this,
+                eventButtonTabStrategy,
+                templateButtonTabStrategy,
+                categoryButtonTabStrategy,
+                timeUnitButtonTabStrategy,
+                eventTablePanel,
+                templateTablePanel,
+                categoryTablePanel,
+                timeUnitTablePanel);
 
         frame = createFrame();
         frame.add(tabbedPane, BorderLayout.CENTER);
-        frame.setJMenuBar(createMenuBar());
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel, resetFiltersButton), BorderLayout.BEFORE_FIRST_LINE);
+        frame.setJMenuBar(createMenuBar(panelChangeListener, eventButtonTabStrategy, templateButtonTabStrategy, categoryButtonTabStrategy, timeUnitButtonTabStrategy));
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
+
+        tabbedPane.addChangeListener(panelChangeListener);
+
         frame.pack();
         changeActionsState(0);
     }
@@ -208,9 +212,19 @@ public class MainWindow {
         rowSorter.sort();
     }
 
+    public void changeTimeUnitActionsState(boolean edit, boolean delete) {
+        editButton.getAction().setEnabled(edit);
+        deleteButton.getAction().setEnabled(delete);
+        editButton.setForeground(edit ? Color.BLACK : Color.GRAY);
+        deleteButton.setForeground(delete ? Color.BLACK : Color.GRAY);
+    }
+
     private void changeActionsState(int selectedItemsCount) {
         editButton.getAction().setEnabled(selectedItemsCount == 1);
         deleteButton.getAction().setEnabled(selectedItemsCount >= 1);
+        editButton.setForeground(selectedItemsCount == 1 ? Color.BLACK : Color.GRAY);
+        deleteButton.setForeground(selectedItemsCount >= 1 ? Color.BLACK : Color.GRAY);
+        templateFromEventAction.setEnabled(selectedItemsCount == 1);
     }
 
     public void refreshCategoryListModel() {
@@ -249,7 +263,8 @@ public class MainWindow {
         }
     }
 
-    private JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar(PanelChangeListener listener, EventButtonTabStrategy eventButtonTabStrategy, TemplateButtonTabStrategy templateButtonTabStrategy,
+                                   CategoryButtonTabStrategy categoryButtonTabStrategy, TimeUnitButtonTabStrategy timeUnitButtonTabStrategy) {
         var menuBar = new JMenuBar();
         var fileMenu = new JMenu("File");
         fileMenu.add(importAction);
@@ -257,30 +272,34 @@ public class MainWindow {
         fileMenu.add(quitAction);
 
         var eventMenu = new JMenu("Event");
-        eventMenu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
-        eventMenu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
-        eventMenu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
-        eventMenu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
-
-        var categoryMenu = new JMenu("Category");
-        categoryMenu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
-        categoryMenu.add(new EditCategoryAction(categoryTablePanel.getEventTable(), this));
-        categoryMenu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable(), this));
+        eventMenu.add(eventButtonTabStrategy.getAddAction());
+        eventMenu.add(eventButtonTabStrategy.getEditAction());
+        eventMenu.add(eventButtonTabStrategy.getDeleteAction());
+        eventMenu.add(templateFromEventAction);
 
         var templateMenu = new JMenu("Template");
-        templateMenu.add(new AddTemplateAction(templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
-        templateMenu.add(new EditTemplateAction(templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
-        templateMenu.add(new DeleteTemplateAction(templateTablePanel.getEventTable(), this));
+        templateMenu.add(templateButtonTabStrategy.getAddAction());
+        templateMenu.add(templateButtonTabStrategy.getEditAction());
+        templateMenu.add(templateButtonTabStrategy.getDeleteAction());
+
+        var categoryMenu = new JMenu("Category");
+        categoryMenu.add(categoryButtonTabStrategy.getAddAction());
+        categoryMenu.add(categoryButtonTabStrategy.getEditAction());
+        categoryMenu.add(categoryButtonTabStrategy.getDeleteAction());
 
         var timeUnitMenu = new JMenu("Time Unit");
-        timeUnitMenu.add(new AddTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
-        timeUnitMenu.add(new EditTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
-        timeUnitMenu.add(new DeleteTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
+        timeUnitMenu.add(timeUnitButtonTabStrategy.getAddAction());
+        timeUnitMenu.add(timeUnitButtonTabStrategy.getEditAction());
+        timeUnitMenu.add(timeUnitButtonTabStrategy.getDeleteAction());
+
+        listener.setMenus(eventMenu, categoryMenu, templateMenu, timeUnitMenu);
+        listener.disableMenuBar();
+        eventMenu.setEnabled(true);
 
         menuBar.add(fileMenu);
         menuBar.add(eventMenu);
-        menuBar.add(categoryMenu);
         menuBar.add(templateMenu);
+        menuBar.add(categoryMenu);
         menuBar.add(timeUnitMenu);
         return menuBar;
     }
@@ -305,53 +324,41 @@ public class MainWindow {
         return frame;
     }
 
-    private JPopupMenu createEventTablePopupMenu() {
+    private JPopupMenu createEventTablePopupMenu(EventButtonTabStrategy eventButtonTabStrategy) {
         var menu = new JPopupMenu();
-        menu.add(new DeleteEventAction(eventTablePanel.getEventTable(), this));
-        menu.add(new EditEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
-        menu.add(new AddEventAction(eventTablePanel.getEventTable(), categoryListModel, timeUnitListModel, templateListModel, this));
-        menu.add(new CreateTemplateFromEventAction(eventTablePanel.getEventTable(), templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
+        menu.add(eventButtonTabStrategy.getAddAction());
+        menu.add(eventButtonTabStrategy.getEditAction());
+        menu.add(eventButtonTabStrategy.getDeleteAction());
+        menu.add(templateFromEventAction);
         return menu;
     }
 
-    private JPopupMenu createCategoryTablePopupMenu() {
+    private JPopupMenu createCategoryTablePopupMenu(CategoryButtonTabStrategy categoryButtonTabStrategy) {
         var menu = new JPopupMenu();
-        menu.add(new DeleteCategoryAction(categoryTablePanel.getEventTable(), this));
-        menu.add(new EditCategoryAction(categoryTablePanel.getEventTable(), this));
-        menu.add(new AddCategoryAction(categoryTablePanel.getEventTable(), this));
+        menu.add(categoryButtonTabStrategy.getAddAction());
+        menu.add(categoryButtonTabStrategy.getEditAction());
+        menu.add(categoryButtonTabStrategy.getDeleteAction());
         return menu;
     }
 
-    private JPopupMenu createTemplateTablePopupMenu() {
+    private JPopupMenu createTemplateTablePopupMenu(TemplateButtonTabStrategy templateButtonTabStrategy) {
         var menu = new JPopupMenu();
-        menu.add(new DeleteTemplateAction(templateTablePanel.getEventTable(), this));
-        menu.add(new EditTemplateAction(templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
-        menu.add(new AddTemplateAction(templateTablePanel.getEventTable(), this, categoryListModel, timeUnitListModel));
+        menu.add(templateButtonTabStrategy.getAddAction());
+        menu.add(templateButtonTabStrategy.getEditAction());
+        menu.add(templateButtonTabStrategy.getDeleteAction());
         return menu;
     }
 
-    private JPopupMenu createTimeUnitTablePopupMenu() {
+    private JPopupMenu createTimeUnitTablePopupMenu(TimeUnitButtonTabStrategy timeUnitButtonTabStrategy) {
         var menu = new JPopupMenu();
-        menu.add(new DeleteTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
-        menu.add(new EditTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
-        menu.add(new AddTimeUnitAction(timeUnitTablePanel.getEventTable(), this));
+        menu.add(timeUnitButtonTabStrategy.getAddAction());
+        menu.add(timeUnitButtonTabStrategy.getEditAction());
+        menu.add(timeUnitButtonTabStrategy.getDeleteAction());
         return menu;
     }
 
     public void setButtonTabStrategy(ButtonTabStrategy buttonTabStrategy) {
         this.buttonTabStrategy = buttonTabStrategy;
-    }
-
-    public CategoryListModel getCategoryListModel() {
-        return categoryListModel;
-    }
-
-    public TimeUnitListModel getTimeUnitListModel() {
-        return timeUnitListModel;
-    }
-
-    public TemplateListModel getTemplateListModel() {
-        return templateListModel;
     }
 
     public JPanel getStatusFilterPanel() {
@@ -368,22 +375,6 @@ public class MainWindow {
 
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
-    }
-
-    public EventTablePanel getEventTablePanel() {
-        return eventTablePanel;
-    }
-
-    public CategoryTablePanel getCategoryTablePanel() {
-        return categoryTablePanel;
-    }
-
-    public TemplateTablePanel getTemplateTablePanel() {
-        return templateTablePanel;
-    }
-
-    public TimeUnitTablePanel getTimeUnitTablePanel() {
-        return timeUnitTablePanel;
     }
 
     public TableModel<Event> getEventTableModel() {
@@ -417,5 +408,4 @@ public class MainWindow {
     public Validator<Template> getTemplateValidator() {
         return templateValidator;
     }
-
 }
