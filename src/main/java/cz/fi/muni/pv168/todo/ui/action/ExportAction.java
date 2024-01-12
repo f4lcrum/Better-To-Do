@@ -1,15 +1,14 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.io.exports.JsonExporter;
-import cz.fi.muni.pv168.todo.storage.sql.snapshot.DatabaseSnapshot;
+import cz.fi.muni.pv168.todo.business.service.export.ExportService;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
-import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import cz.fi.muni.pv168.todo.ui.workers.AsyncExporter;
+import cz.fi.muni.pv168.todo.util.Filter;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingWorker;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -19,13 +18,14 @@ import java.util.Objects;
 public final class ExportAction extends AbstractAction {
 
     private final Component parent;
+    private final Exporter exporter;
 
-    private final DependencyProvider dependencyProvider;
-
-    public ExportAction(Component parent, DependencyProvider dp) {
+    public ExportAction(Component parent, ExportService exportService) {
         super("Export", Icons.EXPORT_ICON);
         this.parent = Objects.requireNonNull(parent);
-        this.dependencyProvider = dp;
+        this.exporter = new AsyncExporter(
+                exportService,
+                () -> JOptionPane.showMessageDialog(parent, "Export has successfully finished."));
 
         putValue(SHORT_DESCRIPTION, "Exports events to a file");
         putValue(MNEMONIC_KEY, KeyEvent.VK_X);
@@ -36,39 +36,17 @@ public final class ExportAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-
-        var eventRepository = dependencyProvider.getEventRepository();
-        var categoryRepository = dependencyProvider.getCategoryRepository();
-        var templateRepository = dependencyProvider.getTemplateRepository();
-        var timeUnitRepository = dependencyProvider.getTimeUnitRepository();
-
-        var jsonExporter = new JsonExporter();
+        exporter.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
 
         int dialogResult = fileChooser.showSaveDialog(parent);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             String exportFile = fileChooser.getSelectedFile().getAbsolutePath();
+            var fileFilter = fileChooser.getFileFilter();
+            if (fileFilter instanceof Filter filter) {
+                exportFile = filter.decorate(exportFile);
+            }
 
-            SwingWorker<Void, Void> exportDbAsync = new SwingWorker<>() {
-                @Override
-                protected Void doInBackground() {
-                    DatabaseSnapshot databaseSnapshot = new DatabaseSnapshot(
-                            categoryRepository.findAll(),
-                            eventRepository.findAll(),
-                            templateRepository.findAll(),
-                            timeUnitRepository.findAll()
-                    );
-
-                    jsonExporter.exportDatabase(exportFile, databaseSnapshot);
-                    return null;
-                }
-
-                @Override
-                protected void done() {
-                    JOptionPane.showMessageDialog(parent, "Export has successfully finished.");
-                }
-            };
-
-            exportDbAsync.execute();
+            exporter.exportData(exportFile);
         }
     }
 }

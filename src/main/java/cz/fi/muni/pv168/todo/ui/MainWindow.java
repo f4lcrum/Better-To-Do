@@ -31,13 +31,13 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
-import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
@@ -53,8 +53,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -139,8 +137,8 @@ public class MainWindow {
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
-        exportAction = new ExportAction(eventTablePanel, dependencyProvider);
-        importAction = new ImportAction(eventTablePanel, categoryTablePanel, templateTablePanel, timeUnitTablePanel, dependencyProvider);
+        exportAction = new ExportAction(eventTablePanel, dependencyProvider.getExportService());
+        importAction = new ImportAction(eventTablePanel, dependencyProvider.getImportService(), this::refresh);
 
         // Apply popup menu bindings
         eventTablePanel.getEventTable().setComponentPopupMenu(createEventTablePopupMenu());
@@ -186,6 +184,13 @@ public class MainWindow {
         frame.add(this.statistics, BorderLayout.SOUTH);
         frame.pack();
         changeActionsState(0);
+    }
+
+    private void refresh() {
+        refreshEventListModel();
+        refreshCategoryListModel();
+        refreshTemplateListModel();
+        refreshTimeUnitListModel();
     }
 
     public void refreshEventListModel() {
@@ -347,6 +352,7 @@ public class MainWindow {
     public JPanel getCategoryFilterPanel() {
         return categoryFilterPanel;
     }
+
     public JPanel getDurationFilterPanel() {
         return durationFilterPanel;
     }

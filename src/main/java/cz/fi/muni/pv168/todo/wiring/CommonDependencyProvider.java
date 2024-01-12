@@ -10,15 +10,22 @@ import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.EventCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
+import cz.fi.muni.pv168.todo.business.service.export.ExportService;
+import cz.fi.muni.pv168.todo.business.service.export.GenericExportService;
+import cz.fi.muni.pv168.todo.business.service.export.GenericImportService;
+import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import cz.fi.muni.pv168.todo.io.exports.JsonExporter;
+import cz.fi.muni.pv168.todo.io.imports.JsonImporter;
 import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.EventSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TemplateSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
+import cz.fi.muni.pv168.todo.storage.sql.TransactionalImportService;
 import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.EventDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.TemplateDao;
@@ -32,6 +39,8 @@ import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.CategoryMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.EventMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TemplateMapper;
 import cz.fi.muni.pv168.todo.storage.sql.entity.mapper.TimeUnitMapper;
+
+import java.util.List;
 
 /**
  * Common dependency provider for both production and test environment.
@@ -50,11 +59,12 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final CrudService<Category> categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final CrudService<Template> templateCrudService;
+    private final ImportService importService;
+    private final ExportService exportService;
     private final Validator<Event> eventValidator;
     private final Validator<Category> categoryValidator;
     private final Validator<TimeUnit> timeUnitValidator;
     private final Validator<Template> templateValidator;
-
 
     public CommonDependencyProvider(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
@@ -97,6 +107,20 @@ public class CommonDependencyProvider implements DependencyProvider {
                 eventMapper
         );
         this.eventCrudService = new EventCrudService(this.eventRepository, eventValidator);
+        this.exportService = new GenericExportService(
+                eventCrudService,
+                categoryCrudService,
+                templateCrudService,
+                timeUnitCrudService,
+                List.of(new JsonExporter()));
+        var genericImportService = new GenericImportService(
+                eventCrudService,
+                categoryCrudService,
+                templateCrudService,
+                timeUnitCrudService,
+                List.of(new JsonImporter())
+        );
+        this.importService = new TransactionalImportService(genericImportService, transactionExecutor);
     }
 
     @Override
@@ -167,5 +191,15 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public Validator<Category> getCategoryValidator() {
         return categoryValidator;
+    }
+
+    @Override
+    public ImportService getImportService() {
+        return importService;
+    }
+
+    @Override
+    public ExportService getExportService() {
+        return exportService;
     }
 }
