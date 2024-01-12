@@ -55,7 +55,7 @@ public class FilterPanel<L extends Enum<L>, R> {
                 .build();
     }
 
-    public static JPanel createDurationFilter(EventTableFilter eventTableFilter) {
+    public static DurationFilterComponents createDurationFilter(EventTableFilter eventTableFilter) {
         JPanel durationPanel = new JPanel();
         JLabel minLabel = new JLabel("Min Duration:");
         JTextField minDurationField = new JTextField(5);
@@ -65,11 +65,15 @@ public class FilterPanel<L extends Enum<L>, R> {
 
         applyFilterButton.addActionListener(e -> {
             try {
-                int minDuration = Integer.parseInt(minDurationField.getText());
-                int maxDuration = Integer.parseInt(maxDurationField.getText());
-                eventTableFilter.filterDuration(minDuration, maxDuration);
+                Integer minDuration = minDurationField.getText().isEmpty() ? null : Integer.parseInt(minDurationField.getText());
+                Integer maxDuration = maxDurationField.getText().isEmpty() ? null : Integer.parseInt(maxDurationField.getText());
+
+                if (minDuration == null && maxDuration == null) {
+                    eventTableFilter.resetDurationFilter();
+                } else {
+                    eventTableFilter.filterDuration(minDuration, maxDuration);
+                }
             } catch (NumberFormatException ex) {
-                // Handle invalid input, perhaps with a dialog showing an error message
                 JOptionPane.showMessageDialog(durationPanel, "Please enter valid integer values for duration.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -80,6 +84,13 @@ public class FilterPanel<L extends Enum<L>, R> {
         durationPanel.add(maxDurationField);
         durationPanel.add(applyFilterButton);
 
-        return durationPanel;
+        return new DurationFilterComponents(durationPanel, minDurationField, maxDurationField);
     }
+
+    public static JButton createResetFiltersButton(EventTableFilter eventTableFilter) {
+        JButton resetButton = new JButton("Reset All Filters");
+        resetButton.addActionListener(e -> eventTableFilter.resetAllFilters());
+        return resetButton;
+    }
+
 }

@@ -20,6 +20,8 @@ import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import javax.swing.JTextField;
+import javax.swing.JList;
 
 /**
  * Class holding all filters for the EventTable.
@@ -27,12 +29,30 @@ import java.util.stream.Stream;
  * @author Vojtěch Sassmann, BOSV team
  */
 public final class EventTableFilter {
+    private JTextField minDurationField;
+    private JTextField maxDurationField;
+    private JList<Either<SpecialFilterStatusValues, Status>> statusList;
+    private JList<Either<SpecialFilterCategoryValues, Category>> categoryList;
 
     private final EventCompoundMatcher eventCompoundMatcher;
 
     public EventTableFilter(TableRowSorter<TableModel<Event>> rowSorter, StatisticsPanel statistics) {
         eventCompoundMatcher = new EventCompoundMatcher(rowSorter, statistics);
         rowSorter.setRowFilter(eventCompoundMatcher);
+    }
+
+    public void setUIComponents(JTextField minDurationField, JTextField maxDurationField,
+                                JList<Either<SpecialFilterStatusValues, Status>> statusList,
+                                JList<Either<SpecialFilterCategoryValues, Category>> categoryList) {
+        this.minDurationField = minDurationField;
+        this.maxDurationField = maxDurationField;
+        this.statusList = statusList;
+        this.categoryList = categoryList;
+    }
+
+    public void resetStatusFilter() {
+        if (statusList != null) statusList.clearSelection();
+        eventCompoundMatcher.setStatusMatcher(EntityMatchers.all());
     }
 
     public void filterStatus(List<Either<SpecialFilterStatusValues, Status>> selectedItems) {
@@ -44,6 +64,11 @@ public final class EventTableFilter {
         eventCompoundMatcher.setStatusMatcher(new EventStatusCompoundMatcher(matchers));
     }
 
+    public void resetCategoryFilter() {
+        if (categoryList != null) categoryList.clearSelection();
+        eventCompoundMatcher.setCategoryMatcher(EntityMatchers.all());
+    }
+
     public void filterCategory(List<Either<SpecialFilterCategoryValues, Category>> selectedItems) {
         List<EntityMatcher<Event>> matchers = new ArrayList<>();
         selectedItems.forEach(either -> either.apply(
@@ -53,8 +78,27 @@ public final class EventTableFilter {
         eventCompoundMatcher.setCategoryMatcher(new EventCategoryCompoundMatcher(matchers));
     }
 
-    public void filterDuration(int minDuration, int maxDuration) {
-        eventCompoundMatcher.setDurationMatcher(new EventDurationMatcher(minDuration, maxDuration));
+    public void resetDurationFilter() {
+        if (minDurationField != null) minDurationField.setText("");
+        if (maxDurationField != null) maxDurationField.setText("");
+        eventCompoundMatcher.setDurationMatcher(EntityMatchers.all());
+    }
+
+    public void filterDuration(Integer minDuration, Integer maxDuration) {
+        int min = (minDuration != null) ? minDuration : Integer.MIN_VALUE;
+        int max = (maxDuration != null) ? maxDuration : Integer.MAX_VALUE;
+        eventCompoundMatcher.setDurationMatcher(new EventDurationMatcher(min, max));
+    }
+
+    public void resetAllFilters() {
+        if (minDurationField != null) minDurationField.setText("");
+        if (maxDurationField != null) maxDurationField.setText("");
+        if (statusList != null) statusList.clearSelection();
+        if (categoryList != null) categoryList.clearSelection();
+
+        resetDurationFilter();
+        resetStatusFilter();
+        resetCategoryFilter();
     }
 
     /**
@@ -70,7 +114,7 @@ public final class EventTableFilter {
         private final TableRowSorter<TableModel<Event>> rowSorter;
         private EntityMatcher<Event> statusMatcher = EntityMatchers.all();
         private EntityMatcher<Event> categoryMatcher = EntityMatchers.all();
-        private EntityMatcher<Event> durationMatcher = EntityMatchers.all(); // Matches all by default
+        private EntityMatcher<Event> durationMatcher = EntityMatchers.all();
 
 
         private EventCompoundMatcher(TableRowSorter<TableModel<Event>> rowSorter, StatisticsPanel statisticsPanel) {
