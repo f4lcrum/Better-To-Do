@@ -47,7 +47,7 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final Repository<Category> categoryRepository;
     private final Repository<Template> templateRepository;
     private final CrudService<Event> eventCrudService;
-    private final CrudService<Category> categoryCrudService;
+    private final CategoryCrudService categoryCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final CrudService<Template> templateCrudService;
     private final Validator<Event> eventValidator;
@@ -130,7 +130,7 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
-    public CrudService<Category> getCategoryCrudService() {
+    public CategoryCrudService getCategoryCrudService() {
         return categoryCrudService;
     }
 

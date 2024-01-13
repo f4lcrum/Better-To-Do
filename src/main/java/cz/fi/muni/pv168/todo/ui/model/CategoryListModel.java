@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 
 import javax.swing.AbstractListModel;
@@ -10,11 +11,11 @@ import java.util.List;
 public class CategoryListModel extends AbstractListModel<Category> {
 
     private List<Category> categories;
-    private final CrudService<Category> categoryCrudService;
+    private final CategoryCrudService categoryCrudService;
 
-    public CategoryListModel(CrudService<Category> categoryCrudService) {
+    public CategoryListModel(CategoryCrudService categoryCrudService) {
         this.categoryCrudService = categoryCrudService;
-        this.categories = new ArrayList<>(categoryCrudService.findAll());
+        this.categories = new ArrayList<>(categoryCrudService.findAllWithDefault());
     }
 
     @Override
