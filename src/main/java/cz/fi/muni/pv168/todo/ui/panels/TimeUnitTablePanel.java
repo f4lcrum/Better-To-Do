@@ -10,10 +10,10 @@ import java.util.function.Consumer;
 
 public class TimeUnitTablePanel extends BasePanel<TimeUnit> {
 
-    private final BiConsumer<Boolean, Boolean> specialOnSelectionChanged;
+    private final Consumer<Boolean> specialOnSelectionChanged;
 
     public TimeUnitTablePanel(TableModel<TimeUnit> timeUnitTableModel, Consumer<Integer> onSelectionChange,
-                              BiConsumer<Boolean, Boolean> specialOnSelectionChanged) {
+                              Consumer<Boolean> specialOnSelectionChanged) {
         super(timeUnitTableModel, onSelectionChange);
         this.specialOnSelectionChanged = specialOnSelectionChanged;
         setUpTable();
@@ -29,16 +29,13 @@ public class TimeUnitTablePanel extends BasePanel<TimeUnit> {
     protected void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
         super.rowSelectionChanged(listSelectionEvent);
         var rows = table.getSelectedRows();
-        var edit = true;
-        var delete = false;
+        var enabled = true;
         for (int row : rows) {
             var entity = tableModel.getEntity(row);
             if (entity.isDefault()) {
-                edit = false;
-            } else {
-                delete = true;
+                enabled = false;
             }
         }
-        specialOnSelectionChanged.accept(edit, delete);
+        specialOnSelectionChanged.accept(enabled);
     }
 }
