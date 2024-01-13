@@ -263,8 +263,7 @@ public class MainWindow {
         }
     }
 
-    private JMenuBar createMenuBar(PanelChangeListener listener, EventButtonTabStrategy
-            eventButtonTabStrategy, TemplateButtonTabStrategy templateButtonTabStrategy,
+    private JMenuBar createMenuBar(PanelChangeListener listener, EventButtonTabStrategy eventButtonTabStrategy, TemplateButtonTabStrategy templateButtonTabStrategy,
                                    CategoryButtonTabStrategy categoryButtonTabStrategy, TimeUnitButtonTabStrategy timeUnitButtonTabStrategy) {
         var menuBar = new JMenuBar();
         var fileMenu = new JMenu("File");
