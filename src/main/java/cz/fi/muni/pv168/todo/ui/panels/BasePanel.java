@@ -40,7 +40,7 @@ public abstract class BasePanel<T extends Entity> extends JPanel {
         var rows = table.getSelectedRows();
         var enabled = true;
         for (int row : rows) {
-            var entity = tableModel.getEntity(row);
+            var entity = tableModel.getEntity(table.convertRowIndexToModel(row));
             if (entity.isDefault()) {
                 enabled = false;
             }
