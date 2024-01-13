@@ -207,6 +207,13 @@ public class MainWindow {
         changeActionsState(0, true);
     }
 
+    public void refresh() {
+        refreshEventModel();
+        refreshTemplateListModel();
+        refreshCategoryListModel();
+        refreshTimeUnitListModel();
+    }
+
     public void refreshEventModel() {
         eventListModel.refresh();
         eventTableModel.refresh();

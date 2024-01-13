@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.EditActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -47,9 +48,6 @@ public class EditTimeUnitAction extends AbstractAction {
             return;
         }
         var dialog = new TimeUnitDialog(timeUnit, true, timeUnitValidator);
-        dialog.show(timeUnitTable, "Edit time unit")
-                .ifPresent(timeUnitTableModel::updateRow);
-        mainWindow.refreshTimeUnitListModel();
-        mainWindow.refreshEventModel();
+        dialog.show(timeUnitTable, "Edit Time Unit").ifPresent(entity -> new EditActionSwingWorker<>(timeUnitTableModel, mainWindow, entity).execute());
     }
 }

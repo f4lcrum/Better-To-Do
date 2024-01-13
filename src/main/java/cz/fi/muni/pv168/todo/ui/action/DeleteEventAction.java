@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -30,14 +31,13 @@ public class DeleteEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
-        Arrays.stream(eventTable.getSelectedRows())
+        var stream = Arrays.stream(eventTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(eventTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
-                .sorted(Comparator.reverseOrder())
-                .forEach(eventTableModel::deleteRow);
-        mainWindow.refreshEventModel();
+                .sorted(Comparator.reverseOrder());
+        new DeleteActionSwingWorker<>(eventTableModel, mainWindow, stream).execute();
     }
 }

@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -14,24 +15,22 @@ import javax.swing.Action;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListModel;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
 public class CreateTemplateFromEventAction extends AbstractAction {
-    private final JTable todoTable;
+    private final JTable eventTable;
     private final JTable templateTable;
     private final MainWindow mainWindow;
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
 
-    public CreateTemplateFromEventAction(JTable todoTable, JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
+    public CreateTemplateFromEventAction(JTable eventTable, JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
         super("Save as template", Icons.ADD_ICON);
-        this.todoTable = todoTable;
+        this.eventTable = eventTable;
         this.templateTable = templateTable;
         this.mainWindow = mainWindow;
         this.categoryListModel = categoryListModel;
@@ -45,7 +44,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int[] selectedRows = todoTable.getSelectedRows();
+        int[] selectedRows = eventTable.getSelectedRows();
 
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
@@ -53,13 +52,11 @@ public class CreateTemplateFromEventAction extends AbstractAction {
 
         var eventTableModel = mainWindow.getEventTableModel();
         var templateTableModel = mainWindow.getTemplateTableModel();
-        int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
+        int modelRow = eventTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
 
         var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
-        dialog.show(templateTable, "Save as template")
-                .ifPresent(templateTableModel::addRow);
-        mainWindow.refreshTemplateListModel();
+        dialog.show(templateTable, "Save as template").ifPresent(entity -> new AddActionSwingWorker<>(templateTableModel, mainWindow, entity).execute());
     }
 
     private Template createPrefilledTemplate(Event event) {
