@@ -1,19 +1,18 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 public class EditTimeUnitAction extends AbstractAction {
 
@@ -51,5 +50,6 @@ public class EditTimeUnitAction extends AbstractAction {
         dialog.show(timeUnitTable, "Edit time unit")
                 .ifPresent(timeUnitTableModel::updateRow);
         mainWindow.refreshTimeUnitListModel();
+        mainWindow.refreshEventModel();
     }
 }
