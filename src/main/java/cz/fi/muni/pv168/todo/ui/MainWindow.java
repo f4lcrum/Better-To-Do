@@ -120,7 +120,7 @@ public class MainWindow {
                 new Column<>("Hour count", Long.class, TimeUnit::getHours),
                 new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
         ));
-        TimeUnitTablePanel timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState, this::changeTimeUnitActionsState);
+        TimeUnitTablePanel timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState);
         this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
@@ -148,7 +148,7 @@ public class MainWindow {
         tabbedPane.addTab("Templates", templateTablePanel);
         tabbedPane.addTab("Categories", categoryTablePanel);
         tabbedPane.addTab("Units", timeUnitTablePanel);
-        tabbedPane.addChangeListener(e -> changeActionsState(0));
+        tabbedPane.addChangeListener(e -> changeActionsState(0, true));
 
         JList<Either<SpecialFilterStatusValues, Status>> statusFilterList = FilterPanel.createStatusFilter(eventTableFilter, statusListModel);
         JList<Either<SpecialFilterCategoryValues, Category>> categoryFilterList = FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel);
@@ -202,7 +202,7 @@ public class MainWindow {
         tabbedPane.addChangeListener(panelChangeListener);
 
         frame.pack();
-        changeActionsState(0);
+        changeActionsState(0, true);
     }
 
     public void refreshEventModel() {
@@ -212,19 +212,14 @@ public class MainWindow {
         rowSorter.sort();
     }
 
-    public void changeTimeUnitActionsState(boolean enabled) {
-        editButton.getAction().setEnabled(enabled);
-        deleteButton.getAction().setEnabled(enabled);
-        editButton.setForeground(enabled ? Color.BLACK : Color.GRAY);
-        deleteButton.setForeground(enabled ? Color.BLACK : Color.GRAY);
-    }
-
-    private void changeActionsState(int selectedItemsCount) {
-        editButton.getAction().setEnabled(selectedItemsCount == 1);
-        deleteButton.getAction().setEnabled(selectedItemsCount >= 1);
-        editButton.setForeground(selectedItemsCount == 1 ? Color.BLACK : Color.GRAY);
-        deleteButton.setForeground(selectedItemsCount >= 1 ? Color.BLACK : Color.GRAY);
-        templateFromEventAction.setEnabled(selectedItemsCount == 1);
+    private void changeActionsState(int selectedItemsCount, boolean enabled) {
+        var edit = enabled && selectedItemsCount == 1;
+        var delete = enabled && selectedItemsCount >= 1;
+        editButton.getAction().setEnabled(edit);
+        deleteButton.getAction().setEnabled(delete);
+        editButton.setForeground(edit ? Color.BLACK : Color.GRAY);
+        deleteButton.setForeground(delete ? Color.BLACK : Color.GRAY);
+        templateFromEventAction.setEnabled(edit);
     }
 
     public void refreshCategoryListModel() {

@@ -10,11 +10,11 @@ import cz.fi.muni.pv168.todo.ui.renderer.LocalDateRenderer;
 
 import java.awt.Color;
 import java.time.LocalDate;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class TemplateTablePanel extends BasePanel<Template> {
 
-    public TemplateTablePanel(TableModel<Template> templateTableModel, Consumer<Integer> onSelectionChange) {
+    public TemplateTablePanel(TableModel<Template> templateTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(templateTableModel, onSelectionChange);
         setUpTable(templateTableModel);
     }

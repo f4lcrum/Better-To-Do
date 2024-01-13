@@ -7,11 +7,11 @@ import cz.fi.muni.pv168.todo.ui.renderer.CategoryColourRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 
 import java.awt.Color;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class CategoryTablePanel extends BasePanel<Category> {
 
-    public CategoryTablePanel(TableModel<Category> categoryTableModel, Consumer<Integer> onSelectionChange) {
+    public CategoryTablePanel(TableModel<Category> categoryTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(categoryTableModel, onSelectionChange);
         setUpTable();
     }

@@ -14,11 +14,11 @@ import cz.fi.muni.pv168.todo.ui.renderer.StatusRenderer;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class EventTablePanel extends BasePanel<Event> {
 
-    public EventTablePanel(TableModel<Event> eventTableModel, Consumer<Integer> onSelectionChange) {
+    public EventTablePanel(TableModel<Event> eventTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(eventTableModel, onSelectionChange);
         table.addMouseListener(new DetailClick<>(eventTableModel, this::formatEvent, "Event detail"));
         setUpTable();

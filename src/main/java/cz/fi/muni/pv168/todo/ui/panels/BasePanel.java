@@ -9,15 +9,15 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.BorderLayout;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public abstract class BasePanel<T extends Entity> extends JPanel {
 
     protected final JTable table;
     protected final TableModel<T> tableModel;
-    protected final Consumer<Integer> onSelectionChange;
+    protected final BiConsumer<Integer, Boolean> onSelectionChange;
 
-    protected BasePanel(TableModel<T> tableModel, Consumer<Integer> onSelectionChange) {
+    protected BasePanel(TableModel<T> tableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         setLayout(new BorderLayout());
         this.table = new JTable(tableModel);
         this.tableModel = tableModel;
@@ -36,8 +36,18 @@ public abstract class BasePanel<T extends Entity> extends JPanel {
     protected void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
         var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
         var count = selectionModel.getSelectedItemsCount();
+
+        var rows = table.getSelectedRows();
+        var enabled = true;
+        for (int row : rows) {
+            var entity = tableModel.getEntity(row);
+            if (entity.isDefault()) {
+                enabled = false;
+            }
+        }
+
         if (onSelectionChange != null) {
-            onSelectionChange.accept(count);
+            onSelectionChange.accept(count, enabled);
         }
     }
 }
