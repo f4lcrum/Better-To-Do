@@ -5,7 +5,6 @@ import cz.fi.muni.pv168.todo.ui.action.DetailClick;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 
 import javax.swing.event.ListSelectionEvent;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class TimeUnitTablePanel extends BasePanel<TimeUnit> {
