@@ -211,11 +211,11 @@ public class MainWindow {
         rowSorter.sort();
     }
 
-    public void changeTimeUnitActionsState(boolean edit, boolean delete) {
-        editButton.getAction().setEnabled(edit);
-        deleteButton.getAction().setEnabled(delete);
-        editButton.setForeground(edit ? Color.BLACK : Color.GRAY);
-        deleteButton.setForeground(delete ? Color.BLACK : Color.GRAY);
+    public void changeTimeUnitActionsState(boolean enabled) {
+        editButton.getAction().setEnabled(enabled);
+        deleteButton.getAction().setEnabled(enabled);
+        editButton.setForeground(enabled ? Color.BLACK : Color.GRAY);
+        deleteButton.setForeground(enabled ? Color.BLACK : Color.GRAY);
     }
 
     private void changeActionsState(int selectedItemsCount) {
