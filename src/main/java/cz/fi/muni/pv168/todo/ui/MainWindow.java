@@ -34,19 +34,17 @@ import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
 import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
-import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.util.Either;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
-import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
-import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -59,8 +57,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -68,6 +64,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
@@ -202,8 +201,9 @@ public class MainWindow {
         changeActionsState(0);
     }
 
-    public void refreshEventListModel() {
+    public void refreshEventModel() {
         eventListModel.refresh();
+        eventTableModel.refresh();
         this.statistics.refresh();
         rowSorter.sort();
     }
@@ -361,6 +361,7 @@ public class MainWindow {
     public JPanel getCategoryFilterPanel() {
         return categoryFilterPanel;
     }
+
     public JPanel getDurationFilterPanel() {
         return durationFilterPanel;
     }

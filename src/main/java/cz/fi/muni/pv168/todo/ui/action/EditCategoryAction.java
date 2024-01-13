@@ -1,17 +1,16 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 public class EditCategoryAction extends AbstractAction {
 
@@ -44,5 +43,6 @@ public class EditCategoryAction extends AbstractAction {
         dialog.show(categoryTable, "Edit Category")
                 .ifPresent(categoryTableModel::updateRow);
         mainWindow.refreshCategoryListModel();
+        mainWindow.refreshEventModel();
     }
 }
