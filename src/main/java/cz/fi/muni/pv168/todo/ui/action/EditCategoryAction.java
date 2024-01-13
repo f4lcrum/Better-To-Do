@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.EditActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -40,9 +41,6 @@ public class EditCategoryAction extends AbstractAction {
         int modelRow = categoryTable.convertRowIndexToModel(selectedRows[0]);
         var category = categoryTableModel.getEntity(modelRow);
         var dialog = new CategoryDialog(category, true, categoryValidator);
-        dialog.show(categoryTable, "Edit Category")
-                .ifPresent(categoryTableModel::updateRow);
-        mainWindow.refreshCategoryListModel();
-        mainWindow.refreshEventModel();
+        dialog.show(categoryTable, "Edit Category").ifPresent(entity -> new EditActionSwingWorker<>(categoryTableModel, mainWindow, entity).execute());
     }
 }

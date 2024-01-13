@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -30,14 +31,13 @@ public class DeleteTemplateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var templateTableModel = mainWindow.getTemplateTableModel();
-        Arrays.stream(templateTable.getSelectedRows())
+        var stream = Arrays.stream(templateTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(templateTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
-                .sorted(Comparator.reverseOrder())
-                .forEach(templateTableModel::deleteRow);
-        mainWindow.refreshTemplateListModel();
+                .sorted(Comparator.reverseOrder());
+        new DeleteActionSwingWorker<>(templateTableModel, mainWindow, stream).execute();
     }
 }

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.EditActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -54,8 +55,6 @@ public class EditTemplateAction extends AbstractAction {
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);
         var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), template, categoryListModel, timeUnitListModel, true, templateValidator);
-        dialog.show(templateTable, "Edit Template")
-                .ifPresent(templateTableModel::updateRow);
-        mainWindow.refreshTemplateListModel();
+        dialog.show(templateTable, "Edit Template").ifPresent(entity -> new EditActionSwingWorker<>(templateTableModel, mainWindow, entity).execute());
     }
 }

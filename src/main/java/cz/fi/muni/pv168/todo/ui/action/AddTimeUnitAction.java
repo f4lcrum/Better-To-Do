@@ -1,19 +1,19 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import java.util.UUID;
 
 public class AddTimeUnitAction extends AbstractAction {
@@ -37,9 +37,7 @@ public class AddTimeUnitAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
         var dialog = new TimeUnitDialog(createPrefilledTimeUnit(), false, timeUnitValidator);
-        dialog.show(timeUnitTable, "Add Time Unit")
-                .ifPresent(timeUnitTableModel::addRow);
-        mainWindow.refreshTimeUnitListModel();
+        dialog.show(timeUnitTable, "Add Time Unit").ifPresent(entity -> new AddActionSwingWorker<>(timeUnitTableModel, mainWindow, entity).execute());
     }
 
     private TimeUnit createPrefilledTimeUnit() {
