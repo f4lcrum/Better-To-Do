@@ -20,8 +20,12 @@ public class IoCategory implements IoEntity {
     private final Color color;
 
     public IoCategory(UUID id, String name, Color color) {
+        this(id, false, name, color);
+    }
+
+    public IoCategory(UUID id, boolean isDefault, String name, Color color) {
         this.id = id;
-        this.isDefault = false;
+        this.isDefault = isDefault;
         this.name = name;
         this.color = color;
     }

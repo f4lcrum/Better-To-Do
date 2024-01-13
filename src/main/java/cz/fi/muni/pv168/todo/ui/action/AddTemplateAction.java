@@ -45,7 +45,7 @@ public final class AddTemplateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var templateTableModel = mainWindow.getTemplateTableModel();
-        var dialog = new TemplateDialog(createPrefilledTemplate(), categoryListModel, timeUnitListModel, false, templateValidator);
+        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(), categoryListModel, timeUnitListModel, false, templateValidator);
         dialog.show(templateTable, "Add Template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();

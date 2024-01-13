@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS "Category"
 (
     `id`            CHAR(36) PRIMARY KEY,
+    `isDefault`     BOOLEAN NOT NULL,
     `name`          VARCHAR(128) NOT NULL,
     `color`         INT NOT NULL
 

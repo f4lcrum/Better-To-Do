@@ -23,15 +23,16 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
     @Override
     public CategoryEntity create(CategoryEntity newCategory) {
-        var sql = "INSERT INTO Category (id, name, color) VALUES (?, ?, ?);";
+        var sql = "INSERT INTO Category (id, isDefault, name, color) VALUES (?, ?, ?, ?);";
 
         try (
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, newCategory.id());
-            statement.setString(2, newCategory.name());
-            statement.setInt(3, newCategory.color());
+            statement.setBoolean(2, newCategory.isDefault());
+            statement.setString(3, newCategory.name());
+            statement.setInt(4, newCategory.color());
             statement.executeUpdate();
 
             try (ResultSet keyResultSet = statement.getGeneratedKeys()) {
@@ -57,6 +58,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     public Collection<CategoryEntity> findAll() {
         var sql = """
                 SELECT id,
+                       isDefault,
                        name,
                        color
                 FROM Category
@@ -84,6 +86,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     public Optional<CategoryEntity> findById(UUID id) {
         var sql = """
                 SELECT id,
+                       isDefault,
                        name,
                        color
                 FROM Category
@@ -108,6 +111,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 UPDATE Category
                 SET name = ?,
+                    isDefault = ?.
                     color = ?
                 WHERE id = ?
                 """;
@@ -117,8 +121,9 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, categoryEntity.name());
-            statement.setInt(2, categoryEntity.color());
-            statement.setString(3, categoryEntity.id());
+            statement.setBoolean(2, categoryEntity.isDefault());
+            statement.setInt(3, categoryEntity.color());
+            statement.setString(4, categoryEntity.id());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("Category not found, id: " + categoryEntity.id());
@@ -190,6 +195,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     private static CategoryEntity categoryFromResultSet(ResultSet resultSet) throws SQLException {
         return new CategoryEntity(
                 resultSet.getString("id"),
+                resultSet.getBoolean("isDefault"),
                 resultSet.getString("name"),
                 resultSet.getInt("color")
         );
