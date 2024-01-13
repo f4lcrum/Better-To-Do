@@ -14,7 +14,6 @@ public class TimeUnitTablePanel extends BasePanel<TimeUnit> {
 
     public TimeUnitTablePanel(TableModel<TimeUnit> timeUnitTableModel, Consumer<Integer> onSelectionChange,
                               Consumer<Boolean> specialOnSelectionChanged) {
-
         super(timeUnitTableModel, onSelectionChange);
         this.specialOnSelectionChanged = specialOnSelectionChanged;
         setUpTable();
