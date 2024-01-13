@@ -16,6 +16,7 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
         var color = new Color(entity.color());
         return new Category(
                 UUID.fromString(entity.id()),
+                entity.isDefault(),
                 entity.name(),
                 color
         );
@@ -28,6 +29,7 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
         return new CategoryEntity(
                 entity.getGuid().toString(),
+                entity.isDefault(),
                 entity.getName(),
                 color.getRGB()
         );
@@ -40,6 +42,7 @@ public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
 
         return new CategoryEntity(
                 dbId,
+                entity.isDefault(),
                 entity.getName(),
                 color.getRGB()
         );

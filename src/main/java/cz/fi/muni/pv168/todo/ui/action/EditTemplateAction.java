@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
@@ -9,7 +8,6 @@ import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -17,6 +15,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 public class EditTemplateAction extends AbstractAction {
 
@@ -54,7 +53,7 @@ public class EditTemplateAction extends AbstractAction {
         var templateTableModel = mainWindow.getTemplateTableModel();
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);
-        var dialog = new TemplateDialog(template, categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), template, categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Edit Template")
                 .ifPresent(templateTableModel::updateRow);
         mainWindow.refreshTemplateListModel();
