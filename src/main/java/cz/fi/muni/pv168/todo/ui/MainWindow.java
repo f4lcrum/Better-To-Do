@@ -18,6 +18,7 @@ import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.TimeUnitButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.filter.components.DurationFilterComponents;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
+import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
@@ -37,6 +38,7 @@ import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.util.Either;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -56,9 +58,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
-import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainWindow {
 
@@ -136,10 +135,9 @@ public class MainWindow {
         var statusListModel = new StatusListModel();
 
         quitAction = new QuitAction();
-        exportAction = new ExportAction(eventTablePanel, dependencyProvider);
-        importAction = new ImportAction(eventTablePanel, categoryTablePanel, templateTablePanel, timeUnitTablePanel, dependencyProvider);
+        exportAction = new ExportAction(eventTablePanel, dependencyProvider.getExportService());
+        importAction = new ImportAction(eventTablePanel, dependencyProvider.getImportService(), this::refresh);
         templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel);
-
         this.rowSorter = new TableRowSorter<>(eventTableModel);
 
         rowSorter.toggleSortOrder(this.eventTableModel.getColumnIndex(startDateRow));
@@ -207,6 +205,14 @@ public class MainWindow {
 
         frame.pack();
         changeActionsState(0, true);
+    }
+
+
+    private void refresh() {
+        refreshEventModel();
+        refreshCategoryListModel();
+        refreshTemplateListModel();
+        refreshTimeUnitListModel();
     }
 
     public void refreshEventModel() {
