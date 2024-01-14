@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 
 final class TimeUnitSqlRepositoryIntegrationTest {
+
     private static final int INIT_TIMEUNITS_COUNT = 4;
 
     private DatabaseManager databaseManager;

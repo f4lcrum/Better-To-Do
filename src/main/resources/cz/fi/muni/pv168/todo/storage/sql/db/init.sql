@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "Category"
 CREATE TABLE IF NOT EXISTS "TimeUnit"
 (
     `id`            CHAR(36) PRIMARY KEY,
-    `isDefault`     BOOLEAN,
+    `isDefault`     BOOLEAN NOT NULL,
     `name`          VARCHAR(128) NOT NULL,
     `hours`         INT NOT NULL,
     `minutes`       INT NOT NULL

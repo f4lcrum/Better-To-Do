@@ -17,7 +17,6 @@ public class CategoryTablePanel extends BasePanel<Category> {
     }
 
     private void setUpTable() {
-        // Renderers bind
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
 
