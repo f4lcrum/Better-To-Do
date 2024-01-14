@@ -5,6 +5,8 @@ import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
+import java.util.List;
+
 public class CategoryCrudService extends CrudServiceImpl<Category> {
 
     public CategoryCrudService(Repository<Category> repository, Validator<Category> validator) {
@@ -23,5 +25,18 @@ public class CategoryCrudService extends CrudServiceImpl<Category> {
             repository.create(newEntity);
         }
         return validationResult;
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return repository.findAll().stream().filter(category -> !category.isDefault()).toList();
+    }
+
+    public List<Category> findAllWithDefault() {
+        return repository.findAll();
+    }
+
+    public Category findDefault() {
+        return repository.findAll().stream().filter(Category::isDefault).toList().get(0);
     }
 }

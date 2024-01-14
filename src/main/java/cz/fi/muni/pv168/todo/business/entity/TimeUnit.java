@@ -49,6 +49,10 @@ public class TimeUnit implements Entity, Comparable<TimeUnit> {
         return minutes;
     }
 
+    public long getMinutesDuration() {
+        return minutes + 60 * hours;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.repository.Repository;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import cz.fi.muni.pv168.todo.business.service.export.ExportService;
 import cz.fi.muni.pv168.todo.business.service.export.ImportService;
@@ -25,7 +26,7 @@ public interface DependencyProvider {
 
     CrudService<Event> getEventCrudService();
 
-    CrudService<Category> getCategoryCrudService();
+    CategoryCrudService getCategoryCrudService();
 
     CrudService<Template> getTemplateCrudService();
 

@@ -41,6 +41,9 @@ public class Template implements Entity {
     }
 
     public Color getColour() {
+        if (category.isDefault()) {
+            return null;
+        }
         return this.category.getColor();
     }
 

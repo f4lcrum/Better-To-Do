@@ -39,7 +39,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
         putValue(SHORT_DESCRIPTION, "Save as template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl T"));
         putValue(Action.SMALL_ICON, Icons.ADD_ICON);
     }
 
@@ -56,7 +56,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
 
-        var dialog = new TemplateDialog(createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Save as template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();

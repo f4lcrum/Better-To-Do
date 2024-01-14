@@ -9,7 +9,6 @@ import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -20,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class AddEventAction extends AbstractAction {
@@ -49,10 +49,10 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
-        var dialog = new EventDialog(createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
+        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
         dialog.show(todoTable, "Add Event")
                 .ifPresent(eventTableModel::addRow);
-        mainWindow.refreshEventListModel();
+        mainWindow.refreshEventModel();
     }
 
     private Event createPrefilledEvent() {
