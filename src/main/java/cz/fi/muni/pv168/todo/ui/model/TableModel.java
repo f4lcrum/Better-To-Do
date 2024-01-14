@@ -44,10 +44,6 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
         return columns.get(columnIndex).getColumnType();
     }
 
-    @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-    }
-
     public void deleteRow(int rowIndex) {
         var entityToBeDeleted = getEntity(rowIndex);
         if (entityToBeDeleted.isDefault()) {
