@@ -54,6 +54,10 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
+    public int getColumnIndex(Column<T, ?> column) {
+        return columns.indexOf(column);
+    }
+
     public void addRow(T item) {
         crudService.create(item)
                 .intoException();

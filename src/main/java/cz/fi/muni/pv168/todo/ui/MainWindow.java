@@ -95,11 +95,12 @@ public class MainWindow {
     private final TableRowSorter<TableModel<Event>> rowSorter;
 
     public MainWindow(DependencyProvider dependencyProvider) {
+        Column<Event, LocalDateTime> startDateRow = new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart);
         this.categoryCrudService = dependencyProvider.getCategoryCrudService();
         this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
                 new Column<>(" ", Color.class, Event::getColour),
                 new Column<>("Name of the event", String.class, Event::getName),
-                new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart),
+                startDateRow,
                 new Column<>("Category", Category.class, Event::getCategory),
                 new Column<>("Status", Status.class, Event::getStatus),
                 new Column<>("Duration (minutes)", String.class, Event::getDurationString)
@@ -140,7 +141,8 @@ public class MainWindow {
         templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel);
 
         this.rowSorter = new TableRowSorter<>(eventTableModel);
-        rowSorter.toggleSortOrder(2); // 2 == 3rd column is start date, automatically sorts 3rd column
+
+        rowSorter.toggleSortOrder(this.eventTableModel.getColumnIndex(startDateRow));
 
         var eventTableFilter = new EventTableFilter(rowSorter, statistics);
         eventTablePanel.getTable().setRowSorter(rowSorter);
