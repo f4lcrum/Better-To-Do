@@ -22,6 +22,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.ListModel;
 import java.awt.event.ItemEvent;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -117,6 +118,12 @@ public final class EventDialog extends EntityDialog<Event> {
 
         if (dateModel.getValue() == null) {
             result.add("Incorrect field: insert date value into date field");
+        }
+
+        try {
+            LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
+        } catch (DateTimeException e) {
+            result.add("Incorrect field: insert valid hours and minutes");
         }
 
         return result;

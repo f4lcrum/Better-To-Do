@@ -5,6 +5,9 @@ import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+
+import java.time.DateTimeException;
+import java.time.LocalTime;
 import java.util.Objects;
 import javax.swing.JTextField;
 
@@ -52,6 +55,12 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
             Long.parseLong(minuteField.getText());
         } catch (NumberFormatException e) {
             result.add("Incorrect field: insert integer value into minutes field");
+        }
+
+        try {
+            LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
+        } catch (DateTimeException e) {
+            result.add("Incorrect field: insert valid hours and minutes");
         }
 
         return result;

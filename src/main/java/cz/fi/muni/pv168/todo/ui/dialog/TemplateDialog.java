@@ -14,6 +14,8 @@ import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
 
 import java.awt.event.ItemEvent;
+import java.time.DateTimeException;
+import java.util.Date;
 import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -101,6 +103,12 @@ public final class TemplateDialog extends EntityDialog<Template> {
             Integer.parseInt(duration.getText());
         } catch (NumberFormatException e) {
             result.add("Incorrect field: insert integer value into time unit count field");
+        }
+
+        try {
+            LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
+        } catch (DateTimeException e) {
+            result.add("Incorrect field: insert valid hours and minutes");
         }
 
         return result;
