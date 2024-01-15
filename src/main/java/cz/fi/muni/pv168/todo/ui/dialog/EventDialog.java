@@ -123,7 +123,7 @@ public final class EventDialog extends EntityDialog<Event> {
         try {
             LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
         } catch (DateTimeException e) {
-            result.add("Incorrect field: insert valid hours and minutes");
+            result.add("Incorrect field: insert valid hours or minutes");
         }
 
         return result;
