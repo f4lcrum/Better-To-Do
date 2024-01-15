@@ -31,7 +31,6 @@ public final class DatabaseManager {
         this.dataSource = JdbcConnectionPool.create(jdbcUri, "", "");
 
         this.sqlFileExecutor = new SqlFileExecutor(this::getTransactionHandler, DatabaseManager.class);
-        // initData("dev");
     }
 
     public static DatabaseManager createProductionInstance() {
