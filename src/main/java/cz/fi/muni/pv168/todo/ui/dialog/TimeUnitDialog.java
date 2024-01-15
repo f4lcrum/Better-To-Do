@@ -57,12 +57,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
             result.add("Incorrect field: insert integer value into minutes field");
         }
 
-        try {
-            LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
-        } catch (DateTimeException e) {
-            result.add("Incorrect field: insert valid hours or minutes");
-        }
-
         return result;
     }
 
