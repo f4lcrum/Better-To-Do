@@ -5,9 +5,9 @@ import cz.fi.muni.pv168.todo.business.service.export.batch.Batch;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchImporter;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.io.AbstractImporterExporter;
+import cz.fi.muni.pv168.todo.io.DataManipulationException;
 import cz.fi.muni.pv168.todo.io.IoDatabaseSnapshot;
 import cz.fi.muni.pv168.todo.io.entity.IoEntity;
-import cz.fi.muni.pv168.todo.io.exception.SnapshotIOException;
 import cz.fi.muni.pv168.todo.io.mapper.CategoryIoMapper;
 import cz.fi.muni.pv168.todo.io.mapper.EventIoMapper;
 import cz.fi.muni.pv168.todo.io.mapper.IoMapper;
@@ -34,8 +34,8 @@ public class JsonImporter extends AbstractImporterExporter implements BatchImpor
                     mapIoEntities(ioSnapshot.templates(), new TemplateIoMapper()),
                     mapIoEntities(ioSnapshot.timeUnits(), new TimeUnitIoMapper())
             );
-        } catch (Exception e) {
-            throw new SnapshotIOException("Error occurred when importing the database", e);
+        } catch (Exception ex) {
+            throw new DataManipulationException("Import failed, input file corrupted", ex);
         }
     }
 

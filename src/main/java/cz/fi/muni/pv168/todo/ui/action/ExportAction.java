@@ -46,6 +46,14 @@ public final class ExportAction extends AbstractAction {
                 exportFile = filter.decorate(exportFile);
             }
 
+            if (!exporter.acceptsFileFormat(exportFile)) {
+                JOptionPane.showMessageDialog(
+                        parent,
+                        String.format("This file format is not supported, only %s is!", String.join(", ", exporter.getSupportedFileExtensions()))
+                );
+                return;
+            }
+
             exporter.exportData(exportFile);
         }
     }

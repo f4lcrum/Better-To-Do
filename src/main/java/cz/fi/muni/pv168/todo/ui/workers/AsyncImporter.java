@@ -4,9 +4,12 @@ import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.ui.action.Importer;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of asynchronous importer for UI.
@@ -24,15 +27,20 @@ public class AsyncImporter implements Importer {
     @Override
     public void importData(String filePath) {
         var asyncWorker = new SwingWorker<Void, Void>() {
+            boolean importSuccessful = false;
+
             @Override
             protected Void doInBackground() {
-                importService.importData(filePath);
+                importSuccessful = importService.importData(filePath);
                 return null;
             }
 
             @Override
             protected void done() {
-                super.done();
+                if (!importSuccessful) {
+                    JOptionPane.showMessageDialog(null, "Import failed, the input file is corrupted!");
+                    return;
+                }
                 onFinish.run();
             }
         };
@@ -42,6 +50,23 @@ public class AsyncImporter implements Importer {
     @Override
     public Collection<Format> getFormats() {
         return importService.getFormats();
+    }
+
+    @Override
+    public Set<String> getSupportedFileExtensions() {
+        return getFormats().stream()
+                .flatMap(format -> format.extensions().stream())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean acceptsFileFormat(String filePath) {
+        String fileExtension = "";
+        int i = filePath.lastIndexOf('.');
+        if (i > 0) {
+            fileExtension = filePath.substring(i + 1);
+        }
+        return getSupportedFileExtensions().contains(fileExtension);
     }
 
 }

@@ -9,8 +9,12 @@ import cz.fi.muni.pv168.todo.business.service.export.batch.BatchImporter;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchOperationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.business.service.export.format.FormatMapping;
+import cz.fi.muni.pv168.todo.io.DataManipulationException;
+import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Generic synchronous implementation of the {@link ImportService}.
@@ -36,18 +40,29 @@ public class GenericImportService implements ImportService {
     }
 
     @Override
-    public void importData(String filePath) {
-        eventCrudService.deleteAll();
-        templateCrudService.deleteAll();
-        categoryCrudService.deleteAll();
-        timeUnitCrudService.deleteAll();
+    public boolean importData(String filePath) {
+        var importer = getImporter(filePath);
+        try {
+            var batch = importer.importBatch(filePath);
 
-        var batch = getImporter(filePath).importBatch(filePath);
+            eventCrudService.deleteAll();
+            templateCrudService.deleteAll();
+            categoryCrudService.deleteAll();
+            timeUnitCrudService.deleteAll();
 
-        batch.timeUnits().forEach(this::createTimeUnit);
-        batch.categories().forEach(this::createCategory);
-        batch.templates().forEach(this::createTemplate);
-        batch.events().forEach(this::createEvent);
+            batch.timeUnits().forEach(this::createTimeUnit);
+            batch.categories().forEach(this::createCategory);
+            batch.templates().forEach(this::createTemplate);
+            batch.events().forEach(this::createEvent);
+        } catch (DataManipulationException dme) {
+            Logger.getLogger(importer.getClass().getName()).log(Level.SEVERE, "An error occurred when trying to parse the input file!", dme);
+            return false;
+        } catch (DataStorageException dse) {
+            Logger.getLogger(GenericImportService.class.getName()).log(Level.SEVERE, "An error occurred when trying to access the database!", dse);
+            return false;
+        }
+
+        return true;
     }
 
     private void createCategory(Category category) {

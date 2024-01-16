@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.business.service.export.batch;
 
-import cz.fi.muni.pv168.todo.business.service.export.DataManipulationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.FileFormat;
+import cz.fi.muni.pv168.todo.io.DataManipulationException;
 
 /**
  * Generic mechanism, allowing to export a {@link Batch} of entities to a file.

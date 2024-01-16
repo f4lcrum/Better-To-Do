@@ -7,6 +7,8 @@ import cz.fi.muni.pv168.todo.ui.action.Exporter;
 import javax.swing.SwingWorker;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of asynchronous exporter for UI.
@@ -43,5 +45,21 @@ public class AsyncExporter implements Exporter {
         };
         asyncWorker.execute();
     }
-}
 
+    @Override
+    public Set<String> getSupportedFileExtensions() {
+        return getFormats().stream()
+                .flatMap(format -> format.extensions().stream())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean acceptsFileFormat(String filePath) {
+        String fileExtension = "";
+        int i = filePath.lastIndexOf('.');
+        if (i > 0) {
+            fileExtension = filePath.substring(i + 1);
+        }
+        return getSupportedFileExtensions().contains(fileExtension);
+    }
+}
