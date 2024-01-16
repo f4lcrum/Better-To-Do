@@ -55,7 +55,7 @@ public class EditEventAction extends AbstractAction {
         var eventTableModel = mainWindow.getEventTableModel();
         int modelRow = eventTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
+        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator, mainWindow.getCreateTemplateFromEventAction());
         dialog.show(eventTable, "Edit Event").ifPresent(entity -> new EditActionSwingWorker<>(eventTableModel, mainWindow, entity).execute());
     }
 }

@@ -69,7 +69,7 @@ public class MainWindow {
     private final Action quitAction;
     private final Action exportAction;
     private final Action importAction;
-    private final Action templateFromEventAction;
+    private final CreateTemplateFromEventAction templateFromEventAction;
     private final EventListModel eventListModel;
     private final TemplateListModel templateListModel;
     private final CategoryListModel categoryListModel;
@@ -136,7 +136,7 @@ public class MainWindow {
         quitAction = new QuitAction();
         exportAction = new ExportAction(eventTablePanel, dependencyProvider.getExportService());
         importAction = new ImportAction(eventTablePanel, dependencyProvider.getImportService(), this::refresh);
-        templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel);
+        templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel, dependencyProvider.getTemplateCrudService());
         this.rowSorter = new TableRowSorter<>(eventTableModel);
 
         rowSorter.toggleSortOrder(this.eventTableModel.getColumnIndex(startDateRow));
@@ -417,5 +417,9 @@ public class MainWindow {
 
     public CategoryCrudService getCategoryCrudService() {
         return categoryCrudService;
+    }
+
+    public CreateTemplateFromEventAction getCreateTemplateFromEventAction() {
+        return templateFromEventAction;
     }
 }

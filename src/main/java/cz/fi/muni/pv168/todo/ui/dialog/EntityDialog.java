@@ -21,7 +21,7 @@ import java.util.Optional;
 
 abstract class EntityDialog<E> {
 
-    private final JPanel panel = new JPanel();
+    protected final JPanel panel = new JPanel();
     private final JPanel errors = new JPanel();
     private final Validator<E> entityValidator;
 
@@ -91,6 +91,11 @@ abstract class EntityDialog<E> {
         );
     }
 
+    public void showWithErrors(JComponent parentComponent, String title, ValidationResult validationResult) {
+        showErrorMessages(validationResult.getValidationErrors());
+        show(parentComponent, title);
+    }
+
     public Optional<E> show(JComponent parentComponent, String title) {
         int result = JOptionPane.showOptionDialog(parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
 
@@ -107,7 +112,7 @@ abstract class EntityDialog<E> {
                 showErrorMessages(validation.getValidationErrors());
                 result = showOptionDialog(parentComponent, title);
             } else {
-                showErrorMessages(validateFields.getValidationErrors());
+
                 result = showOptionDialog(parentComponent, title);
             }
         }
