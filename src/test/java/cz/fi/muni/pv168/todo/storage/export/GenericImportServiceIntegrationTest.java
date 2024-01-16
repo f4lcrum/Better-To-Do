@@ -12,7 +12,6 @@ import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TimeUnitValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationException;
-import cz.fi.muni.pv168.todo.io.exception.SnapshotIOException;
 import cz.fi.muni.pv168.todo.io.imports.JsonImporter;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryCategoryRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryEventRepository;
@@ -29,6 +28,7 @@ import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class GenericImportServiceIntegrationTest
 {
@@ -136,8 +136,7 @@ public class GenericImportServiceIntegrationTest
         Path importFilePath = TEST_RESOURCES.resolve("invalid-color-category.json");
 
         var stringPath = importFilePath.toString();
-        assertThatExceptionOfType(SnapshotIOException.class)
-                .isThrownBy(() -> genericImportService.importData(stringPath));
+        assertFalse(genericImportService.importData(stringPath));
     }
 
     @Test
