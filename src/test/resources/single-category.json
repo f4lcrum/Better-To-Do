@@ -1,0 +1,18 @@
+{
+  "categories": [
+    {
+      "id": "76c59af3-6e9a-4fcb-bd7e-d0a163ed8b45",
+      "isDefault": false,
+      "name": "TestCategory",
+      "color": {
+        "r": 255,
+        "g": 175,
+        "b": 175,
+        "alpha": 255
+      }
+    }
+  ],
+  "events" : [ ],
+  "templates" : [ ],
+  "timeUnits" : [ ]
+}
