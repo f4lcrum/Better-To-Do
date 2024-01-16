@@ -78,11 +78,11 @@ WHERE NOT EXISTS (
 );
 
 -- Insert statements for Category
-INSERT INTO "Category" ("id", "name", "color")
+INSERT INTO "Category" ("id", "isDefault", "name", "color")
 VALUES
-    ('158d4716-eec2-4e03-bc4c-450e31d5d38a', 'Work', -65536),
-    ('d6b0d956-bbf4-4641-afdf-63c9b4127201', 'Personal', -16711936),
-    ('e2e76751-b5be-4955-87e4-48f2403cd4ae', 'Family', -16776961);
+    ('158d4716-eec2-4e03-bc4c-450e31d5d38a', false, 'Work', -65536),
+    ('d6b0d956-bbf4-4641-afdf-63c9b4127201', false, 'Personal', -16711936),
+    ('e2e76751-b5be-4955-87e4-48f2403cd4ae', false, 'Family', -16776961);
 
 -- Insert statements for Template
 INSERT INTO "Template" ("id", "name", "eventName", "category", "startTime", "timeUnit", "duration", "description")
