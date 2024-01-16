@@ -12,6 +12,7 @@ import cz.fi.muni.pv168.todo.wiring.TestingDependencyProvider;
 import java.awt.Color;
 import java.time.LocalTime;
 import org.junit.jupiter.api.AfterEach;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -48,16 +49,13 @@ final class TemplateSqlRepositoryIntegrationTest {
 
     @Test
     void templateInitSucceeds() {
-        Set<String> expectedTemplatesNames = new HashSet<>(Set.of("Work Template", "Personal Template", "Family Template"));
-        final Collection<Template> retrievedTemplates;
+        Collection<Template> templates = templateRepository.findAll();
 
-        retrievedTemplates = templateRepository.findAll();
+        Collection<String> templateNames = templates.stream()
+                .map(Template::getName)
+                .toList();
 
-        retrievedTemplates.forEach(timeUnit -> expectedTemplatesNames.remove(timeUnit.getName()));
-
-        // Expecting 4 initial time units - Minute, Hour, Day, Week
-        assertEquals(3, retrievedTemplates.size());
-        assertEquals(0, expectedTemplatesNames.size());
+        assertThat(templateNames).containsExactlyInAnyOrder("Work Template", "Personal Template", "Family Template");
     }
 
     @Test

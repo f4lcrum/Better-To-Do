@@ -1,11 +1,15 @@
 package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
+import cz.fi.muni.pv168.todo.business.repository.EventRepository;
+import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
 import cz.fi.muni.pv168.todo.business.repository.TimeUnitRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
 import cz.fi.muni.pv168.todo.wiring.TestingDependencyProvider;
 import org.junit.jupiter.api.AfterEach;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,9 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 final class TimeUnitSqlRepositoryIntegrationTest {
@@ -26,12 +28,18 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     private DatabaseManager databaseManager;
     private TimeUnitRepository timeUnitRepository;
+    private EventRepository eventRepository;
+    private TemplateRepository templateRepository;
+
 
     @BeforeEach
     void setUp() {
         databaseManager = DatabaseManager.createTestInstance();
         var dependencyProvider = new TestingDependencyProvider(databaseManager);
         timeUnitRepository = dependencyProvider.getTimeUnitRepository();
+        eventRepository = dependencyProvider.getEventRepository();
+        templateRepository = dependencyProvider.getTemplateRepository();
+
     }
 
     @AfterEach
@@ -41,16 +49,12 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
     @Test
     void timeUnitInitSucceeds() {
-        Set<String> expectedTimeUnitNames = new HashSet<>(Set.of("Minute", "Hour", "Day", "Week"));
-        final Collection<TimeUnit> retrievedTimeUnits;
+        Collection<TimeUnit> timeUnits = timeUnitRepository.findAll();
 
-        retrievedTimeUnits = timeUnitRepository.findAll();
+        Collection<String> unitNames = timeUnits.stream()
+                .map(TimeUnit::getName).toList();
 
-        retrievedTimeUnits.forEach(timeUnit -> expectedTimeUnitNames.remove(timeUnit.getName()));
-
-        // Expecting 4 initial time units - Minute, Hour, Day, Week
-        assertEquals(INIT_TIMEUNITS_COUNT, retrievedTimeUnits.size());
-        assertEquals(0, expectedTimeUnitNames.size());
+        assertThat(unitNames).containsExactlyInAnyOrder("Minute", "Hour", "Day", "Week");
     }
 
     @Test
@@ -102,6 +106,9 @@ final class TimeUnitSqlRepositoryIntegrationTest {
         timeUnitRepository.create(timeUnit2);
         timeUnitRepository.create(timeUnit3);
         timeUnits = timeUnitRepository.findAll();
+
+        assertDoesNotThrow(() -> eventRepository.deleteAll());
+        assertDoesNotThrow(() -> templateRepository.deleteAll());
         assertDoesNotThrow(() -> timeUnitRepository.deleteAll());
 
         assertEquals(INIT_TIMEUNITS_COUNT + 3, timeUnits.size()); // Desired time units were added

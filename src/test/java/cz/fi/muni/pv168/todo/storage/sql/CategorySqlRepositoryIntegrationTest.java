@@ -2,11 +2,14 @@ package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
+import cz.fi.muni.pv168.todo.business.repository.EventRepository;
+import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
 import cz.fi.muni.pv168.todo.wiring.TestingDependencyProvider;
 import java.awt.Color;
 import org.junit.jupiter.api.AfterEach;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,12 +27,17 @@ import java.util.UUID;
 final class CategorySqlRepositoryIntegrationTest {
     private DatabaseManager databaseManager;
     private CategoryRepository categoryRepository;
+    private TemplateRepository templateRepository;
+    private EventRepository eventRepository;
+
 
     @BeforeEach
     void setUp() {
         databaseManager = DatabaseManager.createTestInstance();
         var dependencyProvider = new TestingDependencyProvider(databaseManager);
         categoryRepository = dependencyProvider.getCategoryRepository();
+        eventRepository = dependencyProvider.getEventRepository();
+        templateRepository = dependencyProvider.getTemplateRepository();
     }
 
     @AfterEach
@@ -39,15 +47,13 @@ final class CategorySqlRepositoryIntegrationTest {
 
     @Test
     void categoryInitSucceeds() {
-        Set<String> expectedCategoriesNames = new HashSet<>(Set.of("Work", "Family", "Personal"));
-        final Collection<Category> retrievedCategories;
+        Collection<Category> categories = categoryRepository.findAll();
 
-        retrievedCategories = categoryRepository.findAll();
-        retrievedCategories.forEach(timeUnit -> expectedCategoriesNames.remove(timeUnit.getName()));
+        Collection<String> categoryNames = categories.stream()
+                .map(Category::getName)
+                .toList();
 
-        // Expecting 4 initial time units - Minute, Hour, Day, Week
-        assertEquals(3, retrievedCategories.size());
-        assertEquals(0, expectedCategoriesNames.size());
+        assertThat(categoryNames).containsExactlyInAnyOrder("Work", "Personal", "Family");
     }
 
     @Test
@@ -99,6 +105,9 @@ final class CategorySqlRepositoryIntegrationTest {
         categoryRepository.create(newCategory2);
         categoryRepository.create(newCategory3);
         categories = categoryRepository.findAll();
+
+        assertDoesNotThrow(() -> eventRepository.deleteAll());
+        assertDoesNotThrow(() -> templateRepository.deleteAll());
         assertDoesNotThrow(() -> categoryRepository.deleteAll());
 
         assertEquals(3 + 3, categories.size()); // Desired time units were added

@@ -13,13 +13,12 @@ import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -48,16 +47,13 @@ final class EventSqlRepositoryIntegrationTest {
 
     @Test
     void eventInitSucceeds() {
-        Set<String> expectedEventsNames = new HashSet<>(Set.of("Meeting", "Gym", "Family Dinner"));
-        final Collection<Event> retrievedEvents;
+        Collection<Event> events = eventRepository.findAll();
 
-        retrievedEvents = eventRepository.findAll();
+        Collection<String> eventNames = events.stream()
+                .map(Event::getName)
+                .toList();
 
-        retrievedEvents.forEach(timeUnit -> expectedEventsNames.remove(timeUnit.getName()));
-
-        // Expecting 4 initial time units - Minute, Hour, Day, Week
-        assertEquals(3, retrievedEvents.size());
-        assertEquals(0, expectedEventsNames.size());
+        assertThat(eventNames).containsExactlyInAnyOrder("Meeting", "Gym", "Family Dinner");
     }
 
     @Test
