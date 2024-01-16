@@ -49,8 +49,22 @@ public final class ImportAction extends AbstractAction {
 
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
+            String filePath = importFile.getAbsolutePath();
 
-            importer.importData(importFile.getAbsolutePath());
+            if (!importFile.exists()) {
+                JOptionPane.showMessageDialog(eventTablePanel, "The selected file does not exist!");
+                return;
+            }
+
+            if (!importer.acceptsFileFormat(filePath)) {
+                JOptionPane.showMessageDialog(
+                        eventTablePanel,
+                        String.format("This file format is not supported, only %s is!", String.join(", ", importer.getSupportedFileExtensions()))
+                );
+                return;
+            }
+
+            importer.importData(filePath);
         }
     }
 }

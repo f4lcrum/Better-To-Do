@@ -12,8 +12,8 @@ import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.TimeUnitCrudService;
 import cz.fi.muni.pv168.todo.business.service.export.ExportService;
 import cz.fi.muni.pv168.todo.business.service.export.GenericExportService;
-import cz.fi.muni.pv168.todo.business.service.export.GenericImportService;
 import cz.fi.muni.pv168.todo.business.service.export.ImportService;
+import cz.fi.muni.pv168.todo.business.service.export.TransactionalImportService;
 import cz.fi.muni.pv168.todo.business.service.validation.CategoryValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.EventValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.TemplateValidator;
@@ -25,7 +25,6 @@ import cz.fi.muni.pv168.todo.storage.sql.CategorySqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.EventSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TemplateSqlRepository;
 import cz.fi.muni.pv168.todo.storage.sql.TimeUnitSqlRepository;
-import cz.fi.muni.pv168.todo.storage.sql.TransactionalImportService;
 import cz.fi.muni.pv168.todo.storage.sql.dao.CategoryDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.EventDao;
 import cz.fi.muni.pv168.todo.storage.sql.dao.TemplateDao;
@@ -113,14 +112,14 @@ public class CommonDependencyProvider implements DependencyProvider {
                 templateCrudService,
                 timeUnitCrudService,
                 List.of(new JsonExporter()));
-        var genericImportService = new GenericImportService(
+        this.importService = new TransactionalImportService(
                 eventCrudService,
                 categoryCrudService,
                 templateCrudService,
                 timeUnitCrudService,
-                List.of(new JsonImporter())
+                List.of(new JsonImporter()),
+                transactionExecutor
         );
-        this.importService = new TransactionalImportService(genericImportService, transactionExecutor);
     }
 
     @Override

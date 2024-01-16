@@ -234,14 +234,17 @@ public class MainWindow {
 
     public void refreshCategoryListModel() {
         categoryListModel.refresh();
+        categoryTableModel.refresh();
     }
 
     public void refreshTimeUnitListModel() {
         timeUnitListModel.refresh();
+        timeUnitTableModel.refresh();
     }
 
     public void refreshTemplateListModel() {
         templateListModel.refresh();
+        templateTableModel.refresh();
     }
 
     public void show() {

@@ -5,9 +5,9 @@ import cz.fi.muni.pv168.todo.business.service.export.batch.Batch;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchExporter;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.io.AbstractImporterExporter;
+import cz.fi.muni.pv168.todo.io.DataManipulationException;
 import cz.fi.muni.pv168.todo.io.IoDatabaseSnapshot;
 import cz.fi.muni.pv168.todo.io.entity.IoEntity;
-import cz.fi.muni.pv168.todo.io.exception.SnapshotIOException;
 import cz.fi.muni.pv168.todo.io.mapper.CategoryIoMapper;
 import cz.fi.muni.pv168.todo.io.mapper.EventIoMapper;
 import cz.fi.muni.pv168.todo.io.mapper.IoMapper;
@@ -42,7 +42,7 @@ public class JsonExporter extends AbstractImporterExporter implements BatchExpor
             String jsonContent = getObjectMapper().writeValueAsString(ioSnapshot);
             writer.write(jsonContent);
         } catch (IOException e) {
-            throw new SnapshotIOException("Error occurred when exporting the database", e);
+            throw new DataManipulationException("Error occurred when exporting the database", e);
         }
     }
 
