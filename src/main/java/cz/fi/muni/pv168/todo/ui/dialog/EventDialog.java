@@ -124,6 +124,12 @@ public final class EventDialog extends EntityDialog<Event> {
             LocalTime.of(Integer.parseInt(hourField.getText()), Integer.parseInt(minuteField.getText()));
         } catch (DateTimeException e) {
             result.add("Incorrect field: insert valid hours or minutes");
+        } catch (NumberFormatException e) {
+
+        }
+
+        if (timeUnitModel.getSelectedItem() == null) {
+            result.add("Incorrect field: select time unit value");
         }
 
         return result;
