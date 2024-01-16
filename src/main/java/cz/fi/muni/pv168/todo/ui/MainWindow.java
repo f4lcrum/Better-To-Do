@@ -78,7 +78,6 @@ public class MainWindow {
     private final JPanel statusFilterPanel;
     private final JPanel categoryFilterPanel;
     private final JPanel durationFilterPanel;
-    private final JButton resetFiltersButton;
     private final TableModel<Event> eventTableModel;
 
     private final TableModel<Category> categoryTableModel;
@@ -158,12 +157,11 @@ public class MainWindow {
         this.categoryFilterPanel = FilterPanel.createFilterPanel(categoryFilterList, "Category: ");
         DurationFilterComponents durationComponents = FilterPanel.createDurationFilter(eventTableFilter);
         this.durationFilterPanel = durationComponents.panel;
-        this.resetFiltersButton = createResetFiltersButton(eventTableFilter);
+        JButton resetFiltersButton = createResetFiltersButton(eventTableFilter);
         eventTableFilter.setUIComponents(durationComponents.minDurationField,
                 durationComponents.maxDurationField,
                 statusFilterList,
                 categoryFilterList);
-
         var eventButtonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getTable(), categoryListModel, timeUnitListModel, templateListModel, this);
         var templateButtonTabStrategy = new TemplateButtonTabStrategy(templateTablePanel.getTable(), categoryListModel, timeUnitListModel, this);
         var categoryButtonTabStrategy = new CategoryButtonTabStrategy(categoryTablePanel.getTable(), this);
@@ -198,7 +196,7 @@ public class MainWindow {
         frame = createFrame();
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setJMenuBar(createMenuBar(panelChangeListener, eventButtonTabStrategy, templateButtonTabStrategy, categoryButtonTabStrategy, timeUnitButtonTabStrategy));
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel), BorderLayout.BEFORE_FIRST_LINE);
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel, resetFiltersButton), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
 
         tabbedPane.addChangeListener(panelChangeListener);
