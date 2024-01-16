@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListener;
@@ -19,7 +20,10 @@ import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.ListModel;
 import java.awt.event.ItemEvent;
 import java.time.DateTimeException;
@@ -43,17 +47,18 @@ public final class EventDialog extends EntityDialog<Event> {
     private final Event event;
 
     public EventDialog(CategoryCrudService categoryCrudService, Event event, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
-                       ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator) {
+                       ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator, CreateTemplateFromEventAction action) {
         super(Objects.requireNonNull(entityValidator));
         this.categoryCrudService = categoryCrudService;
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
         this.templateModel = new ComboBoxModelAdapter<>(templateListModel);
+        addFields(action);
         if (edit) {
             setValues();
         }
-        addFields();
+
     }
 
     private void setValues() {
@@ -67,7 +72,7 @@ public final class EventDialog extends EntityDialog<Event> {
         minuteField.setText(Integer.toString(event.getStartTime().getMinute()));
     }
 
-    private void addFields() {
+    private void addFields(CreateTemplateFromEventAction action) {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setRenderer(new CategoryRenderer());
         categoryComboBox.addItemListener(e -> {
@@ -91,7 +96,15 @@ public final class EventDialog extends EntityDialog<Event> {
         addMandatory("Time unit", timeUnitComboBox);
         add("Time unit count", "5", duration);
         addDescription("Description", "A weekend party at John's place.", description);
+        addTemplateFromEventButton(action);
         addErrorPanel();
+    }
+
+    private void addTemplateFromEventButton(CreateTemplateFromEventAction action) {
+        action.setDialog(this);
+        action.setEnabled(true);
+        panel.add(new JLabel(""));
+        panel.add(new JButton(action), "span, al center center");
     }
 
     @Override
@@ -133,6 +146,16 @@ public final class EventDialog extends EntityDialog<Event> {
         }
 
         return result;
+    }
+
+    public Event validateAndGetEvent(JComponent parentComponent) {
+        var validateFields = isValid();
+        if (validateFields.isValid()) {
+            var entity = getEntity();
+            return entity;
+        }
+        showWithErrors(parentComponent, "Add event", validateFields);
+        return null;
     }
 
     @Override
