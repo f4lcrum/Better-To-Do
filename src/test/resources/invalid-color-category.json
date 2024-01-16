@@ -3,9 +3,9 @@
     {
       "id": "120be0a2-16ec-44b4-aad6-5e6826d9e532",
       "isDefault": false,
-      "name": "TestCategory",
+      "name": "Some category",
       "color": {
-        "r": 255,
+        "r": -255,
         "g": 175,
         "b": 175,
         "alpha": 255
