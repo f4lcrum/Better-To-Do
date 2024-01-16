@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.model;
 
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class Column<E, T> {

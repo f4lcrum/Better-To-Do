@@ -1,9 +1,6 @@
 package cz.fi.muni.pv168.todo.business.service.validation;
 
-import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
-import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.business.service.validation.common.NumericalValueValidator;
 import cz.fi.muni.pv168.todo.business.service.validation.common.StringLengthValidator;
 

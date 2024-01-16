@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.filter.matcher.event;
 
-import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EntityMatcher;
 

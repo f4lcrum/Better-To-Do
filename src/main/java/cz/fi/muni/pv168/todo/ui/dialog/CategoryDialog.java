@@ -4,7 +4,6 @@ package cz.fi.muni.pv168.todo.ui.dialog;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 
-import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import java.util.Objects;
