@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
 import cz.fi.muni.pv168.todo.business.repository.EventRepository;
 import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
 import cz.fi.muni.pv168.todo.business.repository.TimeUnitRepository;

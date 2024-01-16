@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.repository.EventRepository;
-import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataAccessObject;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 import cz.fi.muni.pv168.todo.storage.sql.entity.EventEntity;

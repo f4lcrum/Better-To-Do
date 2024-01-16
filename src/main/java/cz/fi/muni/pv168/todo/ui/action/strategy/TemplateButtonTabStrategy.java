@@ -1,11 +1,8 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
-import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
-import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
 import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;

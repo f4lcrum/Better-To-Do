@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;

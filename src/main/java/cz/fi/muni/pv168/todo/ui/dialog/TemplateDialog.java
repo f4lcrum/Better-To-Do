@@ -15,7 +15,6 @@ import cz.fi.muni.pv168.todo.ui.renderer.TimeUnitRenderer;
 
 import java.awt.event.ItemEvent;
 import java.time.DateTimeException;
-import java.util.Date;
 import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;

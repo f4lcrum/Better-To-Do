@@ -1,6 +1,5 @@
 package cz.fi.muni.pv168.todo.wiring;
 
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
 import cz.fi.muni.pv168.todo.business.repository.EventRepository;
 import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
