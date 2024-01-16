@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-final class EventSqlRepositoryIntegrationTest {
+public final class EventSqlRepositoryIntegrationTest {
     private DatabaseManager databaseManager;
     private EventRepository eventRepository;
     private CategoryRepository categoryRepository;
