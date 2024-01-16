@@ -111,7 +111,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 UPDATE Category
                 SET name = ?,
-                    isDefault = ?.
+                    isDefault = ?,
                     color = ?
                 WHERE id = ?
                 """;
