@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.storage.sql;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.business.repository.CategoryRepository;
 import cz.fi.muni.pv168.todo.business.repository.EventRepository;
 import cz.fi.muni.pv168.todo.business.repository.TemplateRepository;
 import cz.fi.muni.pv168.todo.business.repository.TimeUnitRepository;
@@ -22,7 +21,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-final class TimeUnitSqlRepositoryIntegrationTest {
+public final class TimeUnitSqlRepositoryIntegrationTest {
 
     private static final int INIT_TIMEUNITS_COUNT = 4;
 
@@ -33,7 +32,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
 
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         databaseManager = DatabaseManager.createTestInstance();
         var dependencyProvider = new TestingDependencyProvider(databaseManager);
         timeUnitRepository = dependencyProvider.getTimeUnitRepository();
@@ -43,12 +42,12 @@ final class TimeUnitSqlRepositoryIntegrationTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         databaseManager.destroySchema();
     }
 
     @Test
-    void timeUnitInitSucceeds() {
+    public void timeUnitInitSucceeds() {
         Collection<TimeUnit> timeUnits = timeUnitRepository.findAll();
 
         Collection<String> unitNames = timeUnits.stream()
@@ -58,7 +57,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
     }
 
     @Test
-    void createOneTimeUnitSucceeds() {
+    public void createOneTimeUnitSucceeds() {
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final Optional<TimeUnit> retrievedTimeUnit;
 
@@ -70,7 +69,7 @@ final class TimeUnitSqlRepositoryIntegrationTest {
     }
 
     @Test
-    void updateOfInsertedTimeUnitSucceeds() {
+    public void updateOfInsertedTimeUnitSucceeds() {
         final TimeUnit timeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final TimeUnit updatedTimeUnit = new TimeUnit(timeUnit.getGuid(), false, "UpdatedTestTu", 10, 210);
         final Optional<TimeUnit> updateResult;

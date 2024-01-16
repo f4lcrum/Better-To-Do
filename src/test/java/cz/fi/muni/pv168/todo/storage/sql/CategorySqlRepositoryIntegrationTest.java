@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-final class CategorySqlRepositoryIntegrationTest {
+public final class CategorySqlRepositoryIntegrationTest {
     private DatabaseManager databaseManager;
     private CategoryRepository categoryRepository;
     private TemplateRepository templateRepository;
