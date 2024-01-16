@@ -2,7 +2,9 @@ package cz.fi.muni.pv168.todo.ui.model;
 
 import cz.fi.muni.pv168.todo.business.entity.Entity;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,14 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
         if (entityToBeDeleted.isDefault()) {
             return;
         }
-        crudService.deleteByGuid(entityToBeDeleted.getGuid());
-        content.remove(rowIndex);
-        fireTableRowsDeleted(rowIndex, rowIndex);
+        try {
+            crudService.deleteByGuid(entityToBeDeleted.getGuid());
+            content.remove(rowIndex);
+            fireTableRowsDeleted(rowIndex, rowIndex);
+        } catch(DataStorageException e) {
+            JOptionPane.showMessageDialog(null, "Unable to delete, this item is used elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
     }
 
     public int getColumnIndex(Column<T, ?> column) {
