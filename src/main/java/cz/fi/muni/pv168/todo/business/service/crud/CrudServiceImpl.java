@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class CrudServiceImpl<T extends Entity> implements CrudService<T> {
@@ -21,6 +22,10 @@ public abstract class CrudServiceImpl<T extends Entity> implements CrudService<T
     @Override
     public List<T> findAll() {
         return repository.findAll();
+    }
+
+    public Optional<T> findByGuid(UUID guid) {
+        return repository.findByGuid(guid);
     }
 
     @Override
