@@ -16,7 +16,7 @@ public interface ImportService {
      * @param filePath absolute path of the export file (to be created or overwritten)
      * @throws BatchOperationException if the import cannot be done
      */
-    boolean importData(String filePath);
+    boolean importData(String filePath, boolean appendData);
 
     /**
      * Gets all available formats for import.

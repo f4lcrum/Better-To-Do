@@ -25,13 +25,13 @@ public class AsyncImporter implements Importer {
     }
 
     @Override
-    public void importData(String filePath) {
+    public void importData(String filePath, boolean overwrite) {
         var asyncWorker = new SwingWorker<Void, Void>() {
             boolean importSuccessful = false;
 
             @Override
             protected Void doInBackground() {
-                importSuccessful = importService.importData(filePath);
+                importSuccessful = importService.importData(filePath, overwrite);
                 return null;
             }
 

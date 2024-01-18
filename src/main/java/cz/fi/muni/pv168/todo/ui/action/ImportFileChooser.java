@@ -9,6 +9,7 @@ public class ImportFileChooser {
     public static ImportDialogResult showImportDialog(Component parent) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setControlButtonsAreShown(false);
 
         JDialog dialog = new JDialog();
         dialog.setTitle("Open");
@@ -21,14 +22,24 @@ public class ImportFileChooser {
         JPanel buttonPanel = new JPanel();
         JButton overwriteButton = new JButton("Import and Overwrite");
         overwriteButton.addActionListener(e -> {
-            result.setFile(fileChooser.getSelectedFile());
+            File selectedFile = fileChooser.getSelectedFile();
+            if (selectedFile == null || !selectedFile.exists()) {
+                JOptionPane.showMessageDialog(parent, "No file selected or the selected file does not exist!");
+                return;
+            }
+            result.setFile(selectedFile);
             result.setOverwrite(true);
             dialog.dispose();
         });
 
         JButton appendButton = new JButton("Import and Append");
         appendButton.addActionListener(e -> {
-            result.setFile(fileChooser.getSelectedFile());
+            File selectedFile = fileChooser.getSelectedFile();
+            if (selectedFile == null || !selectedFile.exists()) {
+                JOptionPane.showMessageDialog(parent, "No file selected or the selected file does not exist!");
+                return;
+            }
+            result.setFile(selectedFile);
             result.setOverwrite(false);
             dialog.dispose();
         });
@@ -68,28 +79,5 @@ public class ImportFileChooser {
         public void setOverwrite(boolean overwrite) {
             this.overwrite = overwrite;
         }
-    }
-
-    // Main method for testing
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
-
-            JButton button = new JButton("Open File Chooser");
-            button.addActionListener(e -> {
-                ImportDialogResult result = showImportDialog(frame);
-                if (result.getFile() != null) {
-                    System.out.println("File selected: " + result.getFile());
-                    System.out.println("Overwrite: " + result.isOverwrite());
-                } else {
-                    System.out.println("No file selected");
-                }
-            });
-
-            frame.add(button);
-            frame.setVisible(true);
-        });
     }
 }

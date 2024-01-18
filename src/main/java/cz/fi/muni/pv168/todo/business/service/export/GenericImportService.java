@@ -40,29 +40,60 @@ public class GenericImportService implements ImportService {
     }
 
     @Override
-    public boolean importData(String filePath) {
+    public boolean importData(String filePath, boolean overwrite) {
         var importer = getImporter(filePath);
         try {
             var batch = importer.importBatch(filePath);
 
-            eventCrudService.deleteAll();
-            templateCrudService.deleteAll();
-            categoryCrudService.deleteAll();
-            timeUnitCrudService.deleteAll();
+            if (overwrite) {
+                eventCrudService.deleteAll();
+                templateCrudService.deleteAll();
+                categoryCrudService.deleteAll();
+                timeUnitCrudService.deleteAll();
+            }
 
-            batch.timeUnits().forEach(this::createTimeUnit);
-            batch.categories().forEach(this::createCategory);
-            batch.templates().forEach(this::createTemplate);
-            batch.events().forEach(this::createEvent);
-        } catch (DataManipulationException dme) {
-            Logger.getLogger(importer.getClass().getName()).log(Level.SEVERE, "An error occurred when trying to parse the input file!", dme);
-            return false;
-        } catch (DataStorageException dse) {
-            Logger.getLogger(GenericImportService.class.getName()).log(Level.SEVERE, "An error occurred when trying to access the database!", dse);
+            if (!overwrite) {
+                batch.timeUnits().forEach(this::createTimeUnitIfNotExists);
+                batch.categories().forEach(this::createCategoryIfNotExists);
+                batch.templates().forEach(this::createTemplateIfNotExists);
+                batch.events().forEach(this::createEventIfNotExists);
+            } else {
+                batch.timeUnits().forEach(this::createTimeUnit);
+                batch.categories().forEach(this::createCategory);
+                batch.templates().forEach(this::createTemplate);
+                batch.events().forEach(this::createEvent);
+            }
+
+        } catch (DataManipulationException | DataStorageException exception) {
+            Logger.getLogger(GenericImportService.class.getName()).log(Level.SEVERE, "An error occurred during import!", exception);
             return false;
         }
 
         return true;
+    }
+
+    private void createEventIfNotExists(Event event) {
+        if (eventCrudService.findByGuid(event.getGuid()).isEmpty()) {
+            eventCrudService.create(event).intoException();
+        }
+    }
+
+    private void createTemplateIfNotExists(Template template) {
+        if (templateCrudService.findByGuid(template.getGuid()).isEmpty()) {
+            templateCrudService.create(template).intoException();
+        }
+    }
+
+    private void createCategoryIfNotExists(Category category) {
+        if (categoryCrudService.findByGuid(category.getGuid()).isEmpty()) {
+            categoryCrudService.create(category).intoException();
+        }
+    }
+
+    private void createTimeUnitIfNotExists(TimeUnit timeUnit) {
+        if (timeUnitCrudService.findByGuid(timeUnit.getGuid()).isEmpty()) {
+            timeUnitCrudService.create(timeUnit).intoException();
+        }
     }
 
     private void createCategory(Category category) {

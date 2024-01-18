@@ -12,7 +12,7 @@ public interface Importer {
      *
      * @param filePath absolute path of the import file from
      */
-    void importData(String filePath);
+    void importData(String filePath, boolean overwrite);
 
     /**
      * Gets all available formats for export.

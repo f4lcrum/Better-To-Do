@@ -45,16 +45,10 @@ public final class ImportAction extends AbstractAction {
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         importer.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
 
-        int dialogResult = fileChooser.showOpenDialog(eventTablePanel);
+        ImportFileChooser.ImportDialogResult result = ImportFileChooser.showImportDialog(eventTablePanel);
 
-        if (dialogResult == JFileChooser.APPROVE_OPTION) {
-            File importFile = fileChooser.getSelectedFile();
-            String filePath = importFile.getAbsolutePath();
-
-            if (!importFile.exists()) {
-                JOptionPane.showMessageDialog(eventTablePanel, "The selected file does not exist!");
-                return;
-            }
+        if (result != null && result.getFile() != null) {
+            String filePath = result.getFile().getAbsolutePath();
 
             if (!importer.acceptsFileFormat(filePath)) {
                 JOptionPane.showMessageDialog(
@@ -64,7 +58,7 @@ public final class ImportAction extends AbstractAction {
                 return;
             }
 
-            importer.importData(filePath);
+            importer.importData(filePath, result.isOverwrite());
         }
     }
 }

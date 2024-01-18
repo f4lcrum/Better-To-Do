@@ -72,7 +72,7 @@ public class GenericImportServiceIntegrationTest
     @Test
     void importNothing() {
         Path importFilePath = TEST_RESOURCES.resolve("empty.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.importData(importFilePath.toString(), true);
 
         assertThat(eventCrudService.findAll())
                 .isEmpty();
@@ -87,7 +87,7 @@ public class GenericImportServiceIntegrationTest
     @Test
     void singleCategory() {
         Path importFilePath = TEST_RESOURCES.resolve("single-category.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.importData(importFilePath.toString(), true);
 
         assertThat(categoryCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -103,7 +103,7 @@ public class GenericImportServiceIntegrationTest
     @Test
     void multipleCategories() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-categories.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.importData(importFilePath.toString(), true);
 
         assertThat(categoryCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -127,7 +127,7 @@ public class GenericImportServiceIntegrationTest
 
         var stringPath = importFilePath.toString();
         assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> genericImportService.importData(stringPath))
+                .isThrownBy(() -> genericImportService.importData(stringPath, true))
                 .withMessageContaining("'Category name' length is not between 2 (inclusive) and 150 (inclusive)");
     }
 
@@ -136,7 +136,7 @@ public class GenericImportServiceIntegrationTest
         Path importFilePath = TEST_RESOURCES.resolve("invalid-color-category.json");
 
         var stringPath = importFilePath.toString();
-        assertFalse(genericImportService.importData(stringPath));
+        assertFalse(genericImportService.importData(stringPath, true));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class GenericImportServiceIntegrationTest
 
         var stringPath = importFilePath.toString();
         assertThatExceptionOfType(EntityAlreadyExistsException.class)
-                .isThrownBy(() -> genericImportService.importData(stringPath))
+                .isThrownBy(() -> genericImportService.importData(stringPath, true))
                 .withMessage("Category with given guid already exists: 120be0a2-16ec-44b4-aad6-5e6826d9e532");
     }
 }

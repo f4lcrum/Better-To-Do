@@ -28,9 +28,9 @@ public class TransactionalImportService extends GenericImportService {
     }
 
     @Override
-    public boolean importData(String filePath) {
+    public boolean importData(String filePath, boolean overwrite) {
         AtomicBoolean result = new AtomicBoolean(false);
-        transactionExecutor.executeInTransaction(() -> result.set(super.importData(filePath)));
+        transactionExecutor.executeInTransaction(() -> result.set(super.importData(filePath, overwrite)));
         return result.get();
     }
 }
