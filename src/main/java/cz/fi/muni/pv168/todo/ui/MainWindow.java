@@ -5,7 +5,6 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.action.ExportAction;
@@ -20,17 +19,14 @@ import cz.fi.muni.pv168.todo.ui.filter.components.DurationFilterComponents;
 import cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel;
 import static cz.fi.muni.pv168.todo.ui.filter.components.FilterPanel.createResetFiltersButton;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
-import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
 import cz.fi.muni.pv168.todo.ui.listener.PanelChangeListener;
-import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
 import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
-import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
 import cz.fi.muni.pv168.todo.ui.panels.StatisticsPanel;
 import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
@@ -72,29 +68,24 @@ public class MainWindow {
     private final Action templateFromEventAction;
     private final EventListModel eventListModel;
     private final TemplateListModel templateListModel;
-    private final CategoryListModel categoryListModel;
     private final TimeUnitListModel timeUnitListModel;
     private final JTabbedPane tabbedPane;
     private final JPanel statusFilterPanel;
-    private final JPanel categoryFilterPanel;
     private final JPanel durationFilterPanel;
     private final TableModel<Event> eventTableModel;
-
-    private final TableModel<Category> categoryTableModel;
     private final TableModel<TimeUnit> timeUnitTableModel;
     private final TableModel<Template> templateTableModel;
     private final Validator<Event> eventValidator;
-    private final Validator<Category> categoryValidator;
     private final Validator<TimeUnit> timeUnitValidator;
     private final Validator<Template> templateValidator;
-
     private final StatisticsPanel statistics;
-    private final CategoryCrudService categoryCrudService;
     private final TableRowSorter<TableModel<Event>> rowSorter;
-
+    private final MainWindowCategory mainWindowCategory;
+    private final EventTableFilter eventTableFilter;
     public MainWindow(DependencyProvider dependencyProvider) {
+        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
+
         Column<Event, LocalDateTime> startDateRow = new Column<>("Start date and Time", LocalDateTime.class, Event::calculateStart);
-        this.categoryCrudService = dependencyProvider.getCategoryCrudService();
         this.eventTableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
                 new Column<>(" ", Color.class, Event::getColour),
                 new Column<>("Name of the event", String.class, Event::getName),
@@ -104,6 +95,13 @@ public class MainWindow {
                 new Column<>("Duration (minutes)", String.class, Event::getDurationString)
         ));
         EventTablePanel eventTablePanel = new EventTablePanel(eventTableModel, this::changeActionsState);
+        this.rowSorter = new TableRowSorter<>(eventTableModel);
+
+        rowSorter.toggleSortOrder(this.eventTableModel.getColumnIndex(startDateRow));
+
+        this.eventTableFilter = new EventTableFilter(rowSorter, statistics);
+        this.mainWindowCategory = new MainWindowCategory(dependencyProvider, this::changeActionsState, this);
+
         this.templateTableModel = new TableModel<>(dependencyProvider.getTemplateCrudService(), List.of(
                 new Column<>(" ", Color.class, Template::getColour),
                 new Column<>("Template name", String.class, Template::getName),
@@ -111,24 +109,18 @@ public class MainWindow {
                 new Column<>("Duration", String.class, Template::getDurationString)
         ));
         TemplateTablePanel templateTablePanel = new TemplateTablePanel(templateTableModel, this::changeActionsState);
-        this.categoryTableModel = new TableModel<>(dependencyProvider.getCategoryCrudService(), List.of(
-                new Column<>(" ", Color.class, Category::getColor),
-                new Column<>("Name", String.class, Category::getName)
-        ));
-        CategoryTablePanel categoryTablePanel = new CategoryTablePanel(categoryTableModel, this::changeActionsState);
+
         this.timeUnitTableModel = new TableModel<>(dependencyProvider.getTimeUnitCrudService(), List.of(
                 new Column<>("Name", String.class, TimeUnit::getName),
                 new Column<>("Hour count", Long.class, TimeUnit::getHours),
                 new Column<>("Minute count", Long.class, TimeUnit::getMinutes)
         ));
         TimeUnitTablePanel timeUnitTablePanel = new TimeUnitTablePanel(timeUnitTableModel, this::changeActionsState);
-        this.categoryListModel = new CategoryListModel(dependencyProvider.getCategoryCrudService());
         this.timeUnitListModel = new TimeUnitListModel(dependencyProvider.getTimeUnitCrudService());
         this.templateListModel = new TemplateListModel(dependencyProvider.getTemplateCrudService());
-        this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), this);
+
         this.eventListModel = new EventListModel(dependencyProvider.getEventCrudService());
         this.eventValidator = dependencyProvider.getEventValidator();
-        this.categoryValidator = dependencyProvider.getCategoryValidator();
         this.timeUnitValidator = dependencyProvider.getTimeUnitValidator();
         this.templateValidator = dependencyProvider.getTemplateValidator();
         var statusListModel = new StatusListModel();
@@ -136,41 +128,34 @@ public class MainWindow {
         quitAction = new QuitAction();
         exportAction = new ExportAction(eventTablePanel, dependencyProvider.getExportService());
         importAction = new ImportAction(eventTablePanel, dependencyProvider.getImportService(), this::refresh);
-        templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, categoryListModel, timeUnitListModel);
-        this.rowSorter = new TableRowSorter<>(eventTableModel);
+        templateFromEventAction = new CreateTemplateFromEventAction(eventTablePanel.getTable(), templateTablePanel.getTable(), this, mainWindowCategory, mainWindowCategory.getCategoryListModel(), timeUnitListModel);
 
-        rowSorter.toggleSortOrder(this.eventTableModel.getColumnIndex(startDateRow));
-
-        var eventTableFilter = new EventTableFilter(rowSorter, statistics);
         eventTablePanel.getTable().setRowSorter(rowSorter);
 
         this.tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Events", eventTablePanel);
         tabbedPane.addTab("Templates", templateTablePanel);
-        tabbedPane.addTab("Categories", categoryTablePanel);
+        tabbedPane.addTab("Categories", mainWindowCategory.getCategoryTablePanel());
         tabbedPane.addTab("Units", timeUnitTablePanel);
         tabbedPane.addChangeListener(e -> changeActionsState(0, true));
 
         JList<Either<SpecialFilterStatusValues, Status>> statusFilterList = FilterPanel.createStatusFilter(eventTableFilter, statusListModel);
-        JList<Either<SpecialFilterCategoryValues, Category>> categoryFilterList = FilterPanel.createCategoryFilter(eventTableFilter, categoryListModel);
         this.statusFilterPanel = FilterPanel.createFilterPanel(statusFilterList, "Status: ");
-        this.categoryFilterPanel = FilterPanel.createFilterPanel(categoryFilterList, "Category: ");
         DurationFilterComponents durationComponents = FilterPanel.createDurationFilter(eventTableFilter);
         this.durationFilterPanel = durationComponents.panel;
         JButton resetFiltersButton = createResetFiltersButton(eventTableFilter);
         eventTableFilter.setUIComponents(durationComponents.minDurationField,
                 durationComponents.maxDurationField,
                 statusFilterList,
-                categoryFilterList);
-        var eventButtonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getTable(), categoryListModel, timeUnitListModel, templateListModel, this);
-        var templateButtonTabStrategy = new TemplateButtonTabStrategy(templateTablePanel.getTable(), categoryListModel, timeUnitListModel, this);
-        var categoryButtonTabStrategy = new CategoryButtonTabStrategy(categoryTablePanel.getTable(), this);
+                mainWindowCategory.getCategoryFilterList());
+        var eventButtonTabStrategy = new EventButtonTabStrategy(eventTablePanel.getTable(), mainWindowCategory.getCategoryListModel(), timeUnitListModel, templateListModel, this, mainWindowCategory);
+        var templateButtonTabStrategy = new TemplateButtonTabStrategy(templateTablePanel.getTable(), mainWindowCategory.getCategoryListModel(), timeUnitListModel, this, mainWindowCategory);
         var timeUnitButtonTabStrategy = new TimeUnitButtonTabStrategy(timeUnitTablePanel.getTable(), this);
         this.buttonTabStrategy = eventButtonTabStrategy;
 
         // Apply popup menu bindings
         eventTablePanel.getTable().setComponentPopupMenu(createEventTablePopupMenu(eventButtonTabStrategy));
-        categoryTablePanel.getTable().setComponentPopupMenu(createCategoryTablePopupMenu(categoryButtonTabStrategy));
+        mainWindowCategory.getCategoryTablePanel().getTable().setComponentPopupMenu(createCategoryTablePopupMenu(mainWindowCategory.getCategoryButtonTabStrategy()));
         templateTablePanel.getTable().setComponentPopupMenu(createTemplateTablePopupMenu(templateButtonTabStrategy));
         timeUnitTablePanel.getTable().setComponentPopupMenu(createTimeUnitTablePopupMenu(timeUnitButtonTabStrategy));
 
@@ -186,17 +171,17 @@ public class MainWindow {
                 this,
                 eventButtonTabStrategy,
                 templateButtonTabStrategy,
-                categoryButtonTabStrategy,
+                mainWindowCategory.getCategoryButtonTabStrategy(),
                 timeUnitButtonTabStrategy,
                 eventTablePanel,
                 templateTablePanel,
-                categoryTablePanel,
+                mainWindowCategory.getCategoryTablePanel(),
                 timeUnitTablePanel);
 
         frame = createFrame();
         frame.add(tabbedPane, BorderLayout.CENTER);
-        frame.setJMenuBar(createMenuBar(panelChangeListener, eventButtonTabStrategy, templateButtonTabStrategy, categoryButtonTabStrategy, timeUnitButtonTabStrategy));
-        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, categoryFilterPanel, durationFilterPanel, resetFiltersButton), BorderLayout.BEFORE_FIRST_LINE);
+        frame.setJMenuBar(createMenuBar(panelChangeListener, eventButtonTabStrategy, templateButtonTabStrategy, mainWindowCategory.getCategoryButtonTabStrategy(), timeUnitButtonTabStrategy));
+        frame.add(createToolbar(addButton, editButton, deleteButton, statusFilterPanel, mainWindowCategory.getCategoryFilterPanel(), durationFilterPanel, resetFiltersButton), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(this.statistics, BorderLayout.SOUTH);
 
         tabbedPane.addChangeListener(panelChangeListener);
@@ -208,7 +193,7 @@ public class MainWindow {
 
     private void refresh() {
         refreshEventModel();
-        refreshCategoryListModel();
+        mainWindowCategory.refreshModel();
         refreshTemplateListModel();
         refreshTimeUnitListModel();
     }
@@ -220,7 +205,7 @@ public class MainWindow {
         rowSorter.sort();
     }
 
-    private void changeActionsState(int selectedItemsCount, boolean enabled) {
+    void changeActionsState(int selectedItemsCount, boolean enabled) {
         var edit = enabled && selectedItemsCount == 1;
         var delete = enabled && selectedItemsCount >= 1;
         editButton.getAction().setEnabled(edit);
@@ -228,11 +213,6 @@ public class MainWindow {
         editButton.setForeground(edit ? Color.BLACK : Color.GRAY);
         deleteButton.setForeground(delete ? Color.BLACK : Color.GRAY);
         templateFromEventAction.setEnabled(edit);
-    }
-
-    public void refreshCategoryListModel() {
-        categoryListModel.refresh();
-        categoryTableModel.refresh();
     }
 
     public void refreshTimeUnitListModel() {
@@ -251,7 +231,7 @@ public class MainWindow {
 
     public void applyButtonStrategy() {
         setPanelEnabled(getStatusFilterPanel(), buttonTabStrategy.statusFilterEnabled());
-        setPanelEnabled(getCategoryFilterPanel(), buttonTabStrategy.categoryFilterEnabled());
+        setPanelEnabled(mainWindowCategory.getCategoryFilterPanel(), buttonTabStrategy.categoryFilterEnabled());
         setPanelEnabled(getDurationFilterPanel(), buttonTabStrategy.durationFilterEnabled());
         addButton.setAction(buttonTabStrategy.getAddAction());
         editButton.setAction(buttonTabStrategy.getEditAction());
@@ -372,10 +352,6 @@ public class MainWindow {
         return statusFilterPanel;
     }
 
-    public JPanel getCategoryFilterPanel() {
-        return categoryFilterPanel;
-    }
-
     public JPanel getDurationFilterPanel() {
         return durationFilterPanel;
     }
@@ -388,9 +364,6 @@ public class MainWindow {
         return eventTableModel;
     }
 
-    public TableModel<Category> getCategoryTableModel() {
-        return categoryTableModel;
-    }
 
     public TableModel<TimeUnit> getTimeUnitTableModel() {
         return timeUnitTableModel;
@@ -404,8 +377,8 @@ public class MainWindow {
         return eventValidator;
     }
 
-    public Validator<Category> getCategoryValidator() {
-        return categoryValidator;
+    public EventTableFilter getEventTableFilter() {
+        return eventTableFilter;
     }
 
     public Validator<TimeUnit> getTimeUnitValidator() {
@@ -414,9 +387,5 @@ public class MainWindow {
 
     public Validator<Template> getTemplateValidator() {
         return templateValidator;
-    }
-
-    public CategoryCrudService getCategoryCrudService() {
-        return categoryCrudService;
     }
 }
