@@ -1,0 +1,59 @@
+{
+  "categories" : [],
+  "events" : [ {
+    "id" : "9a42961b-4bf4-4c00-9be8-dde332a03d7f",
+    "isDefault" : false,
+    "name" : "Work Task",
+    "category" : {
+      "id" : "158d4716-eec2-4e03-bc4c-450e31d5d38a",
+      "isDefault" : false,
+      "name" : "Work",
+      "color" : {
+        "r" : 255,
+        "g" : 0,
+        "b" : 0,
+        "alpha" : 255
+      }
+    },
+    "date" : [ 2024, 1, 24 ],
+    "startTime" : [ 8, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minutes",
+      "hours" : 0,
+      "minutes" : 1
+    },
+    "duration" : 8,
+    "description" : ""
+  },
+  {
+    "id" : "a5d4a9c1-6d25-4d9c-80f9-48573315b4cd",
+    "isDefault" : false,
+    "name" : "Work Task",
+    "category" : {
+      "id" : "e57c25c2-9106-48ed-a37c-613b72b7cdac",
+      "isDefault" : false,
+      "name" : "xadadasd",
+      "color" : {
+        "r" : 255,
+        "g" : 153,
+        "b" : 153,
+        "alpha" : 255
+      }
+    },
+    "date" : [ 2024, 2, 1 ],
+    "startTime" : [ 12, 23 ],
+    "timeUnit" : {
+      "id" : "25aae21c-74f6-425d-8b52-b00cb6b34efb",
+      "isDefault" : true,
+      "name" : "Hours",
+      "hours" : 1,
+      "minutes" : 0
+    },
+    "duration" : 8,
+    "description" : ""
+  } ],
+  "templates" : [],
+  "timeUnits" : []
+}
