@@ -17,9 +17,13 @@ import cz.fi.muni.pv168.todo.storage.memory.InMemoryCategoryRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryEventRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTemplateRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTimeUnitRepository;
+
 import java.awt.Color;
 import java.util.List;
 import java.util.UUID;
+
+import cz.fi.muni.pv168.todo.ui.action.Importer;
+import cz.fi.muni.pv168.todo.ui.workers.AsyncImporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,16 +34,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class GenericImportServiceIntegrationTest
-{
+public class GenericImportServiceIntegrationTest {
     private static final Path PROJECT_ROOT = Paths.get(System.getProperty("project.basedir", "")).toAbsolutePath();
     private static final Path TEST_RESOURCES = PROJECT_ROOT.resolve(Path.of("src", "test", "resources"));
-
     private EventCrudService eventCrudService;
     private TemplateCrudService templateCrudService;
     private CategoryCrudService categoryCrudService;
     private TimeUnitCrudService timeUnitCrudService;
-
     private GenericImportService genericImportService;
 
     @BeforeEach
@@ -119,6 +120,19 @@ public class GenericImportServiceIntegrationTest
                                 Color.PINK
                         )
                 );
+    }
+
+    @Test
+    void invalidFormatFails() {
+        Path importFilePath = TEST_RESOURCES.resolve("invalid.format");
+
+        Importer importer = new AsyncImporter(
+                genericImportService,
+                () -> {
+                }
+        );
+        var stringPath = importFilePath.toString();
+        assertThat(importer.acceptsFileFormat(stringPath)).isFalse();
     }
 
     @Test
