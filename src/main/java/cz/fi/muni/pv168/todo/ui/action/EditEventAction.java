@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -26,9 +27,10 @@ public class EditEventAction extends AbstractAction {
     private final ListModel<Template> templateListModel;
     private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
 
     public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
-                           ListModel<Template> templateListModel, MainWindow mainWindow) {
+                           ListModel<Template> templateListModel, MainWindow mainWindow, MainWindowCategory mainWindowCategory) {
         super("Edit event", Icons.EDIT_ICON);
         this.todoTable = todoTable;
         this.categoryListModel = categoryListModel;
@@ -36,6 +38,7 @@ public class EditEventAction extends AbstractAction {
         this.templateListModel = templateListModel;
         this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
         this.mainWindow = mainWindow;
+        this.mainWindowCategory = mainWindowCategory;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -54,7 +57,7 @@ public class EditEventAction extends AbstractAction {
         var eventTableModel = mainWindow.getEventTableModel();
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
+        var dialog = new EventDialog(mainWindowCategory.getCategoryCrudService(), event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
         dialog.show(todoTable, "Edit Event")
                 .ifPresent(eventTableModel::updateRow);
         mainWindow.refreshEventModel();

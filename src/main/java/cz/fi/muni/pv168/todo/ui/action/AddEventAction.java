@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -30,9 +31,10 @@ public final class AddEventAction extends AbstractAction {
     private final ListModel<Template> templateListModel;
     private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
 
     public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
-                          ListModel<Template> templateListModel, MainWindow mainWindow) {
+                          ListModel<Template> templateListModel, MainWindow mainWindow, MainWindowCategory mainWindowCategory) {
         super("Add event", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
@@ -40,6 +42,7 @@ public final class AddEventAction extends AbstractAction {
         this.timeUnitListModel = timeUnitListModel;
         this.templateListModel = templateListModel;
         this.mainWindow = mainWindow;
+        this.mainWindowCategory = mainWindowCategory;
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
@@ -49,7 +52,7 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
-        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
+        var dialog = new EventDialog(mainWindowCategory.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
         dialog.show(todoTable, "Add Event")
                 .ifPresent(eventTableModel::addRow);
         mainWindow.refreshEventModel();

@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -23,15 +24,17 @@ public class CreateTemplateFromEventAction extends AbstractAction {
     private final JTable todoTable;
     private final JTable templateTable;
     private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
 
-    public CreateTemplateFromEventAction(JTable todoTable, JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
+    public CreateTemplateFromEventAction(JTable todoTable, JTable templateTable, MainWindow mainWindow, MainWindowCategory mainWindowCategory, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
         super("Save as template", Icons.ADD_ICON);
         this.todoTable = todoTable;
         this.templateTable = templateTable;
         this.mainWindow = mainWindow;
+        this.mainWindowCategory = mainWindowCategory;
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
@@ -54,7 +57,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
         int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
 
-        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(mainWindowCategory.getCategoryCrudService(), createPrefilledTemplate(event), categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Save as template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();

@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -24,15 +25,17 @@ public final class AddTemplateAction extends AbstractAction {
 
     private final JTable templateTable;
     private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
 
-    public AddTemplateAction(JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel,
+    public AddTemplateAction(JTable templateTable, MainWindow mainWindow, MainWindowCategory mainWindowCategory, ListModel<Category> categoryListModel,
                              ListModel<TimeUnit> timeUnitListModel) {
         super("Add template", Icons.ADD_ICON);
         this.templateTable = templateTable;
         this.mainWindow = mainWindow;
+        this.mainWindowCategory = mainWindowCategory;
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
@@ -45,7 +48,7 @@ public final class AddTemplateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var templateTableModel = mainWindow.getTemplateTableModel();
-        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(), categoryListModel, timeUnitListModel, false, templateValidator);
+        var dialog = new TemplateDialog(mainWindowCategory.getCategoryCrudService(), createPrefilledTemplate(), categoryListModel, timeUnitListModel, false, templateValidator);
         dialog.show(templateTable, "Add Template")
                 .ifPresent(templateTableModel::addRow);
         mainWindow.refreshTemplateListModel();

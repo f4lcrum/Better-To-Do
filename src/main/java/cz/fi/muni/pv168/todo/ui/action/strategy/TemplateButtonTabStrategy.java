@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
@@ -17,9 +18,9 @@ public class TemplateButtonTabStrategy implements ButtonTabStrategy {
     private final DeleteTemplateAction deleteAction;
 
     public TemplateButtonTabStrategy(JTable table, CategoryListModel categoryListModel,
-                                     TimeUnitListModel timeUnitListModel, MainWindow mainWindow) {
-        this.addAction = new AddTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
-        this.editAction = new EditTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
+                                     TimeUnitListModel timeUnitListModel, MainWindow mainWindow, MainWindowCategory mainWindowCategory) {
+        this.addAction = new AddTemplateAction(table, mainWindow, mainWindowCategory, categoryListModel, timeUnitListModel);
+        this.editAction = new EditTemplateAction(table, mainWindow, mainWindowCategory, categoryListModel, timeUnitListModel);
         this.deleteAction = new DeleteTemplateAction(table, mainWindow);
     }
 

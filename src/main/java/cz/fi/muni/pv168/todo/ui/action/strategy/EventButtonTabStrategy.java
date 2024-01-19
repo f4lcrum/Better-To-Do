@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
@@ -18,9 +19,9 @@ public class EventButtonTabStrategy implements ButtonTabStrategy {
     private final DeleteEventAction deleteAction;
 
     public EventButtonTabStrategy(JTable table, CategoryListModel categoryListModel, TimeUnitListModel timeUnitListModel,
-                                  TemplateListModel templateListModel, MainWindow mainWindow) {
-        this.addAction = new AddEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow);
-        this.editAction = new EditEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow);
+                                  TemplateListModel templateListModel, MainWindow mainWindow, MainWindowCategory mainWindowCategory) {
+        this.addAction = new AddEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow, mainWindowCategory);
+        this.editAction = new EditEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow, mainWindowCategory);
         this.deleteAction = new DeleteEventAction(table, mainWindow);
     }
 

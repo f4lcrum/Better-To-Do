@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -17,23 +18,23 @@ public final class AddCategoryAction extends AbstractAction {
 
     private final JTable categoryTable;
     private final Validator<Category> categoryValidator;
-    private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
 
-    public AddCategoryAction(JTable categoryTable, MainWindow mainWindow) {
+    public AddCategoryAction(JTable categoryTable, MainWindowCategory mainWindowCategory) {
         super("Add category", Icons.ADD_ICON);
         this.categoryTable = categoryTable;
-        this.categoryValidator = Objects.requireNonNull(mainWindow.getCategoryValidator());
-        this.mainWindow = mainWindow;
+        this.categoryValidator = Objects.requireNonNull(mainWindowCategory.getCategoryValidator());
+        this.mainWindowCategory = mainWindowCategory;
         putValue(SHORT_DESCRIPTION, "Adds new category");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var categoryTableModel = mainWindow.getCategoryTableModel();
+        var categoryTableModel = mainWindowCategory.getCategoryTableModel();
         var dialog = new CategoryDialog(createPrefilledCategory(), false, categoryValidator);
         dialog.show(categoryTable, "Add Category")
                 .ifPresent(categoryTableModel::addRow);
-        mainWindow.refreshCategoryListModel();
+        mainWindowCategory.refreshModel();
     }
 
 

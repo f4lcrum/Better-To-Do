@@ -5,6 +5,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -24,8 +25,8 @@ public class EditTemplateAction extends AbstractAction {
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
     private final MainWindow mainWindow;
-
-    public EditTemplateAction(JTable templateTable, MainWindow mainWindow, ListModel<Category> categoryListModel,
+    private final MainWindowCategory mainWindowCategory;
+    public EditTemplateAction(JTable templateTable, MainWindow mainWindow, MainWindowCategory mainWindowCategory, ListModel<Category> categoryListModel,
                               ListModel<TimeUnit> timeUnitListModel) {
         super("Edit template", Icons.EDIT_ICON);
         this.templateTable = templateTable;
@@ -33,6 +34,7 @@ public class EditTemplateAction extends AbstractAction {
         this.timeUnitListModel = timeUnitListModel;
         this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
         this.mainWindow = mainWindow;
+        this.mainWindowCategory = mainWindowCategory;
         putValue(SHORT_DESCRIPTION, "Edits selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -53,7 +55,7 @@ public class EditTemplateAction extends AbstractAction {
         var templateTableModel = mainWindow.getTemplateTableModel();
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);
-        var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), template, categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(mainWindowCategory.getCategoryCrudService(), template, categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Edit Template")
                 .ifPresent(templateTableModel::updateRow);
         mainWindow.refreshTemplateListModel();
