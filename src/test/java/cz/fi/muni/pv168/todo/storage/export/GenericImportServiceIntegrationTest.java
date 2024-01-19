@@ -145,7 +145,7 @@ public class GenericImportServiceIntegrationTest {
     }
 
     @Test
-    void multipleTimeUnit() {
+    void multipleTimeUnits() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-timeunit.json");
         genericImportService.importData(importFilePath.toString());
 
@@ -208,7 +208,7 @@ public class GenericImportServiceIntegrationTest {
     }
 
     @Test
-    void multipleEvent() {
+    void multipleEvents() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-events.json");
         genericImportService.importData(importFilePath.toString());
 
