@@ -6,6 +6,7 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
@@ -24,17 +25,17 @@ import java.util.UUID;
 
 public final class AddEventAction extends AbstractAction {
 
-    private final JTable todoTable;
+    private final JTable eventTable;
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final ListModel<Template> templateListModel;
     private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
 
-    public AddEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
+    public AddEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
                           ListModel<Template> templateListModel, MainWindow mainWindow) {
         super("Add event", Icons.ADD_ICON);
-        this.todoTable = todoTable;
+        this.eventTable = eventTable;
         this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
@@ -50,9 +51,7 @@ public final class AddEventAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindow.getEventTableModel();
         var dialog = new EventDialog(mainWindow.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
-        dialog.show(todoTable, "Add Event")
-                .ifPresent(eventTableModel::addRow);
-        mainWindow.refreshEventModel();
+        dialog.show(eventTable, "Add Event").ifPresent(entity -> new AddActionSwingWorker<>(eventTableModel, mainWindow, entity).execute());
     }
 
     private Event createPrefilledEvent() {

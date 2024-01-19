@@ -6,10 +6,10 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.EditActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -17,20 +17,21 @@ import javax.swing.KeyStroke;
 import javax.swing.ListModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 public class EditEventAction extends AbstractAction {
 
-    private final JTable todoTable;
+    private final JTable eventTable;
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final ListModel<Template> templateListModel;
     private final Validator<Event> eventValidator;
     private final MainWindow mainWindow;
 
-    public EditEventAction(JTable todoTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
+    public EditEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
                            ListModel<Template> templateListModel, MainWindow mainWindow) {
         super("Edit event", Icons.EDIT_ICON);
-        this.todoTable = todoTable;
+        this.eventTable = eventTable;
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateListModel = templateListModel;
@@ -44,19 +45,17 @@ public class EditEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int[] selectedRows = todoTable.getSelectedRows();
+        int[] selectedRows = eventTable.getSelectedRows();
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
         }
-        if (todoTable.isEditing()) {
-            todoTable.getCellEditor().cancelCellEditing();
+        if (eventTable.isEditing()) {
+            eventTable.getCellEditor().cancelCellEditing();
         }
         var eventTableModel = mainWindow.getEventTableModel();
-        int modelRow = todoTable.convertRowIndexToModel(selectedRows[0]);
+        int modelRow = eventTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
         var dialog = new EventDialog(mainWindow.getCategoryCrudService(), event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
-        dialog.show(todoTable, "Edit Event")
-                .ifPresent(eventTableModel::updateRow);
-        mainWindow.refreshEventModel();
+        dialog.show(eventTable, "Edit Event").ifPresent(entity -> new EditActionSwingWorker<>(eventTableModel, mainWindow, entity).execute());
     }
 }

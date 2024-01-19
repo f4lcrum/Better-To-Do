@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,6 +17,7 @@ public class DeleteCategoryAction extends AbstractAction {
 
     private final JTable categoryTable;
     private final MainWindow mainWindow;
+
     public DeleteCategoryAction(JTable categoryTable, MainWindow mainWindow) {
         super("Delete category", Icons.DELETE_ICON);
         this.categoryTable = categoryTable;
@@ -30,14 +32,13 @@ public class DeleteCategoryAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var categoryTableModel = mainWindow.getCategoryTableModel();
         // Check if there is no existing model of such category
-        Arrays.stream(categoryTable.getSelectedRows())
+        var stream = Arrays.stream(categoryTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(categoryTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
-                .sorted(Comparator.reverseOrder())
-                .forEach(categoryTableModel::deleteRow);
-        mainWindow.refreshCategoryListModel();
+                .sorted(Comparator.reverseOrder());
+        new DeleteActionSwingWorker<>(categoryTableModel, mainWindow, stream).execute();
     }
 }

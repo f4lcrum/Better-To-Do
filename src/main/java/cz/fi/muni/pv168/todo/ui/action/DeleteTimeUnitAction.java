@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -30,15 +31,13 @@ public class DeleteTimeUnitAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
-        Arrays.stream(timeUnitTable.getSelectedRows())
+        var stream = Arrays.stream(timeUnitTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(timeUnitTable::convertRowIndexToModel)
                 .boxed()
                 // We need to delete rows in descending order to not change index of rows
                 // which are not deleted yet
-                .sorted(Comparator.reverseOrder())
-                .forEach(timeUnitTableModel::deleteRow);
-        mainWindow.refreshTimeUnitListModel();
+                .sorted(Comparator.reverseOrder());
+        new DeleteActionSwingWorker<>(timeUnitTableModel, mainWindow, stream).execute();
     }
-
 }

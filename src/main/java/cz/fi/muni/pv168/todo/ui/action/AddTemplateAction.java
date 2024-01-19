@@ -5,10 +5,10 @@ import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTable;
@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class AddTemplateAction extends AbstractAction {
@@ -46,9 +47,7 @@ public final class AddTemplateAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var templateTableModel = mainWindow.getTemplateTableModel();
         var dialog = new TemplateDialog(mainWindow.getCategoryCrudService(), createPrefilledTemplate(), categoryListModel, timeUnitListModel, false, templateValidator);
-        dialog.show(templateTable, "Add Template")
-                .ifPresent(templateTableModel::addRow);
-        mainWindow.refreshTemplateListModel();
+        dialog.show(templateTable, "Add Template").ifPresent(entity -> new AddActionSwingWorker<>(templateTableModel, mainWindow, entity).execute());
     }
 
     private Template createPrefilledTemplate() {
