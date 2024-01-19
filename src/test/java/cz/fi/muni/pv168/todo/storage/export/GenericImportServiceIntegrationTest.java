@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.storage.export;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
+import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.EntityAlreadyExistsException;
@@ -175,6 +176,89 @@ public class GenericImportServiceIntegrationTest {
                         )
                 );
     }
+
+    @Test
+    void singleTemplate() {
+        Path importFilePath = TEST_RESOURCES.resolve("single-template.json");
+        genericImportService.importData(importFilePath.toString());
+
+        assertThat(templateCrudService.findAll())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(
+                        new Template(
+                                UUID.fromString("7ee351e5-a704-4685-9b02-017d28835ffb"),
+                                "Work Template",
+                                "Work Task",
+                                new Category(
+                                        UUID.fromString("158d4716-eec2-4e03-bc4c-450e31d5d38a"),
+                                        "Work",
+                                        new Color(255, 0, 0, 255)
+                                ),
+                                LocalTime.of(8, 0),
+                                new TimeUnit(
+                                        UUID.fromString("25aae21c-74f6-425d-8b52-b00cb6b34efb"),
+                                        true,
+                                        "Hours",
+                                        1,
+                                        0
+                                ),
+                                8,
+                                "Template for work tasks"
+                        )
+                );
+    }
+
+    @Test
+    void multipleTemplates() {
+        Path importFilePath = TEST_RESOURCES.resolve("multiple-templates.json");
+        genericImportService.importData(importFilePath.toString());
+
+        assertThat(templateCrudService.findAll())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(
+                        new Template(
+                                UUID.fromString("7ee351e5-a704-4685-9b02-017d28835ffb"),
+                                "Work Template",
+                                "Work Task",
+                                new Category(
+                                        UUID.fromString("158d4716-eec2-4e03-bc4c-450e31d5d38a"),
+                                        "Work",
+                                        new Color(255, 0, 0, 255)
+                                ),
+                                LocalTime.of(8, 0),
+                                new TimeUnit(
+                                        UUID.fromString("25aae21c-74f6-425d-8b52-b00cb6b34efb"),
+                                        true,
+                                        "Hours",
+                                        1,
+                                        0
+                                ),
+                                8,
+                                "Template for work tasks"
+                        ),
+                        new Template(
+                                UUID.fromString("f5c694b4-6790-4b50-847e-405da9c209a3"),
+                                "Work Task",
+                                "Work Task",
+                                new Category(
+                                        UUID.fromString("158d4716-eec2-4e03-bc4c-450e31d5d38a"),
+                                        "Work",
+                                        new Color(255, 0, 0, 255)
+                                ),
+                                LocalTime.of(12, 23),
+                                new TimeUnit(
+                                        UUID.fromString("25aae21c-74f6-425d-8b52-b00cb6b34efb"),
+                                        true,
+                                        "Hours",
+                                        1,
+                                        0
+                                ),
+                                8,
+                                ""
+                        )
+                );
+    }
+
 
     @Test
     void singleEvent() {
