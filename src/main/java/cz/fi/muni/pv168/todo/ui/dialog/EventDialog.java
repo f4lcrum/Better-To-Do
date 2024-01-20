@@ -110,7 +110,7 @@ public final class EventDialog extends EntityDialog<Event> {
         action.setDialog(this);
         action.setEnabled(true);
         panel.add(new JLabel(""));
-        panel.add(new JButton(action), "span, al center center");
+        panel.add(new JButton(action));
     }
 
     @Override
