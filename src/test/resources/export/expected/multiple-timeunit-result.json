@@ -1,0 +1,24 @@
+{
+  "categories" : [ ],
+  "events" : [ ],
+  "templates" : [ ],
+  "timeUnits" : [ {
+    "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+    "isDefault" : true,
+    "name" : "Minutes",
+    "hours" : 2,
+    "minutes" : 1
+  }, {
+    "id" : "4253a7c1-0e78-4c24-b97c-810bc15100ae",
+    "isDefault" : false,
+    "name" : "Sprint",
+    "hours" : 3,
+    "minutes" : 54
+  }, {
+    "id" : "25aae21c-74f6-425d-8b52-b00cb6b34efb",
+    "isDefault" : true,
+    "name" : "Hours",
+    "hours" : 1,
+    "minutes" : 0
+  } ]
+}
