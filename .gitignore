@@ -9,3 +9,6 @@
 # Production files
 .env
 docker-compose.yml
+
+# DB
+db/*
