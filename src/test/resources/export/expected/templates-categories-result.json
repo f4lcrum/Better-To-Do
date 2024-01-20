@@ -1,0 +1,68 @@
+{
+  "categories" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174002",
+    "isDefault" : false,
+    "name" : "Default",
+    "color" : {
+      "r" : 255,
+      "g" : 255,
+      "b" : 255,
+      "alpha" : 255
+    }
+  } ],
+  "events" : [ ],
+  "templates" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174020",
+    "isDefault" : false,
+    "name" : "Morning Routine",
+    "eventName" : "Morning Routine Event",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174002",
+      "isDefault" : false,
+      "name" : "Default",
+      "color" : {
+        "r" : 255,
+        "g" : 255,
+        "b" : 255,
+        "alpha" : 255
+      }
+    },
+    "startTime" : [ 7, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 10,
+    "description" : "Morning preparation routine"
+  }, {
+    "id" : "123e4567-e89b-12d3-a456-426614174021",
+    "isDefault" : false,
+    "name" : "Evening Review",
+    "eventName" : "Evening Routine Event",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174002",
+      "isDefault" : false,
+      "name" : "Default",
+      "color" : {
+        "r" : 255,
+        "g" : 255,
+        "b" : 255,
+        "alpha" : 255
+      }
+    },
+    "startTime" : [ 20, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 30,
+    "description" : "Review of daily accomplishments"
+  } ],
+  "timeUnits" : [ ]
+}

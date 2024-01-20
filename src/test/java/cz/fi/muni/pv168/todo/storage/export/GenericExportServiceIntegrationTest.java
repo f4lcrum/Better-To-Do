@@ -177,6 +177,49 @@ class GenericExportServiceIntegrationTest {
         Files.delete(exportFilePath);
     }
 
+    @Test
+    void exportingTemplatesWithCategories() throws IOException {
+        Category defaultCategory = new Category(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174002"),
+                "Default",
+                new Color(255, 255, 255)
+        );
+        categoryCrudService.create(defaultCategory);
+
+        TimeUnit minuteUnit = new TimeUnit(UUID.fromString("0e587bc6-83a1-44ac-a911-0bfe0df998e4"), true, "Minute", 0, 30);
+        Template morningRoutine = new Template(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174020"),
+                "Morning Routine",
+                "Morning Routine Event",
+                defaultCategory,
+                LocalTime.of(7, 0),
+                minuteUnit,
+                10,
+                "Morning preparation routine"
+        );
+        Template eveningReview = new Template(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174021"),
+                "Evening Review",
+                "Evening Routine Event",
+                defaultCategory,
+                LocalTime.of(20, 0),
+                minuteUnit,
+                30,
+                "Review of daily accomplishments"
+        );
+        templateCrudService.create(morningRoutine);
+        templateCrudService.create(eveningReview);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("templates-categories-result.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("templates-categories-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
+
+
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
             return reader.lines().toList();
