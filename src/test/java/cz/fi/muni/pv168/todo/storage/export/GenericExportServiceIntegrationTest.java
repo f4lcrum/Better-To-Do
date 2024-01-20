@@ -155,6 +155,28 @@ class GenericExportServiceIntegrationTest {
         Files.delete(exportFilePath);
     }
 
+    @Test
+    void exportingCategoriesAndEvents() throws IOException {
+        Category personalCategory = new Category(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), false, "Personal", new Color(255, 200, 200));
+        Category workCategory = new Category(UUID.fromString("123e4567-e89b-12d3-a456-426614174001"), true, "Work", new Color(100, 100, 100));
+        categoryCrudService.create(personalCategory);
+        categoryCrudService.create(workCategory);
+
+        TimeUnit minuteUnit = new TimeUnit(UUID.fromString("0e587bc6-83a1-44ac-a911-0bfe0df998e4"), true, "Minute", 0, 30);
+        Event dentistAppointment = new Event(UUID.fromString("123e4567-e89b-12d3-a456-426614174010"), "Dentist Appointment", personalCategory, LocalDate.of(2024, 1, 20), LocalTime.of(10, 30), minuteUnit, 30, "Dental checkup");
+        Event codeReview = new Event(UUID.fromString("123e4567-e89b-12d3-a456-426614174011"), "Code Review", workCategory, LocalDate.of(2024, 1, 22), LocalTime.of(14, 0), minuteUnit, 60, "Review team's code");
+        eventCrudService.create(dentistAppointment);
+        eventCrudService.create(codeReview);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("exported-categories-events.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("categories-events-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
+
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
             return reader.lines().toList();

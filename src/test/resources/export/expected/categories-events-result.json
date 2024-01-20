@@ -1,0 +1,63 @@
+{
+  "categories" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174000",
+    "isDefault" : false,
+    "name" : "Personal",
+    "color" : {
+      "r" : 255,
+      "g" : 200,
+      "b" : 200,
+      "alpha" : 255
+    }
+  } ],
+  "events" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174010",
+    "isDefault" : false,
+    "name" : "Dentist Appointment",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174000",
+      "isDefault" : false,
+      "name" : "Personal",
+      "color" : {
+        "r" : 255,
+        "g" : 200,
+        "b" : 200,
+        "alpha" : 255
+      }
+    },
+    "date" : [ 2024, 1, 20 ],
+    "startTime" : [ 10, 30 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 30,
+    "description" : "Dental checkup"
+  }, {
+    "id" : "123e4567-e89b-12d3-a456-426614174011",
+    "isDefault" : false,
+    "name" : "Code Review",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174001",
+      "isDefault" : false,
+      "name" : "Work",
+      "color" : null
+    },
+    "date" : [ 2024, 1, 22 ],
+    "startTime" : [ 14, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 60,
+    "description" : "Review team's code"
+  } ],
+  "templates" : [ ],
+  "timeUnits" : [ ]
+}
