@@ -226,7 +226,6 @@ public class MainWindow {
         deleteButton.getAction().setEnabled(delete);
         editButton.setForeground(edit ? Color.BLACK : Color.GRAY);
         deleteButton.setForeground(delete ? Color.BLACK : Color.GRAY);
-        templateFromEventAction.setEnabled(edit);
     }
 
     public void refreshCategoryListModel() {
@@ -280,7 +279,6 @@ public class MainWindow {
         eventMenu.add(eventButtonTabStrategy.getAddAction());
         eventMenu.add(eventButtonTabStrategy.getEditAction());
         eventMenu.add(eventButtonTabStrategy.getDeleteAction());
-        eventMenu.add(templateFromEventAction);
 
         var templateMenu = new JMenu("Template");
         templateMenu.add(templateButtonTabStrategy.getAddAction());
@@ -335,7 +333,6 @@ public class MainWindow {
         menu.add(eventButtonTabStrategy.getAddAction());
         menu.add(eventButtonTabStrategy.getEditAction());
         menu.add(eventButtonTabStrategy.getDeleteAction());
-        menu.add(templateFromEventAction);
         return menu;
     }
 
