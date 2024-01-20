@@ -205,7 +205,7 @@ public class MainWindow {
         changeActionsState(0, true);
     }
 
-    private void refresh() {
+    public void refresh() {
         refreshEventModel();
         refreshCategoryListModel();
         refreshTemplateListModel();
