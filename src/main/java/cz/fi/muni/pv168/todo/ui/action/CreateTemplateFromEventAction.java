@@ -44,17 +44,12 @@ public class CreateTemplateFromEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var event = dialog.validateAndGetEvent(eventTable);
+        var event = dialog.validateAndGetEvent(eventTable, "Add event");
         if (event != null) {
             var template = createPrefilledTemplate(event);
-            var validation = templateValidator.validate(template);
-            if (validation.isValid()) {
-                service.create(template);
-                mainWindow.refreshTemplateListModel();
-                JOptionPane.showConfirmDialog(eventTable, "Template has been created", null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null);
-            } else {
-                dialog.showWithErrors(templateTable, "Add event", validation);
-            }
+            service.create(template);
+            mainWindow.refreshTemplateListModel();
+            JOptionPane.showConfirmDialog(eventTable, "Template has been successfully created.", "Confirm dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null);
         }
     }
 
@@ -66,7 +61,7 @@ public class CreateTemplateFromEventAction extends AbstractAction {
 
         return new Template(
                 UUID.randomUUID(),
-                event.getName(),
+                String.format("%s template", event.getName()),
                 event.getName(),
                 event.getCategory(),
                 event.getStartTime(),

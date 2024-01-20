@@ -22,8 +22,8 @@ import java.util.Optional;
 public abstract class EntityDialog<E> {
 
     protected final JPanel panel = new JPanel();
-    private final JPanel errors = new JPanel();
-    private final Validator<E> entityValidator;
+    protected final JPanel errors = new JPanel();
+    protected final Validator<E> entityValidator;
 
     abstract E getEntity();
 
@@ -79,21 +79,16 @@ public abstract class EntityDialog<E> {
         panel.add(new JLabel("m"));
     }
 
-    private void showErrorMessages(List<String> messages) {
+    protected void showErrorMessages(List<String> messages) {
         errors.removeAll();
         messages.stream().map(JLabel::new).forEach(errors::add);
     }
 
-    private int showOptionDialog(JComponent parentComponent, String title) {
+    protected int showOptionDialog(JComponent parentComponent, String title) {
         return JOptionPane.showOptionDialog(
                 parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE,
                 null, null, null
         );
-    }
-
-    public void showWithErrors(JComponent parentComponent, String title, ValidationResult validationResult) {
-        showErrorMessages(validationResult.getValidationErrors());
-        show(parentComponent, title);
     }
 
     public Optional<E> show(JComponent parentComponent, String title) {
@@ -110,11 +105,10 @@ public abstract class EntityDialog<E> {
                 }
 
                 showErrorMessages(validation.getValidationErrors());
-                result = showOptionDialog(parentComponent, title);
             } else {
-
-                result = showOptionDialog(parentComponent, title);
+                showErrorMessages(validateFields.getValidationErrors());
             }
+            result = showOptionDialog(parentComponent, title);
         }
 
         return Optional.empty();

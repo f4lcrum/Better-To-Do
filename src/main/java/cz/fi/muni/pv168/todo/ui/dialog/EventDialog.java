@@ -24,12 +24,18 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import java.awt.event.ItemEvent;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.Optional;
+
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 public final class EventDialog extends EntityDialog<Event> {
 
@@ -43,8 +49,8 @@ public final class EventDialog extends EntityDialog<Event> {
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
     private final ComboBoxModel<TimeUnit> timeUnitModel;
     private final ComboBoxModel<Template> templateModel;
-
     private final Event event;
+    private int result;
 
     public EventDialog(CategoryCrudService categoryCrudService, Event event, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
                        ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator, CreateTemplateFromEventAction action) {
@@ -148,13 +154,20 @@ public final class EventDialog extends EntityDialog<Event> {
         return result;
     }
 
-    public Event validateAndGetEvent(JComponent parentComponent) {
+    public Event validateAndGetEvent(JComponent parentComponent, String title) {
         var validateFields = isValid();
         if (validateFields.isValid()) {
             var entity = getEntity();
-            return entity;
+            var validation = entityValidator.validate(entity);
+            if (validation.isValid()) {
+                return entity;
+            }
+            showErrorMessages(validation.getValidationErrors());
         }
-        showWithErrors(parentComponent, "Add event", validateFields);
+        else {
+            showErrorMessages(validateFields.getValidationErrors());
+        }
+        result = showOptionDialog(parentComponent, title);
         return null;
     }
 
@@ -179,5 +192,29 @@ public final class EventDialog extends EntityDialog<Event> {
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());
         duration.setText(Integer.toString(template.getDuration()));
+    }
+
+    @Override
+    public Optional<Event> show(JComponent parentComponent, String title) {
+        result = JOptionPane.showOptionDialog(parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
+
+        while (result == OK_OPTION) {
+            var validateFields = isValid();
+            if (validateFields.isValid()) {
+                var entity = getEntity();
+                var validation = entityValidator.validate(entity);
+
+                if (validation.isValid()) {
+                    return Optional.of(entity);
+                }
+
+                showErrorMessages(validation.getValidationErrors());
+            } else {
+                showErrorMessages(validateFields.getValidationErrors());
+            }
+            result = showOptionDialog(parentComponent, title);
+        }
+
+        return Optional.empty();
     }
 }
