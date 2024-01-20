@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.storage.export;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
@@ -19,6 +20,7 @@ import cz.fi.muni.pv168.todo.storage.memory.InMemoryTemplateRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTimeUnitRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.awt.Color;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,6 +131,23 @@ class GenericExportServiceIntegrationTest {
 
         Path exportFilePath = TEST_RESOURCES.resolve("exported-multiple-templates.json");
         Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("multiple-templates-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
+    @Test
+    void exportingMultipleEvents() throws IOException {
+        Category personalCategory = new Category(UUID.fromString("37a00d72-30ba-4a84-81ba-64393163918d"), "Personal", new Color(255, 200, 200));
+        TimeUnit minuteUnit = new TimeUnit(UUID.fromString("0e587bc6-83a1-44ac-a911-0bfe0df998e4"), true, "Minute", 0, 30);
+        Event event1 = new Event(UUID.fromString("9a42961b-4bf4-4c00-9be8-dde332a03d7f"), "Doctor Appointment", personalCategory, LocalDate.of(2024, 1, 20), LocalTime.of(10, 30), minuteUnit, 30, "General checkup");
+        Event event2 = new Event(UUID.fromString("a5d4a9c1-6d25-4d9c-80f9-48573315b4cd"), "Team Meeting", personalCategory, LocalDate.of(2024, 1, 22), LocalTime.of(14, 0), minuteUnit, 60, "Weekly team sync");
+        eventCrudService.create(event1);
+        eventCrudService.create(event2);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("exported-multiple-events.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("multiple-events-result.json");
         genericExportService.exportData(exportFilePath.toString());
 
         assertThat(getFileContents(exportFilePath.toString()))

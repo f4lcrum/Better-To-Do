@@ -1,0 +1,58 @@
+{
+  "categories" : [ ],
+  "events" : [ {
+    "id" : "9a42961b-4bf4-4c00-9be8-dde332a03d7f",
+    "isDefault" : false,
+    "name" : "Doctor Appointment",
+    "category" : {
+      "id" : "37a00d72-30ba-4a84-81ba-64393163918d",
+      "isDefault" : false,
+      "name" : "Personal",
+      "color" : {
+        "r" : 255,
+        "g" : 200,
+        "b" : 200,
+        "alpha" : 255
+      }
+    },
+    "date" : [ 2024, 1, 20 ],
+    "startTime" : [ 10, 30 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 30,
+    "description" : "General checkup"
+  }, {
+    "id" : "a5d4a9c1-6d25-4d9c-80f9-48573315b4cd",
+    "isDefault" : false,
+    "name" : "Team Meeting",
+    "category" : {
+      "id" : "37a00d72-30ba-4a84-81ba-64393163918d",
+      "isDefault" : false,
+      "name" : "Personal",
+      "color" : {
+        "r" : 255,
+        "g" : 200,
+        "b" : 200,
+        "alpha" : 255
+      }
+    },
+    "date" : [ 2024, 1, 22 ],
+    "startTime" : [ 14, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Minute",
+      "hours" : 0,
+      "minutes" : 30
+    },
+    "duration" : 60,
+    "description" : "Weekly team sync"
+  } ],
+  "templates" : [ ],
+  "timeUnits" : [ ]
+}
