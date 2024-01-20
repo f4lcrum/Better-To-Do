@@ -219,6 +219,37 @@ class GenericExportServiceIntegrationTest {
         Files.delete(exportFilePath);
     }
 
+    @Test
+    void exportingTimeUnitsWithCategories() throws IOException {
+        Category urgentCategory = new Category(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174003"),
+                "Urgent",
+                new Color(255, 0, 0)
+        );
+        categoryCrudService.create(urgentCategory);
+
+        TimeUnit shortBreak = new TimeUnit(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174030"),
+                false,
+                "Short Break",
+                0,
+                15);
+        TimeUnit longBreak = new TimeUnit(UUID.fromString("123e4567-e89b-12d3-a456-426614174031"),
+                true,
+                "Long Break",
+                0,
+                60);
+        timeUnitCrudService.create(shortBreak);
+        timeUnitCrudService.create(longBreak);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("timeunits-categories-result.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("timeunits-categories-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
 
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
