@@ -299,8 +299,6 @@ class GenericExportServiceIntegrationTest {
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
             return reader.lines().toList();
-        } catch (IOException ioe) {
-            throw ioe;
         }
     }
 }
