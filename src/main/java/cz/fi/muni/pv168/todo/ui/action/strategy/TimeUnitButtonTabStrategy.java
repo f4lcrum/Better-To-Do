@@ -1,9 +1,10 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.AddTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTimeUnitAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTimeUnitAction;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTimeUnit;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTable;
@@ -14,10 +15,10 @@ public class TimeUnitButtonTabStrategy implements ButtonTabStrategy {
     private final EditTimeUnitAction editAction;
     private final DeleteTimeUnitAction deleteAction;
 
-    public TimeUnitButtonTabStrategy(JTable table, MainWindow mainWindow) {
-        this.addAction = new AddTimeUnitAction(table, mainWindow);
-        this.editAction = new EditTimeUnitAction(table, mainWindow);
-        this.deleteAction = new DeleteTimeUnitAction(table, mainWindow);
+    public TimeUnitButtonTabStrategy(JTable table, DependencyProvider dependencyProvider, MainWindowTimeUnit mainWindowTimeUnit, Runnable refresh) {
+        this.addAction = new AddTimeUnitAction(table, dependencyProvider, mainWindowTimeUnit, refresh);
+        this.editAction = new EditTimeUnitAction(table, dependencyProvider, mainWindowTimeUnit, refresh);
+        this.deleteAction = new DeleteTimeUnitAction(table, mainWindowTimeUnit, refresh);
     }
 
     @Override

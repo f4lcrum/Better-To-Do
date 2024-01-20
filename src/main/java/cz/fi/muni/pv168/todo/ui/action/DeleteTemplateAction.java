@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTemplate;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,12 +16,14 @@ import java.util.Comparator;
 public class DeleteTemplateAction extends AbstractAction {
 
     private final JTable templateTable;
-    private final MainWindow mainWindow;
+    private final MainWindowTemplate mainWindowTemplate;
+    private final Runnable refresh;
 
-    public DeleteTemplateAction(JTable templateTable, MainWindow mainWindow) {
+    public DeleteTemplateAction(JTable templateTable, MainWindowTemplate mainWindowTemplate, Runnable refresh) {
         super("Delete template", Icons.DELETE_ICON);
         this.templateTable = templateTable;
-        this.mainWindow = mainWindow;
+        this.mainWindowTemplate = mainWindowTemplate;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Deletes selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -30,14 +32,11 @@ public class DeleteTemplateAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var templateTableModel = mainWindow.getTemplateTableModel();
+        var templateTableModel = mainWindowTemplate.getTableModel();
         var stream = Arrays.stream(templateTable.getSelectedRows())
-                // view row index must be converted to model row index
                 .map(templateTable::convertRowIndexToModel)
                 .boxed()
-                // We need to delete rows in descending order to not change index of rows
-                // which are not deleted yet
                 .sorted(Comparator.reverseOrder());
-        new DeleteActionSwingWorker<>(templateTableModel, mainWindow, stream).execute();
+        new DeleteActionSwingWorker<>(templateTableModel, refresh, stream).execute();
     }
 }

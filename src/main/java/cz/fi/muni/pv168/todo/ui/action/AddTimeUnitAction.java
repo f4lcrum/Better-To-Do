@@ -2,10 +2,11 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTimeUnit;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -20,13 +21,15 @@ public class AddTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
     private final Validator<TimeUnit> timeUnitValidator;
-    private final MainWindow mainWindow;
+    private final MainWindowTimeUnit mainWindowTimeUnit;
+    private final Runnable refresh;
 
-    public AddTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
+    public AddTimeUnitAction(JTable timeUnitTable, DependencyProvider dependencyProvider, MainWindowTimeUnit mainWindowTimeUnit, Runnable refresh) {
         super("Add time unit", Icons.ADD_ICON);
         this.timeUnitTable = timeUnitTable;
-        this.timeUnitValidator = Objects.requireNonNull(mainWindow.getTimeUnitValidator());
-        this.mainWindow = mainWindow;
+        this.timeUnitValidator = Objects.requireNonNull(dependencyProvider.getTimeUnitValidator());
+        this.mainWindowTimeUnit = mainWindowTimeUnit;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Adds new time unit");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
@@ -35,9 +38,9 @@ public class AddTimeUnitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
+        var timeUnitTableModel = mainWindowTimeUnit.getTableModel();
         var dialog = new TimeUnitDialog(createPrefilledTimeUnit(), false, timeUnitValidator);
-        dialog.show(timeUnitTable, "Add Time Unit").ifPresent(entity -> new AddActionSwingWorker<>(timeUnitTableModel, mainWindow, entity).execute());
+        dialog.show(timeUnitTable, "Add Time Unit").ifPresent(entity -> new AddActionSwingWorker<>(timeUnitTableModel, refresh, entity).execute());
     }
 
     private TimeUnit createPrefilledTimeUnit() {

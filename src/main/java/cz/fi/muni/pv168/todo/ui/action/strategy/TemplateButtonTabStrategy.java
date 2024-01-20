@@ -1,14 +1,16 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.action.AddTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteTemplateAction;
 import cz.fi.muni.pv168.todo.ui.action.EditTemplateAction;
-import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTemplate;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTable;
+import javax.swing.ListModel;
 
 public class TemplateButtonTabStrategy implements ButtonTabStrategy {
 
@@ -16,11 +18,11 @@ public class TemplateButtonTabStrategy implements ButtonTabStrategy {
     private final EditTemplateAction editAction;
     private final DeleteTemplateAction deleteAction;
 
-    public TemplateButtonTabStrategy(JTable table, CategoryListModel categoryListModel,
-                                     TimeUnitListModel timeUnitListModel, MainWindow mainWindow) {
-        this.addAction = new AddTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
-        this.editAction = new EditTemplateAction(table, mainWindow, categoryListModel, timeUnitListModel);
-        this.deleteAction = new DeleteTemplateAction(table, mainWindow);
+    public TemplateButtonTabStrategy(JTable table, DependencyProvider dependencyProvider, ListModel<Category> categoryListModel,
+                                     ListModel<TimeUnit> timeUnitListModel, MainWindowTemplate mainWindowTemplate, Runnable refresh) {
+        this.addAction = new AddTemplateAction(table, mainWindowTemplate, dependencyProvider, categoryListModel, timeUnitListModel, refresh);
+        this.editAction = new EditTemplateAction(table, dependencyProvider, mainWindowTemplate, categoryListModel, timeUnitListModel, refresh);
+        this.deleteAction = new DeleteTemplateAction(table, mainWindowTemplate, refresh);
     }
 
     @Override

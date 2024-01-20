@@ -3,7 +3,7 @@ package cz.fi.muni.pv168.todo.ui.panels;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.model.TableModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JLabel;
@@ -29,14 +29,14 @@ public class StatisticsPanel extends JPanel {
     JLabel todayEventCount = new JLabel("0");
     JLabel todayEventDuration = new JLabel("0");
     JLabel doneCount = new JLabel("0");
-    private final MainWindow mainWindow;
+    private final TableModel<Event> eventTableModel;
 
-    public StatisticsPanel(CrudService<Event> eventCrudService, MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
+    public StatisticsPanel(CrudService<Event> eventCrudService, TableModel<Event> eventTableModel) {
         setLayout(new BorderLayout());
         this.leftPanel = new JPanel(new MigLayout("wrap 3"));
         this.rightPanel = new JPanel(new MigLayout("wrap 2"));
         this.eventCrudService = eventCrudService;
+        this.eventTableModel = eventTableModel;
         add(this.leftPanel, BorderLayout.WEST);
         add(this.rightPanel, BorderLayout.EAST);
         setValues();
@@ -103,7 +103,7 @@ public class StatisticsPanel extends JPanel {
     public void setFilter(List<Integer> indices) {
         var events = new ArrayList<Event>();
         for (Integer index : indices) {
-            events.add(mainWindow.getEventTableModel().getEntity(index));
+            events.add(eventTableModel.getEntity(index));
         }
         filteredEventCount.setText(Integer.toString(events.size()));
         filteredEventDuration.setText(Long.toString(getEventListDuration(events)));

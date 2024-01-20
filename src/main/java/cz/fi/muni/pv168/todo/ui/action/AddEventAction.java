@@ -4,11 +4,13 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowEvent;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -30,17 +32,21 @@ public final class AddEventAction extends AbstractAction {
     private final ListModel<TimeUnit> timeUnitListModel;
     private final ListModel<Template> templateListModel;
     private final Validator<Event> eventValidator;
-    private final MainWindow mainWindow;
+    private final MainWindowEvent mainWindowEvent;
+    private final CategoryCrudService categoryCrudService;
+    private final Runnable refresh;
 
-    public AddEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel,
-                          ListModel<Template> templateListModel, MainWindow mainWindow) {
+    public AddEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel, ListModel<Template> templateListModel,
+                          MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, Runnable refresh) {
         super("Add event", Icons.ADD_ICON);
         this.eventTable = eventTable;
-        this.eventValidator = Objects.requireNonNull(mainWindow.getEventValidator());
+        this.eventValidator = Objects.requireNonNull(dependencyProvider.getEventValidator());
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
         this.templateListModel = templateListModel;
-        this.mainWindow = mainWindow;
+        this.mainWindowEvent = mainWindowEvent;
+        this.categoryCrudService = dependencyProvider.getCategoryCrudService();
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
@@ -49,9 +55,9 @@ public final class AddEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var eventTableModel = mainWindow.getEventTableModel();
-        var dialog = new EventDialog(mainWindow.getCategoryCrudService(), createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
-        dialog.show(eventTable, "Add Event").ifPresent(entity -> new AddActionSwingWorker<>(eventTableModel, mainWindow, entity).execute());
+        var eventTableModel = mainWindowEvent.getTableModel();
+        var dialog = new EventDialog(categoryCrudService, createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
+        dialog.show(eventTable, "Add Event").ifPresent(entity -> new AddActionSwingWorker<>(eventTableModel, refresh, entity).execute());
     }
 
     private Event createPrefilledEvent() {

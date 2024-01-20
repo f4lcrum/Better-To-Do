@@ -4,16 +4,9 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
-import cz.fi.muni.pv168.todo.ui.action.strategy.CategoryButtonTabStrategy;
-import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
-import cz.fi.muni.pv168.todo.ui.action.strategy.TemplateButtonTabStrategy;
-import cz.fi.muni.pv168.todo.ui.action.strategy.TimeUnitButtonTabStrategy;
-import cz.fi.muni.pv168.todo.ui.panels.BasePanel;
-import cz.fi.muni.pv168.todo.ui.panels.CategoryTablePanel;
-import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
-import cz.fi.muni.pv168.todo.ui.panels.TemplateTablePanel;
-import cz.fi.muni.pv168.todo.ui.panels.TimeUnitTablePanel;
+import cz.fi.muni.pv168.todo.ui.action.strategy.ButtonTabStrategy;
+import cz.fi.muni.pv168.todo.ui.main.MainWindow;
+import cz.fi.muni.pv168.todo.ui.panels.TablePanel;
 
 import javax.swing.JMenu;
 import javax.swing.event.ChangeEvent;
@@ -22,28 +15,28 @@ import javax.swing.event.ChangeListener;
 public class PanelChangeListener implements ChangeListener {
 
     private final MainWindow mainWindow;
-    private final EventButtonTabStrategy eventButtonTabStrategy;
-    private final TemplateButtonTabStrategy templateButtonTabStrategy;
-    private final CategoryButtonTabStrategy categoryButtonTabStrategy;
-    private final TimeUnitButtonTabStrategy timeUnitButtonTabStrategy;
-    private final BasePanel<Event> eventTablePanel;
-    private final BasePanel<Template> templateTablePanel;
-    private final BasePanel<Category> categoryTablePanel;
-    private final BasePanel<TimeUnit> timeUnitTablePanel;
+    private final ButtonTabStrategy eventButtonTabStrategy;
+    private final ButtonTabStrategy templateButtonTabStrategy;
+    private final ButtonTabStrategy categoryButtonTabStrategy;
+    private final ButtonTabStrategy timeUnitButtonTabStrategy;
+    private final TablePanel<Event> eventTablePanel;
+    private final TablePanel<Template> templateTablePanel;
+    private final TablePanel<Category> categoryTablePanel;
+    private final TablePanel<TimeUnit> timeUnitTablePanel;
     private JMenu eventMenu;
     private JMenu categoryMenu;
     private JMenu templateMenu;
     private JMenu timeUnitMenu;
 
     public PanelChangeListener(MainWindow mainWindow,
-                               EventButtonTabStrategy eventButtonTabStrategy,
-                               TemplateButtonTabStrategy templateButtonTabStrategy,
-                               CategoryButtonTabStrategy categoryButtonTabStrategy,
-                               TimeUnitButtonTabStrategy timeUnitButtonTabStrategy,
-                               EventTablePanel eventTablePanel,
-                               TemplateTablePanel templateTablePanel,
-                               CategoryTablePanel categoryTablePanel,
-                               TimeUnitTablePanel timeUnitTablePanel) {
+                               ButtonTabStrategy eventButtonTabStrategy,
+                               ButtonTabStrategy templateButtonTabStrategy,
+                               ButtonTabStrategy categoryButtonTabStrategy,
+                               ButtonTabStrategy timeUnitButtonTabStrategy,
+                               TablePanel<Event> eventTablePanel,
+                               TablePanel<Template> templateTablePanel,
+                               TablePanel<Category> categoryTablePanel,
+                               TablePanel<TimeUnit> timeUnitTablePanel) {
         this.mainWindow = mainWindow;
         this.eventButtonTabStrategy = eventButtonTabStrategy;
         this.templateButtonTabStrategy = templateButtonTabStrategy;
@@ -66,7 +59,6 @@ public class PanelChangeListener implements ChangeListener {
         templateMenu.setEnabled(false);
         timeUnitMenu.setEnabled(false);
     }
-
 
     private void changeActions() {
         disableMenuBar();

@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowEvent;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,12 +16,14 @@ import java.util.Comparator;
 public class DeleteEventAction extends AbstractAction {
 
     private final JTable eventTable;
-    private final MainWindow mainWindow;
+    private final MainWindowEvent mainWindowEvent;
+    private final Runnable refresh;
 
-    public DeleteEventAction(JTable eventTable, MainWindow mainWindow) {
+    public DeleteEventAction(JTable eventTable, MainWindowEvent mainWindowEvent, Runnable refresh) {
         super("Delete event", Icons.DELETE_ICON);
         this.eventTable = eventTable;
-        this.mainWindow = mainWindow;
+        this.mainWindowEvent = mainWindowEvent;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Deletes selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -30,14 +32,11 @@ public class DeleteEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var eventTableModel = mainWindow.getEventTableModel();
+        var eventTableModel = mainWindowEvent.getTableModel();
         var stream = Arrays.stream(eventTable.getSelectedRows())
-                // view row index must be converted to model row index
                 .map(eventTable::convertRowIndexToModel)
                 .boxed()
-                // We need to delete rows in descending order to not change index of rows
-                // which are not deleted yet
                 .sorted(Comparator.reverseOrder());
-        new DeleteActionSwingWorker<>(eventTableModel, mainWindow, stream).execute();
+        new DeleteActionSwingWorker<>(eventTableModel, refresh, stream).execute();
     }
 }

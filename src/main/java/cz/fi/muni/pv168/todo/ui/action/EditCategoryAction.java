@@ -2,10 +2,11 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.EditActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.CategoryDialog;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,13 +18,16 @@ public class EditCategoryAction extends AbstractAction {
 
     private final JTable categoryTable;
     private final Validator<Category> categoryValidator;
-    private final MainWindow mainWindow;
+    private final MainWindowCategory mainWindowCategory;
+    private final Runnable refresh;
 
-    public EditCategoryAction(JTable categoryTable, MainWindow mainWindow) {
+
+    public EditCategoryAction(JTable categoryTable, DependencyProvider dependencyProvider, MainWindowCategory mainWindowCategory, Runnable refresh) {
         super("Edit category", Icons.EDIT_ICON);
         this.categoryTable = categoryTable;
-        this.categoryValidator = Objects.requireNonNull(mainWindow.getCategoryValidator());
-        this.mainWindow = mainWindow;
+        this.categoryValidator = Objects.requireNonNull(dependencyProvider.getCategoryValidator());
+        this.mainWindowCategory = mainWindowCategory;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Edits selected category");
         putValue(Action.SMALL_ICON, Icons.EDIT_ICON);
     }
@@ -37,10 +41,10 @@ public class EditCategoryAction extends AbstractAction {
         if (categoryTable.isEditing()) {
             categoryTable.getCellEditor().cancelCellEditing();
         }
-        var categoryTableModel = mainWindow.getCategoryTableModel();
+        var categoryTableModel = mainWindowCategory.getTableModel();
         int modelRow = categoryTable.convertRowIndexToModel(selectedRows[0]);
         var category = categoryTableModel.getEntity(modelRow);
         var dialog = new CategoryDialog(category, true, categoryValidator);
-        dialog.show(categoryTable, "Edit Category").ifPresent(entity -> new EditActionSwingWorker<>(categoryTableModel, mainWindow, entity).execute());
+        dialog.show(categoryTable, "Edit Category").ifPresent(entity -> new EditActionSwingWorker<>(categoryTableModel, refresh, entity).execute());
     }
 }

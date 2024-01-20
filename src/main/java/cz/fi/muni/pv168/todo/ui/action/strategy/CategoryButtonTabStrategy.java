@@ -1,9 +1,10 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.action.AddCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteCategoryAction;
 import cz.fi.muni.pv168.todo.ui.action.EditCategoryAction;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowCategory;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTable;
@@ -14,10 +15,10 @@ public class CategoryButtonTabStrategy implements ButtonTabStrategy {
     private final EditCategoryAction editAction;
     private final DeleteCategoryAction deleteAction;
 
-    public CategoryButtonTabStrategy(JTable table, MainWindow mainWindow) {
-        this.addAction = new AddCategoryAction(table, mainWindow);
-        this.editAction = new EditCategoryAction(table, mainWindow);
-        this.deleteAction = new DeleteCategoryAction(table, mainWindow);
+    public CategoryButtonTabStrategy(JTable table, DependencyProvider dependencyProvider, MainWindowCategory mainWindowCategory, Runnable refresh) {
+        this.addAction = new AddCategoryAction(table, dependencyProvider, mainWindowCategory, refresh);
+        this.editAction = new EditCategoryAction(table, dependencyProvider, mainWindowCategory, refresh);
+        this.deleteAction = new DeleteCategoryAction(table, mainWindowCategory, refresh);
     }
 
     @Override

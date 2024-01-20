@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.function.BiConsumer;
 
-public class EventTablePanel extends BasePanel<Event> {
+public class EventTablePanel extends TablePanel<Event> {
 
     public EventTablePanel(TableModel<Event> eventTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(eventTableModel, onSelectionChange);
@@ -28,7 +28,7 @@ public class EventTablePanel extends BasePanel<Event> {
         return event.getName() + " " + event.getCategory().getName() + " " + event.getStartTime();
     }
 
-    private void setUpTable() {
+    protected void setUpTable() {
         // Renderers bind
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(Status.class, new StatusRenderer());

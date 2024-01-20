@@ -1,7 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
 import cz.fi.muni.pv168.todo.ui.async.DeleteActionSwingWorker;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTimeUnit;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -16,12 +16,14 @@ import java.util.Comparator;
 public class DeleteTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
-    private final MainWindow mainWindow;
+    private final MainWindowTimeUnit mainWindowTimeUnit;
+    private final Runnable refresh;
 
-    public DeleteTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
+    public DeleteTimeUnitAction(JTable timeUnitTable, MainWindowTimeUnit mainWindowTimeUnit, Runnable refresh) {
         super("Delete time unit", Icons.DELETE_ICON);
         this.timeUnitTable = timeUnitTable;
-        this.mainWindow = mainWindow;
+        this.mainWindowTimeUnit = mainWindowTimeUnit;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Deletes selected time unit");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -30,14 +32,11 @@ public class DeleteTimeUnitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
+        var timeUnitTableModel = mainWindowTimeUnit.getTableModel();
         var stream = Arrays.stream(timeUnitTable.getSelectedRows())
-                // view row index must be converted to model row index
                 .map(timeUnitTable::convertRowIndexToModel)
                 .boxed()
-                // We need to delete rows in descending order to not change index of rows
-                // which are not deleted yet
                 .sorted(Comparator.reverseOrder());
-        new DeleteActionSwingWorker<>(timeUnitTableModel, mainWindow, stream).execute();
+        new DeleteActionSwingWorker<>(timeUnitTableModel, refresh, stream).execute();
     }
 }
