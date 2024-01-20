@@ -19,14 +19,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.util.Optional;
 
-abstract class EntityDialog<E> {
+public abstract class EntityDialog<E> {
 
     protected final JPanel panel = new JPanel();
     private final JPanel errors = new JPanel();
     private final Validator<E> entityValidator;
 
+    abstract E getEntity();
 
-    EntityDialog(Validator<E> entityValidator) {
+    abstract ValidationResult isValid();
+
+    public EntityDialog(Validator<E> entityValidator) {
         this.entityValidator = Objects.requireNonNull(entityValidator);
         panel.setLayout(new MigLayout("wrap 2"));
         errors.setLayout(new MigLayout("wrap 1"));
@@ -75,9 +78,6 @@ abstract class EntityDialog<E> {
         panel.add(minutes, "wmin 30");
         panel.add(new JLabel("m"));
     }
-
-    abstract E getEntity();
-    abstract ValidationResult isValid();
 
     private void showErrorMessages(List<String> messages) {
         errors.removeAll();
