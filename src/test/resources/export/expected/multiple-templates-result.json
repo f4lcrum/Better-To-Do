@@ -1,0 +1,58 @@
+{
+  "categories" : [ ],
+  "events" : [ ],
+  "templates" : [ {
+    "id" : "7ee351e5-a704-4685-9b02-017d28835ffb",
+    "isDefault" : false,
+    "name" : "Work Template",
+    "eventName" : "Work Task",
+    "category" : {
+      "id" : "37a00d72-30ba-4a84-81ba-64393163918d",
+      "isDefault" : false,
+      "name" : "Work Category",
+      "color" : {
+        "r" : 0,
+        "g" : 0,
+        "b" : 0,
+        "alpha" : 255
+      }
+    },
+    "startTime" : [ 8, 0 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Hours",
+      "hours" : 1,
+      "minutes" : 0
+    },
+    "duration" : 8,
+    "description" : "Template for work tasks"
+  }, {
+    "id" : "f5c694b4-6790-4b50-847e-405da9c209a3",
+    "isDefault" : false,
+    "name" : "Home Template",
+    "eventName" : "Home Task",
+    "category" : {
+      "id" : "37a00d72-30ba-4a84-81ba-64393163918d",
+      "isDefault" : false,
+      "name" : "Work Category",
+      "color" : {
+        "r" : 0,
+        "g" : 0,
+        "b" : 0,
+        "alpha" : 255
+      }
+    },
+    "startTime" : [ 9, 30 ],
+    "timeUnit" : {
+      "id" : "0e587bc6-83a1-44ac-a911-0bfe0df998e4",
+      "isDefault" : true,
+      "name" : "Hours",
+      "hours" : 1,
+      "minutes" : 0
+    },
+    "duration" : 3,
+    "description" : "Template for home tasks"
+  } ],
+  "timeUnits" : [ ]
+}

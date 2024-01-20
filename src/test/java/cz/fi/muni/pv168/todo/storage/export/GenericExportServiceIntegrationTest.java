@@ -1,8 +1,6 @@
 package cz.fi.muni.pv168.todo.storage.export;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.fi.muni.pv168.todo.business.entity.Category;
-import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
@@ -21,7 +19,6 @@ import cz.fi.muni.pv168.todo.storage.memory.InMemoryTemplateRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTimeUnitRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.awt.Color;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,7 +92,7 @@ class GenericExportServiceIntegrationTest {
         categoryCrudService.create(category2);
 
         Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("multiple-categories-result.json");
-        Path exportFilePath = TEST_RESOURCES.resolve("multiple-categories.json");
+        Path exportFilePath = TEST_RESOURCES.resolve("exported-multiple-categories.json");
         genericExportService.exportData(exportFilePath.toString());
 
         assertThat(getFileContents(exportFilePath.toString()))
@@ -121,6 +118,23 @@ class GenericExportServiceIntegrationTest {
         Files.delete(exportFilePath);
     }
 
+    @Test
+    void exportingMultipleTemplates() throws IOException {
+        Category workCategory = new Category(UUID.fromString("37a00d72-30ba-4a84-81ba-64393163918d"), "Work Category", new Color(0, 0, 0, 255));
+        TimeUnit hourUnit = new TimeUnit(UUID.fromString("0e587bc6-83a1-44ac-a911-0bfe0df998e4"), true, "Hours", 1, 0);
+        Template template1 = new Template(UUID.fromString("7ee351e5-a704-4685-9b02-017d28835ffb"), "Work Template", "Work Task", workCategory, LocalTime.of(8, 0), hourUnit, 8, "Template for work tasks");
+        Template template2 = new Template(UUID.fromString("f5c694b4-6790-4b50-847e-405da9c209a3"), "Home Template", "Home Task", workCategory, LocalTime.of(9, 30), hourUnit, 3, "Template for home tasks");
+        templateCrudService.create(template1);
+        templateCrudService.create(template2);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("exported-multiple-templates.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("multiple-templates-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
 
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
