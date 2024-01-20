@@ -251,6 +251,51 @@ class GenericExportServiceIntegrationTest {
         Files.delete(exportFilePath);
     }
 
+    @Test
+    void exportingAllEntities() throws IOException {
+        Category urgentCategory = new Category(UUID.fromString("123e4567-e89b-12d3-a456-426614174004"), true, "Urgent", new Color(255, 0, 0));
+        categoryCrudService.create(urgentCategory);
+
+        TimeUnit workHour = new TimeUnit(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174040"),
+                true,
+                "Work Hour",
+                1,
+                0
+        );
+        timeUnitCrudService.create(workHour);
+
+        Template morningRoutine = new Template(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174050"),
+                "Morning Routine", "Morning Routine Event",
+                urgentCategory,
+                LocalTime.of(6, 0),
+                workHour,
+                2,
+                "Start the day with a productive morning routine"
+        );
+        templateCrudService.create(morningRoutine);
+
+        Event teamMeeting = new Event(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174060"),
+                "Team Meeting",
+                urgentCategory,
+                LocalDate.of(2024, 6, 15),
+                LocalTime.of(9, 30),
+                workHour,
+                60,
+                "Weekly team meeting to discuss project progress");
+        eventCrudService.create(teamMeeting);
+
+        Path exportFilePath = TEST_RESOURCES.resolve("exported-all-entities.json");
+        Path exportResultFilePath = TEST_RESOURCES_EXPECTED.resolve("all-entities-result.json");
+        genericExportService.exportData(exportFilePath.toString());
+
+        assertThat(getFileContents(exportFilePath.toString()))
+                .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
+        Files.delete(exportFilePath);
+    }
+
     private List<String> getFileContents(String filePath) throws IOException {
         try (var reader = new BufferedReader(new FileReader(filePath))) {
             return reader.lines().toList();

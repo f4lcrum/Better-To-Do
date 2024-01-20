@@ -1,0 +1,28 @@
+{
+  "categories" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174003",
+    "isDefault" : false,
+    "name" : "Urgent",
+    "color" : {
+      "r" : 255,
+      "g" : 0,
+      "b" : 0,
+      "alpha" : 255
+    }
+  } ],
+  "events" : [ ],
+  "templates" : [ ],
+  "timeUnits" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174030",
+    "isDefault" : false,
+    "name" : "Short Break",
+    "hours" : 0,
+    "minutes" : 15
+  }, {
+    "id" : "123e4567-e89b-12d3-a456-426614174031",
+    "isDefault" : true,
+    "name" : "Long Break",
+    "hours" : 0,
+    "minutes" : 60
+  } ]
+}
