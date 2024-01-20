@@ -11,13 +11,13 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.BorderLayout;
 import java.util.function.BiConsumer;
 
-public abstract class BasePanel<T extends Entity> extends JPanel {
+public abstract class TablePanel<T extends Entity> extends JPanel {
 
     protected final JTable table;
     protected final TableModel<T> tableModel;
     protected final BiConsumer<Integer, Boolean> onSelectionChange;
 
-    protected BasePanel(TableModel<T> tableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
+    protected TablePanel(TableModel<T> tableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         setLayout(new BorderLayout());
         this.table = new JTable(tableModel);
         this.tableModel = tableModel;
@@ -25,9 +25,7 @@ public abstract class BasePanel<T extends Entity> extends JPanel {
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
-    public void refresh() {
-        tableModel.refresh();
-    }
+    protected abstract void setUpTable();
 
     public JTable getTable() {
         return table;

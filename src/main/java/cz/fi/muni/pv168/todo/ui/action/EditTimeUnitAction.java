@@ -2,9 +2,12 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.main.MainWindow;
 import cz.fi.muni.pv168.todo.ui.dialog.TimeUnitDialog;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowEvent;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTimeUnit;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -18,13 +21,15 @@ public class EditTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
     private final Validator<TimeUnit> timeUnitValidator;
-    private final MainWindow mainWindow;
+    private final MainWindowTimeUnit mainWindowTimeUnit;
+    private final Runnable refresh;
 
-    public EditTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
+    public EditTimeUnitAction(JTable timeUnitTable, DependencyProvider dependencyProvider, MainWindowTimeUnit mainWindowTimeUnit, Runnable refresh) {
         super("Edit time unit", Icons.EDIT_ICON);
         this.timeUnitTable = timeUnitTable;
-        this.timeUnitValidator = Objects.requireNonNull(mainWindow.getTimeUnitValidator());
-        this.mainWindow = mainWindow;
+        this.timeUnitValidator = Objects.requireNonNull(dependencyProvider.getTimeUnitValidator());
+        this.mainWindowTimeUnit = mainWindowTimeUnit;
+        this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -40,7 +45,7 @@ public class EditTimeUnitAction extends AbstractAction {
         if (timeUnitTable.isEditing()) {
             timeUnitTable.getCellEditor().cancelCellEditing();
         }
-        var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
+        var timeUnitTableModel = mainWindowTimeUnit.getTableModel();
         int modelRow = timeUnitTable.convertRowIndexToModel(selectedRows[0]);
         var timeUnit = timeUnitTableModel.getEntity(modelRow);
         if (timeUnit.isDefault()) {
@@ -49,7 +54,6 @@ public class EditTimeUnitAction extends AbstractAction {
         var dialog = new TimeUnitDialog(timeUnit, true, timeUnitValidator);
         dialog.show(timeUnitTable, "Edit time unit")
                 .ifPresent(timeUnitTableModel::updateRow);
-        mainWindow.refreshTimeUnitListModel();
-        mainWindow.refreshEventModel();
+        refresh.run();
     }
 }

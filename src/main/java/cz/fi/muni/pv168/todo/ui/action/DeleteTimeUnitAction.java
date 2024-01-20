@@ -1,6 +1,7 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.main.MainWindow;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTimeUnit;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -15,12 +16,12 @@ import java.util.Comparator;
 public class DeleteTimeUnitAction extends AbstractAction {
 
     private final JTable timeUnitTable;
-    private final MainWindow mainWindow;
+    private final MainWindowTimeUnit mainWindowTimeUnit;
 
-    public DeleteTimeUnitAction(JTable timeUnitTable, MainWindow mainWindow) {
+    public DeleteTimeUnitAction(JTable timeUnitTable, MainWindowTimeUnit mainWindowTimeUnit) {
         super("Delete time unit", Icons.DELETE_ICON);
         this.timeUnitTable = timeUnitTable;
-        this.mainWindow = mainWindow;
+        this.mainWindowTimeUnit = mainWindowTimeUnit;
         putValue(SHORT_DESCRIPTION, "Deletes selected time unit");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -29,7 +30,7 @@ public class DeleteTimeUnitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var timeUnitTableModel = mainWindow.getTimeUnitTableModel();
+        var timeUnitTableModel = mainWindowTimeUnit.getTableModel();
         Arrays.stream(timeUnitTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(timeUnitTable::convertRowIndexToModel)
@@ -38,7 +39,7 @@ public class DeleteTimeUnitAction extends AbstractAction {
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(timeUnitTableModel::deleteRow);
-        mainWindow.refreshTimeUnitListModel();
+        mainWindowTimeUnit.refreshModel();
     }
 
 }

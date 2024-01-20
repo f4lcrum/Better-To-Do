@@ -1,7 +1,9 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
+import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.ui.panels.EventTablePanel;
+import cz.fi.muni.pv168.todo.ui.panels.TablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.ui.workers.AsyncImporter;
 import cz.fi.muni.pv168.todo.util.Filter;
@@ -17,11 +19,11 @@ import java.util.Objects;
 
 public final class ImportAction extends AbstractAction {
 
-    private final EventTablePanel eventTablePanel;
+    private final TablePanel<Event> eventTablePanel;
     private final Importer importer;
 
     public ImportAction(
-            EventTablePanel eventTablePanel,
+            TablePanel<Event> eventTablePanel,
             ImportService importService,
             Runnable callback) {
         super("Import", Icons.IMPORT_ICON);

@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
-import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -29,7 +28,7 @@ public class DeleteCategoryAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var categoryTableModel = mainWindowCategory.getCategoryTableModel();
+        var categoryTableModel = mainWindowCategory.getTableModel();
         // Check if there is no existing model of such category
         Arrays.stream(categoryTable.getSelectedRows())
                 // view row index must be converted to model row index

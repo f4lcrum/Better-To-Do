@@ -3,11 +3,12 @@ package cz.fi.muni.pv168.todo.ui.action;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.ui.MainWindow;
-import cz.fi.muni.pv168.todo.ui.MainWindowCategory;
 import cz.fi.muni.pv168.todo.ui.dialog.TemplateDialog;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowTemplate;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -24,17 +25,18 @@ public class EditTemplateAction extends AbstractAction {
     private final ListModel<Category> categoryListModel;
     private final ListModel<TimeUnit> timeUnitListModel;
     private final Validator<Template> templateValidator;
-    private final MainWindow mainWindow;
-    private final MainWindowCategory mainWindowCategory;
-    public EditTemplateAction(JTable templateTable, MainWindow mainWindow, MainWindowCategory mainWindowCategory, ListModel<Category> categoryListModel,
-                              ListModel<TimeUnit> timeUnitListModel) {
+    private final CategoryCrudService categoryCrudService;
+    private final MainWindowTemplate mainWindowTemplate;
+
+    public EditTemplateAction(JTable templateTable, DependencyProvider dependencyProvider, MainWindowTemplate mainWindowTemplate,
+                              ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel) {
         super("Edit template", Icons.EDIT_ICON);
         this.templateTable = templateTable;
         this.categoryListModel = categoryListModel;
         this.timeUnitListModel = timeUnitListModel;
-        this.templateValidator = Objects.requireNonNull(mainWindow.getTemplateValidator());
-        this.mainWindow = mainWindow;
-        this.mainWindowCategory = mainWindowCategory;
+        this.templateValidator = Objects.requireNonNull(dependencyProvider.getTemplateValidator());
+        this.categoryCrudService = dependencyProvider.getCategoryCrudService();
+        this.mainWindowTemplate = mainWindowTemplate;
         putValue(SHORT_DESCRIPTION, "Edits selected template");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -52,12 +54,12 @@ public class EditTemplateAction extends AbstractAction {
             templateTable.getCellEditor().cancelCellEditing();
         }
 
-        var templateTableModel = mainWindow.getTemplateTableModel();
+        var templateTableModel = mainWindowTemplate.getTableModel();
         int modelRow = templateTable.convertRowIndexToModel(selectedRows[0]);
         var template = templateTableModel.getEntity(modelRow);
-        var dialog = new TemplateDialog(mainWindowCategory.getCategoryCrudService(), template, categoryListModel, timeUnitListModel, true, templateValidator);
+        var dialog = new TemplateDialog(categoryCrudService, template, categoryListModel, timeUnitListModel, true, templateValidator);
         dialog.show(templateTable, "Edit Template")
                 .ifPresent(templateTableModel::updateRow);
-        mainWindow.refreshTemplateListModel();
+        mainWindowTemplate.refreshModel();
     }
 }

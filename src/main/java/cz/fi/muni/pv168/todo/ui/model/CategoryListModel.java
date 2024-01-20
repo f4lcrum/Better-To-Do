@@ -3,11 +3,10 @@ package cz.fi.muni.pv168.todo.ui.model;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 
-import javax.swing.AbstractListModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryListModel extends AbstractListModel<Category> {
+public class CategoryListModel extends RefreshableListModel<Category> {
 
     private List<Category> categories;
     private final CategoryCrudService categoryCrudService;
@@ -27,9 +26,9 @@ public class CategoryListModel extends AbstractListModel<Category> {
         return categories.get(index);
     }
 
+    @Override
     public void refresh() {
         this.categories = new ArrayList<>(categoryCrudService.findAll());
         fireContentsChanged(this, 0, getSize() - 1);
     }
-
 }

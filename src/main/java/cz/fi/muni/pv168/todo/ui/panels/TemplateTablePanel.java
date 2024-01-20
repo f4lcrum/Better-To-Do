@@ -12,20 +12,20 @@ import java.awt.Color;
 import java.time.LocalDate;
 import java.util.function.BiConsumer;
 
-public class TemplateTablePanel extends BasePanel<Template> {
+public class TemplateTablePanel extends TablePanel<Template> {
 
     public TemplateTablePanel(TableModel<Template> templateTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(templateTableModel, onSelectionChange);
-        setUpTable(templateTableModel);
+        setUpTable();
     }
 
-    private void setUpTable(TableModel<Template> templateTableModel) {
+    protected void setUpTable() {
         table.setAutoCreateRowSorter(true);
         // Renderers bind
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(LocalDate.class, new LocalDateRenderer());
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
-        table.addMouseListener(new DetailClick<>(templateTableModel, Template::getName, "Template detail"));
+        table.addMouseListener(new DetailClick<>(tableModel, Template::getName, "Template detail"));
 
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
     }

@@ -1,6 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowEvent;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 
 import javax.swing.AbstractAction;
@@ -15,12 +15,12 @@ import java.util.Comparator;
 public class DeleteEventAction extends AbstractAction {
 
     private final JTable eventTable;
-    private final MainWindow mainWindow;
+    private final MainWindowEvent mainWindowEvent;
 
-    public DeleteEventAction(JTable eventTable, MainWindow mainWindow) {
+    public DeleteEventAction(JTable eventTable, MainWindowEvent mainWindowEvent) {
         super("Delete event", Icons.DELETE_ICON);
         this.eventTable = eventTable;
-        this.mainWindow = mainWindow;
+        this.mainWindowEvent = mainWindowEvent;
         putValue(SHORT_DESCRIPTION, "Deletes selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
@@ -29,7 +29,7 @@ public class DeleteEventAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var eventTableModel = mainWindow.getEventTableModel();
+        var eventTableModel = mainWindowEvent.getTableModel();
         Arrays.stream(eventTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(eventTable::convertRowIndexToModel)
@@ -38,6 +38,6 @@ public class DeleteEventAction extends AbstractAction {
                 // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
                 .forEach(eventTableModel::deleteRow);
-        mainWindow.refreshEventModel();
+        mainWindowEvent.refreshModel();
     }
 }
