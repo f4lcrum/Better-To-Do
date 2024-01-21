@@ -5,6 +5,8 @@ import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.crud.TemplateCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
 import cz.fi.muni.pv168.todo.ui.async.AddActionSwingWorker;
 import cz.fi.muni.pv168.todo.ui.dialog.EventDialog;
@@ -34,10 +36,11 @@ public final class AddEventAction extends AbstractAction {
     private final Validator<Event> eventValidator;
     private final MainWindowEvent mainWindowEvent;
     private final CategoryCrudService categoryCrudService;
+    private final CreateTemplateFromEventAction action;
     private final Runnable refresh;
 
     public AddEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel, ListModel<Template> templateListModel,
-                          MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, Runnable refresh) {
+                          MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, CreateTemplateFromEventAction action, Runnable refresh) {
         super("Add event", Icons.ADD_ICON);
         this.eventTable = eventTable;
         this.eventValidator = Objects.requireNonNull(dependencyProvider.getEventValidator());
@@ -46,6 +49,7 @@ public final class AddEventAction extends AbstractAction {
         this.templateListModel = templateListModel;
         this.mainWindowEvent = mainWindowEvent;
         this.categoryCrudService = dependencyProvider.getCategoryCrudService();
+        this.action = action;
         this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Adds new event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
@@ -56,7 +60,7 @@ public final class AddEventAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var eventTableModel = mainWindowEvent.getTableModel();
-        var dialog = new EventDialog(categoryCrudService, createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator);
+        var dialog = new EventDialog(categoryCrudService, createPrefilledEvent(), categoryListModel, timeUnitListModel, templateListModel, false, eventValidator, action);
         dialog.show(eventTable, "Add Event").ifPresent(entity -> new AddActionSwingWorker<>(eventTableModel, refresh, entity).execute());
     }
 

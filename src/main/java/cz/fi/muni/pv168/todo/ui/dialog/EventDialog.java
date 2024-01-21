@@ -107,10 +107,9 @@ public final class EventDialog extends EntityDialog<Event> {
     }
 
     private void addTemplateFromEventButton(CreateTemplateFromEventAction action) {
-        action.setDialog(this);
-        action.setEnabled(true);
         panel.add(new JLabel(""));
         panel.add(new JButton(action));
+        action.setDialog(this);
     }
 
     @Override
@@ -163,8 +162,7 @@ public final class EventDialog extends EntityDialog<Event> {
                 return entity;
             }
             showErrorMessages(validation.getValidationErrors());
-        }
-        else {
+        } else {
             showErrorMessages(validateFields.getValidationErrors());
         }
         result = showOptionDialog(parentComponent, title);

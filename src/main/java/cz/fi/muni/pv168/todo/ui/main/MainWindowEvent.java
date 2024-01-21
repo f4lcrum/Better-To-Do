@@ -3,8 +3,8 @@ package cz.fi.muni.pv168.todo.ui.main;
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Status;
-import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
+import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.action.strategy.EventButtonTabStrategy;
 import cz.fi.muni.pv168.todo.ui.model.Column;
 import cz.fi.muni.pv168.todo.ui.model.EventListModel;
@@ -22,7 +22,7 @@ public class MainWindowEvent extends MainWindowEntityImpl<Event> {
 
     private final Runnable refreshStatistics;
 
-    public MainWindowEvent(DependencyProvider dependencyProvider, BiConsumer<Integer, Boolean> onSelectionChange, ListModel<Category> categoryListModel, ListModel<Template> templateListModel,
+    public MainWindowEvent(DependencyProvider dependencyProvider, BiConsumer<Integer, Boolean> onSelectionChange, ListModel<Category> categoryListModel, MainWindowTemplate mainWindowTemplate,
                            ListModel<TimeUnit> timeUnitListModel, Column<Event, LocalDateTime> startDateRow, Runnable refreshStatistics, Runnable refresh) {
         this.tableModel = new TableModel<>(dependencyProvider.getEventCrudService(), List.of(
                 new Column<>(" ", Color.class, Event::getColour),
@@ -34,7 +34,8 @@ public class MainWindowEvent extends MainWindowEntityImpl<Event> {
         ));
         this.listModel = new EventListModel(dependencyProvider.getEventCrudService());
         this.tablePanel = new EventTablePanel(tableModel, onSelectionChange);
-        this.buttonTabStrategy = new EventButtonTabStrategy(tablePanel.getTable(), categoryListModel, timeUnitListModel, templateListModel, this, dependencyProvider, refresh);
+        this.buttonTabStrategy = new EventButtonTabStrategy(tablePanel.getTable(), categoryListModel, timeUnitListModel, mainWindowTemplate.getListModel(),
+                this, dependencyProvider, new CreateTemplateFromEventAction(tablePanel.getTable(), dependencyProvider, mainWindowTemplate), refresh);
         this.refreshStatistics = refreshStatistics;
         tablePanel.getTable().setComponentPopupMenu(MainWindowHelper.createPopupMenu((buttonTabStrategy)));
     }
