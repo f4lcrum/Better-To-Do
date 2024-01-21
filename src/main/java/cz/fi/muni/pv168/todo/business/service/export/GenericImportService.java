@@ -50,6 +50,10 @@ public class GenericImportService implements ImportService {
         this.strategy = strategy;
     }
 
+    public ImportStrategy getStrategy() {
+        return strategy;
+    }
+
     @Override
     public Collection<Format> getFormats() {
         return importers.getFormats();
