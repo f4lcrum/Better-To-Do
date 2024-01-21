@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.business.service.validation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -17,13 +16,6 @@ import java.util.Objects;
 public final class ValidationResult {
 
     private final List<String> validationErrors;
-
-    public static ValidationResult failed(String... validationErrors) {
-        return new ValidationResult(Arrays.asList(validationErrors));
-    }
-    public static ValidationResult success() {
-        return new ValidationResult();
-    }
 
     public ValidationResult(Collection<String> validationErrors) {
         this.validationErrors = new ArrayList<>(validationErrors);

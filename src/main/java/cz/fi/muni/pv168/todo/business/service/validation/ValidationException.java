@@ -18,7 +18,4 @@ public class ValidationException extends RuntimeApplicationException {
         this.validationErrors = validationErrors;
     }
 
-    public List<String> getValidationErrors() {
-        return Collections.unmodifiableList(validationErrors);
-    }
 }

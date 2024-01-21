@@ -6,10 +6,6 @@ import java.time.LocalTime;
 
 public class LocalTimeValidator extends PropertyValidator<LocalTime> {
 
-    public LocalTimeValidator() {
-        this(null);
-    }
-
     public LocalTimeValidator(String name) {
         super(name);
     }

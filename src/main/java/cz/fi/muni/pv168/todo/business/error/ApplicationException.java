@@ -6,8 +6,4 @@ package cz.fi.muni.pv168.todo.business.error;
  */
 public interface ApplicationException {
 
-    /**
-     * @return error message displayable to user
-     */
-    String getUserMessage();
 }

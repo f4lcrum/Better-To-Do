@@ -20,11 +20,6 @@ public final class CustomValuesModelDecorator {
     private CustomValuesModelDecorator() {
     }
 
-    public static <T extends Enum<T>, E> ComboBoxModel<Either<T, E>> addCustomValues(Class<T> clazz,
-                                                                                     ComboBoxModel<E> decoratedModel) {
-        return new ComboBoxModelDecorator<>(clazz, decoratedModel);
-    }
-
     public static <T extends Enum<T>, E> ListModel<Either<T, E>> addCustomValues(Class<T> clazz,
                                                                                  ListModel<E> decoratedModel) {
         return new ListModelDecorator<>(clazz, decoratedModel);
@@ -73,24 +68,6 @@ public final class CustomValuesModelDecorator {
             }
         }
 
-    }
-
-    private static class ComboBoxModelDecorator<T extends Enum<T>, E>
-            extends ListModelDecorator<T, E, ComboBoxModel<E>> implements ComboBoxModel<Either<T, E>> {
-
-        private ComboBoxModelDecorator(Class<T> clazz, ComboBoxModel<E> decoratedModel) {
-            super(clazz, decoratedModel);
-        }
-
-        @Override
-        public Object getSelectedItem() {
-            return super.decoratedModel.getSelectedItem();
-        }
-
-        @Override
-        public void setSelectedItem(Object anItem) {
-            super.decoratedModel.setSelectedItem(anItem);
-        }
     }
 
     private static class TransposingListener implements ListDataListener {
