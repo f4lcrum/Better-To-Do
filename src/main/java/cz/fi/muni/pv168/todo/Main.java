@@ -1,6 +1,10 @@
 package cz.fi.muni.pv168.todo;
 
 import cz.fi.muni.pv168.todo.ui.main.MainWindow;
+<<<<<<< HEAD
+=======
+
+>>>>>>> d93b7ba1f34fcc38dbdebb8ee8dfed233ea389d6
 import cz.fi.muni.pv168.todo.wiring.ProductionDependencyProvider;
 
 import javax.swing.UIManager;
