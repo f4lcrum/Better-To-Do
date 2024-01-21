@@ -5,7 +5,6 @@ import cz.fi.muni.pv168.todo.business.entity.Status;
 import cz.fi.muni.pv168.todo.ui.filter.matcher.EventTableFilter;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterCategoryValues;
 import cz.fi.muni.pv168.todo.ui.filter.values.SpecialFilterStatusValues;
-import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
 import cz.fi.muni.pv168.todo.ui.model.StatusListModel;
 import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import cz.fi.muni.pv168.todo.ui.renderer.SpecialFilterCategoryRenderer;
@@ -18,10 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.swing.JTextField;
-
 
 public class FilterPanel<L extends Enum<L>, R> {
 
@@ -45,7 +44,7 @@ public class FilterPanel<L extends Enum<L>, R> {
     }
 
     public static JList<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
-            EventTableFilter eventTableFilter, CategoryListModel categoryListModel) {
+            EventTableFilter eventTableFilter, ListModel<Category> categoryListModel) {
         return FilterListModelBuilder.create(SpecialFilterCategoryValues.class, categoryListModel, "Category")
                 .setSelectedIndex(0)
                 .setVisibleRowsCount(3)
@@ -92,5 +91,4 @@ public class FilterPanel<L extends Enum<L>, R> {
         resetButton.addActionListener(e -> eventTableFilter.resetAllFilters());
         return resetButton;
     }
-
 }

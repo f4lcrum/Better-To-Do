@@ -1,27 +1,28 @@
 package cz.fi.muni.pv168.todo.ui.action.strategy;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
+import cz.fi.muni.pv168.todo.business.entity.Category;
+import cz.fi.muni.pv168.todo.business.entity.Template;
+import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.ui.action.AddEventAction;
 import cz.fi.muni.pv168.todo.ui.action.DeleteEventAction;
 import cz.fi.muni.pv168.todo.ui.action.EditEventAction;
-import cz.fi.muni.pv168.todo.ui.model.CategoryListModel;
-import cz.fi.muni.pv168.todo.ui.model.TemplateListModel;
-import cz.fi.muni.pv168.todo.ui.model.TimeUnitListModel;
+import cz.fi.muni.pv168.todo.ui.main.MainWindowEvent;
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTable;
+import javax.swing.ListModel;
 
 public class EventButtonTabStrategy implements ButtonTabStrategy {
-
     private final AddEventAction addAction;
     private final EditEventAction editAction;
     private final DeleteEventAction deleteAction;
 
-    public EventButtonTabStrategy(JTable table, CategoryListModel categoryListModel, TimeUnitListModel timeUnitListModel,
-                                  TemplateListModel templateListModel, MainWindow mainWindow) {
-        this.addAction = new AddEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow);
-        this.editAction = new EditEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindow);
-        this.deleteAction = new DeleteEventAction(table, mainWindow);
+    public EventButtonTabStrategy(JTable table, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel, ListModel<Template> templateListModel,
+                                  MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, Runnable refresh) {
+        this.addAction = new AddEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindowEvent, dependencyProvider, refresh);
+        this.editAction = new EditEventAction(table, categoryListModel, timeUnitListModel, templateListModel, mainWindowEvent, dependencyProvider, refresh);
+        this.deleteAction = new DeleteEventAction(table, mainWindowEvent, refresh);
     }
 
     @Override

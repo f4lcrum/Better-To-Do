@@ -1,8 +1,8 @@
 package cz.fi.muni.pv168.todo;
 
-import cz.fi.muni.pv168.todo.ui.MainWindow;
-
+import cz.fi.muni.pv168.todo.ui.main.MainWindow;
 import cz.fi.muni.pv168.todo.wiring.ProductionDependencyProvider;
+
 import javax.swing.UIManager;
 import java.awt.EventQueue;
 import java.util.logging.Level;

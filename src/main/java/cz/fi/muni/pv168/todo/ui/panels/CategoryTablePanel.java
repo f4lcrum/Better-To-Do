@@ -9,14 +9,14 @@ import cz.fi.muni.pv168.todo.ui.renderer.CategoryRenderer;
 import java.awt.Color;
 import java.util.function.BiConsumer;
 
-public class CategoryTablePanel extends BasePanel<Category> {
+public class CategoryTablePanel extends TablePanel<Category> {
 
     public CategoryTablePanel(TableModel<Category> categoryTableModel, BiConsumer<Integer, Boolean> onSelectionChange) {
         super(categoryTableModel, onSelectionChange);
         setUpTable();
     }
 
-    private void setUpTable() {
+    protected void setUpTable() {
         table.setDefaultRenderer(Category.class, new CategoryRenderer());
         table.setDefaultRenderer(Color.class, new CategoryColourRenderer());
 
