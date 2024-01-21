@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.business.entity.Entity;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -18,6 +19,11 @@ public interface CrudService<T extends Entity> {
      * Find all entities.
      */
     List<T> findAll();
+
+    /**
+     * Find entity based on GUID.
+     */
+    Optional<T> findByGuid(UUID guid);
 
     /**
      * Validate and store the given {@code newEntity}.
