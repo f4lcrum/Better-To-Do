@@ -9,3 +9,6 @@
 # Production files
 .env
 docker-compose.yml
+
+# Test files
+src/test/resources/exported*.json

@@ -1,0 +1,59 @@
+{
+  "categories" : [ ],
+  "events" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174060",
+    "isDefault" : false,
+    "name" : "Team Meeting",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174004",
+      "isDefault" : false,
+      "name" : "Urgent",
+      "color" : null
+    },
+    "date" : [ 2024, 6, 15 ],
+    "startTime" : [ 9, 30 ],
+    "timeUnit" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174040",
+      "isDefault" : true,
+      "name" : "Work Hour",
+      "hours" : 1,
+      "minutes" : 0
+    },
+    "duration" : 60,
+    "description" : "Weekly team meeting to discuss project progress"
+  } ],
+  "templates" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174050",
+    "isDefault" : false,
+    "name" : "Morning Routine",
+    "eventName" : "Morning Routine Event",
+    "category" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174004",
+      "isDefault" : false,
+      "name" : "Urgent",
+      "color" : {
+        "r" : 255,
+        "g" : 0,
+        "b" : 0,
+        "alpha" : 255
+      }
+    },
+    "startTime" : [ 6, 0 ],
+    "timeUnit" : {
+      "id" : "123e4567-e89b-12d3-a456-426614174040",
+      "isDefault" : true,
+      "name" : "Work Hour",
+      "hours" : 1,
+      "minutes" : 0
+    },
+    "duration" : 2,
+    "description" : "Start the day with a productive morning routine"
+  } ],
+  "timeUnits" : [ {
+    "id" : "123e4567-e89b-12d3-a456-426614174040",
+    "isDefault" : true,
+    "name" : "Work Hour",
+    "hours" : 1,
+    "minutes" : 0
+  } ]
+}
