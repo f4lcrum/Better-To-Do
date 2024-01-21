@@ -2,14 +2,10 @@ package cz.fi.muni.pv168.todo.business.service.validation.common;
 
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 
-public class NumericalValueValidator<T extends Number> extends PropertyValidator<T > {
+public class NumericalValueValidator<T extends Number> extends PropertyValidator<T> {
 
     private final T min;
     private final T max;
-
-    public NumericalValueValidator(T min, T max) {
-        this(min, max, null);
-    }
 
     public NumericalValueValidator(T min, T max, String name) {
         super(name);

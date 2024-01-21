@@ -11,7 +11,4 @@ public final class DataManipulationException extends RuntimeApplicationException
         super(message, cause);
     }
 
-    public DataManipulationException(String message) {
-        super(message);
-    }
 }

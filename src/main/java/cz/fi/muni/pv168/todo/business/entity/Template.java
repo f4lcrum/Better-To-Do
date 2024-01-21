@@ -67,12 +67,6 @@ public class Template implements Entity {
         return this.eventName;
     }
 
-    public LocalTime getEndTime() {
-        var hours = timeUnit.getHours() * duration;
-        var minutes = timeUnit.getMinutes() * duration;
-        return this.startTime.plusHours(hours).plusMinutes(minutes);
-    }
-
     public String getDurationString() {
         return String.format("%d %s", getDuration(), getTimeUnit().getName());
     }

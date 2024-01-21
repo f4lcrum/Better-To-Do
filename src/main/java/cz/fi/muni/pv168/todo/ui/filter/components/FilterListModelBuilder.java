@@ -18,7 +18,6 @@ public class FilterListModelBuilder<L extends Enum<L>, R> {
 
     private final Class<L> clazz;
     private final ListModel<R> values;
-    private final String name;
     private AbstractRenderer<L> specialValuesRenderer;
     private AbstractRenderer<R> valuesRenderer;
     private Consumer<List<Either<L, R>>> filter;
@@ -28,7 +27,6 @@ public class FilterListModelBuilder<L extends Enum<L>, R> {
     private FilterListModelBuilder(Class<L> clazz, ListModel<R> values, String name) {
         this.clazz = clazz;
         this.values = values;
-        this.name = name;
     }
 
     public static <L extends Enum<L>, R> FilterListModelBuilder<L, R> create(Class<L> clazz, ListModel<R> values, String name) {

@@ -20,11 +20,6 @@ public final class CustomValuesModelDecorator {
     private CustomValuesModelDecorator() {
     }
 
-    public static <T extends Enum<T>, E> ComboBoxModel<Either<T, E>> addCustomValues(Class<T> clazz,
-                                                                                     ComboBoxModel<E> decoratedModel) {
-        return new ComboBoxModelDecorator<>(clazz, decoratedModel);
-    }
-
     public static <T extends Enum<T>, E> ListModel<Either<T, E>> addCustomValues(Class<T> clazz,
                                                                                  ListModel<E> decoratedModel) {
         return new ListModelDecorator<>(clazz, decoratedModel);

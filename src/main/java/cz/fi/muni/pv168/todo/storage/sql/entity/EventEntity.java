@@ -35,14 +35,4 @@ public record EventEntity(String id,
         this.description = description;
     }
 
-    public EventEntity(
-            String name,
-            String categoryId,
-            LocalDate date,
-            LocalTime startTime,
-            String timeUnitId,
-            int duration,
-            String description) {
-        this(null, name, categoryId, date, startTime, timeUnitId, duration, description);
-    }
 }

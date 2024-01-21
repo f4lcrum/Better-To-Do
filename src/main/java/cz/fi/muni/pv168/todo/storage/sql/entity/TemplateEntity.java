@@ -33,14 +33,4 @@ public record TemplateEntity(String id,
         this.description = description;
     }
 
-    public TemplateEntity(
-            String name,
-            String eventName,
-            String categoryId,
-            LocalTime startTime,
-            String timeUnitId,
-            int duration,
-            String description) {
-        this(null, name, eventName, categoryId, startTime, timeUnitId, duration, description);
-    }
 }

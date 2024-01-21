@@ -84,12 +84,6 @@ public class Event implements Entity {
         return this.startTime;
     }
 
-    public LocalTime getEndTime() {
-        var hours = timeUnit.getHours() * duration;
-        var minutes = timeUnit.getMinutes() * duration;
-        return this.startTime.plusHours(hours).plusMinutes(minutes);
-    }
-
     public String getDescription() {
         return this.description;
     }

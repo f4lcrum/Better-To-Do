@@ -123,31 +123,6 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    @Override
-    public Repository<Event> getEventRepository() {
-        return eventRepository;
-    }
-
-    @Override
-    public Repository<Category> getCategoryRepository() {
-        return categoryRepository;
-    }
-
-    @Override
-    public Repository<TimeUnit> getTimeUnitRepository() {
-        return timeUnitRepository;
-    }
-
-    @Override
-    public Repository<Template> getTemplateRepository() {
-        return templateRepository;
-    }
-
-    @Override
     public CrudService<Event> getEventCrudService() {
         return eventCrudService;
     }
@@ -165,11 +140,6 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public CrudService<Template> getTemplateCrudService() {
         return templateCrudService;
-    }
-
-    @Override
-    public TransactionExecutor getTransactionExecutor() {
-        return transactionExecutor;
     }
 
     @Override

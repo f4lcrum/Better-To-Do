@@ -9,8 +9,4 @@ public class BatchOperationException extends RuntimeApplicationException {
     public BatchOperationException(String message) {
         super(message);
     }
-
-    public BatchOperationException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }
