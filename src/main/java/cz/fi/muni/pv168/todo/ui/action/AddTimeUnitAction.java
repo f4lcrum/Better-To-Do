@@ -41,7 +41,6 @@ public class AddTimeUnitAction extends AbstractAction {
         var timeUnitTableModel = mainWindowTimeUnit.getTableModel();
         var dialog = new TimeUnitDialog(createPrefilledTimeUnit(), false, timeUnitValidator);
         dialog.show(timeUnitTable, "Add Time Unit").ifPresent(entity -> new AddActionSwingWorker<>(timeUnitTableModel, refresh, entity).execute());
-        6
     }
 
     private TimeUnit createPrefilledTimeUnit() {
