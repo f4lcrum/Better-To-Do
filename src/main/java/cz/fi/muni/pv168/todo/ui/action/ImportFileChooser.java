@@ -5,10 +5,15 @@ import cz.fi.muni.pv168.todo.ui.action.strategy.AppendImportStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import cz.fi.muni.pv168.todo.ui.action.strategy.OverwriteImportStrategy;
 import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.List;
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ImportFileChooser {
 
