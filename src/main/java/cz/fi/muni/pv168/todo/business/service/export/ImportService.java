@@ -3,6 +3,7 @@ package cz.fi.muni.pv168.todo.business.service.export;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchOperationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 
+import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
 
 /**
@@ -17,6 +18,8 @@ public interface ImportService {
      * @throws BatchOperationException if the import cannot be done
      */
     boolean importData(String filePath);
+
+    void setStrategy(ImportStrategy strategy);
 
     /**
      * Gets all available formats for import.

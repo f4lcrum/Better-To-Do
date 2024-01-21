@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.ui.action.Importer;
 
+import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class AsyncImporter implements Importer {
 
     private final ImportService importService;
     private final Runnable onFinish;
+    private ImportStrategy strategy;
 
     public AsyncImporter(ImportService importService, Runnable onFinish) {
         this.importService = Objects.requireNonNull(importService);
@@ -45,6 +47,12 @@ public class AsyncImporter implements Importer {
             }
         };
         asyncWorker.execute();
+    }
+
+    @Override
+    public void setStrategy(ImportStrategy strategy) {
+        this.strategy = strategy;
+        importService.setStrategy(strategy);
     }
 
     @Override

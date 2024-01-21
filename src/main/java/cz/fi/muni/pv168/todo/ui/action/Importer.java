@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 
+import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
 import java.util.Set;
 
@@ -13,6 +14,8 @@ public interface Importer {
      * @param filePath absolute path of the import file from
      */
     void importData(String filePath);
+
+    void setStrategy(ImportStrategy strategy);
 
     /**
      * Gets all available formats for export.

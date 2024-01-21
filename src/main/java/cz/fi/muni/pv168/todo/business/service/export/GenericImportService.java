@@ -12,6 +12,7 @@ import cz.fi.muni.pv168.todo.business.service.export.format.FormatMapping;
 import cz.fi.muni.pv168.todo.io.DataManipulationException;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
+import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +27,7 @@ public class GenericImportService implements ImportService {
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final FormatMapping<BatchImporter> importers;
+    private ImportStrategy strategy;
 
     public GenericImportService(CrudService<Event> eventCrudService,
                                 CrudService<Category> categoryCrudService,
@@ -41,48 +43,11 @@ public class GenericImportService implements ImportService {
 
     @Override
     public boolean importData(String filePath) {
-        var importer = getImporter(filePath);
-        try {
-            var batch = importer.importBatch(filePath);
-
-            eventCrudService.deleteAll();
-            templateCrudService.deleteAll();
-            categoryCrudService.deleteAll();
-            timeUnitCrudService.deleteAll();
-
-            batch.timeUnits().forEach(this::createTimeUnit);
-            batch.categories().forEach(this::createCategory);
-            batch.templates().forEach(this::createTemplate);
-            batch.events().forEach(this::createEvent);
-        } catch (DataManipulationException dme) {
-            Logger.getLogger(importer.getClass().getName()).log(Level.SEVERE, "An error occurred when trying to parse the input file!", dme);
-            return false;
-        } catch (DataStorageException dse) {
-            Logger.getLogger(GenericImportService.class.getName()).log(Level.SEVERE, "An error occurred when trying to access the database!", dse);
-            return false;
-        }
-
-        return true;
+        return strategy.importData(filePath);
     }
 
-    private void createCategory(Category category) {
-        categoryCrudService.create(category)
-                .intoException();
-    }
-
-    private void createTemplate(Template template) {
-        templateCrudService.create(template)
-                .intoException();
-    }
-
-    private void createEvent(Event event) {
-        eventCrudService.create(event)
-                .intoException();
-    }
-
-    private void createTimeUnit(TimeUnit timeUnit) {
-        timeUnitCrudService.create(timeUnit)
-                .intoException();
+    public void setStrategy(ImportStrategy strategy) {
+        this.strategy = strategy;
     }
 
     @Override
