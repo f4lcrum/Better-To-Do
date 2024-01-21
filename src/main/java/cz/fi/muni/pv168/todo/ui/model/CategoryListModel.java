@@ -28,7 +28,7 @@ public class CategoryListModel extends RefreshableListModel<Category> {
 
     @Override
     public void refresh() {
-        this.categories = new ArrayList<>(categoryCrudService.findAll());
+        this.categories = new ArrayList<>(categoryCrudService.findAllWithDefault());
         fireContentsChanged(this, 0, getSize() - 1);
     }
 }

@@ -19,14 +19,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.util.Optional;
 
-abstract class EntityDialog<E> {
+public abstract class EntityDialog<E> {
 
-    private final JPanel panel = new JPanel();
-    private final JPanel errors = new JPanel();
-    private final Validator<E> entityValidator;
+    protected final JPanel panel = new JPanel();
+    protected final JPanel errors = new JPanel();
+    protected final Validator<E> entityValidator;
 
+    abstract E getEntity();
 
-    EntityDialog(Validator<E> entityValidator) {
+    abstract ValidationResult isValid();
+
+    public EntityDialog(Validator<E> entityValidator) {
         this.entityValidator = Objects.requireNonNull(entityValidator);
         panel.setLayout(new MigLayout("wrap 2"));
         errors.setLayout(new MigLayout("wrap 1"));
@@ -76,15 +79,12 @@ abstract class EntityDialog<E> {
         panel.add(new JLabel("m"));
     }
 
-    abstract E getEntity();
-    abstract ValidationResult isValid();
-
-    private void showErrorMessages(List<String> messages) {
+    protected void showErrorMessages(List<String> messages) {
         errors.removeAll();
         messages.stream().map(JLabel::new).forEach(errors::add);
     }
 
-    private int showOptionDialog(JComponent parentComponent, String title) {
+    protected int showOptionDialog(JComponent parentComponent, String title) {
         return JOptionPane.showOptionDialog(
                 parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE,
                 null, null, null
@@ -105,11 +105,10 @@ abstract class EntityDialog<E> {
                 }
 
                 showErrorMessages(validation.getValidationErrors());
-                result = showOptionDialog(parentComponent, title);
             } else {
                 showErrorMessages(validateFields.getValidationErrors());
-                result = showOptionDialog(parentComponent, title);
             }
+            result = showOptionDialog(parentComponent, title);
         }
 
         return Optional.empty();

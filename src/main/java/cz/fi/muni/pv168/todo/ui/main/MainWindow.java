@@ -59,7 +59,7 @@ public class MainWindow {
         this.mainWindowCategory = new MainWindowCategory(dependencyProvider, this::changeActionsState, this::refresh);
         this.mainWindowTimeUnit = new MainWindowTimeUnit(dependencyProvider, this::changeActionsState, this::refresh);
         this.mainWindowTemplate = new MainWindowTemplate(dependencyProvider, this::changeActionsState, mainWindowCategory.getListModel(), mainWindowTimeUnit.getListModel(), this::refresh);
-        this.mainWindowEvent = new MainWindowEvent(dependencyProvider, this::changeActionsState, mainWindowCategory.getListModel(), mainWindowTemplate.getListModel(), mainWindowTimeUnit.getListModel(),
+        this.mainWindowEvent = new MainWindowEvent(dependencyProvider, this::changeActionsState, mainWindowCategory.getListModel(), mainWindowTemplate, mainWindowTimeUnit.getListModel(),
                 startDateRow, this::refreshStatistics, this::refresh);
         this.statistics = new StatisticsPanel(dependencyProvider.getEventCrudService(), mainWindowEvent.getTableModel());
 

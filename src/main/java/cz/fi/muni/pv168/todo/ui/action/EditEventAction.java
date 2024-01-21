@@ -30,10 +30,11 @@ public class EditEventAction extends AbstractAction {
     private final Validator<Event> eventValidator;
     private final MainWindowEvent mainWindowEvent;
     private final CategoryCrudService categoryCrudService;
+    private final CreateTemplateFromEventAction action;
     private final Runnable refresh;
 
     public EditEventAction(JTable eventTable, ListModel<Category> categoryListModel, ListModel<TimeUnit> timeUnitListModel, ListModel<Template> templateListModel,
-                           MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, Runnable refresh) {
+                           MainWindowEvent mainWindowEvent, DependencyProvider dependencyProvider, CreateTemplateFromEventAction action, Runnable refresh) {
         super("Edit event", Icons.EDIT_ICON);
         this.eventTable = eventTable;
         this.categoryListModel = categoryListModel;
@@ -42,6 +43,7 @@ public class EditEventAction extends AbstractAction {
         this.eventValidator = Objects.requireNonNull(dependencyProvider.getEventValidator());
         this.mainWindowEvent = mainWindowEvent;
         this.categoryCrudService = dependencyProvider.getCategoryCrudService();
+        this.action = action;
         this.refresh = refresh;
         putValue(SHORT_DESCRIPTION, "Edits selected event");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
@@ -61,8 +63,7 @@ public class EditEventAction extends AbstractAction {
         var eventTableModel = mainWindowEvent.getTableModel();
         int modelRow = eventTable.convertRowIndexToModel(selectedRows[0]);
         var event = eventTableModel.getEntity(modelRow);
-        var dialog = new EventDialog(categoryCrudService, event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator);
+        var dialog = new EventDialog(categoryCrudService, event, categoryListModel, timeUnitListModel, templateListModel, true, eventValidator, action);
         dialog.show(eventTable, "Edit Event").ifPresent(entity -> new EditActionSwingWorker<>(eventTableModel, refresh, entity).execute());
-
     }
 }

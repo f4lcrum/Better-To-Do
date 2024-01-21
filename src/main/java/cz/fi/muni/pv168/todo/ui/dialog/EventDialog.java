@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.validation.ValidationResult;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
+import cz.fi.muni.pv168.todo.ui.action.CreateTemplateFromEventAction;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextArea;
 import cz.fi.muni.pv168.todo.ui.custom.PlaceholderTextField;
 import cz.fi.muni.pv168.todo.ui.listener.TemplateComboBoxItemListener;
@@ -19,13 +20,22 @@ import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import java.awt.event.ItemEvent;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.Optional;
+
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 public final class EventDialog extends EntityDialog<Event> {
 
@@ -39,21 +49,22 @@ public final class EventDialog extends EntityDialog<Event> {
     private final DateModel<LocalDate> dateModel = new LocalDateModel();
     private final ComboBoxModel<TimeUnit> timeUnitModel;
     private final ComboBoxModel<Template> templateModel;
-
     private final Event event;
+    private int result;
 
     public EventDialog(CategoryCrudService categoryCrudService, Event event, ListModel<Category> categoryModel, ListModel<TimeUnit> timeUnitListModel,
-                       ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator) {
+                       ListModel<Template> templateListModel, boolean edit, Validator<Event> entityValidator, CreateTemplateFromEventAction action) {
         super(Objects.requireNonNull(entityValidator));
         this.categoryCrudService = categoryCrudService;
         this.event = event;
         this.categoryModel = new ComboBoxModelAdapter<>(categoryModel);
         this.timeUnitModel = new ComboBoxModelAdapter<>(timeUnitListModel);
         this.templateModel = new ComboBoxModelAdapter<>(templateListModel);
+        addFields(action);
         if (edit) {
             setValues();
         }
-        addFields();
+
     }
 
     private void setValues() {
@@ -67,7 +78,7 @@ public final class EventDialog extends EntityDialog<Event> {
         minuteField.setText(Integer.toString(event.getStartTime().getMinute()));
     }
 
-    private void addFields() {
+    private void addFields(CreateTemplateFromEventAction action) {
         var categoryComboBox = new JComboBox<>(categoryModel);
         categoryComboBox.setRenderer(new CategoryRenderer());
         categoryComboBox.addItemListener(e -> {
@@ -91,7 +102,14 @@ public final class EventDialog extends EntityDialog<Event> {
         addMandatory("Time unit", timeUnitComboBox);
         add("Time unit count", "5", duration);
         addDescription("Description", "A weekend party at John's place.", description);
+        addTemplateFromEventButton(action);
         addErrorPanel();
+    }
+
+    private void addTemplateFromEventButton(CreateTemplateFromEventAction action) {
+        panel.add(new JLabel(""));
+        panel.add(new JButton(action));
+        action.setDialog(this);
     }
 
     @Override
@@ -135,6 +153,22 @@ public final class EventDialog extends EntityDialog<Event> {
         return result;
     }
 
+    public Event validateAndGetEvent(JComponent parentComponent, String title) {
+        var validateFields = isValid();
+        if (validateFields.isValid()) {
+            var entity = getEntity();
+            var validation = entityValidator.validate(entity);
+            if (validation.isValid()) {
+                return entity;
+            }
+            showErrorMessages(validation.getValidationErrors());
+        } else {
+            showErrorMessages(validateFields.getValidationErrors());
+        }
+        result = showOptionDialog(parentComponent, title);
+        return null;
+    }
+
     @Override
     Event getEntity() {
         return new Event(
@@ -156,5 +190,29 @@ public final class EventDialog extends EntityDialog<Event> {
         categoryModel.setSelectedItem(template.getCategory());
         timeUnitModel.setSelectedItem(template.getTimeUnit());
         duration.setText(Integer.toString(template.getDuration()));
+    }
+
+    @Override
+    public Optional<Event> show(JComponent parentComponent, String title) {
+        result = JOptionPane.showOptionDialog(parentComponent, panel, title, OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
+
+        while (result == OK_OPTION) {
+            var validateFields = isValid();
+            if (validateFields.isValid()) {
+                var entity = getEntity();
+                var validation = entityValidator.validate(entity);
+
+                if (validation.isValid()) {
+                    return Optional.of(entity);
+                }
+
+                showErrorMessages(validation.getValidationErrors());
+            } else {
+                showErrorMessages(validateFields.getValidationErrors());
+            }
+            result = showOptionDialog(parentComponent, title);
+        }
+
+        return Optional.empty();
     }
 }
