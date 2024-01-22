@@ -1,15 +1,11 @@
-package cz.fi.muni.pv168.todo.business.service.export;
+package cz.fi.muni.pv168.todo.ui.action.strategy;
 
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchOperationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
-
-import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
+import javax.swing.AbstractAction;
 
-/**
- * Generic mechanism, allowing to import data from a file.
- */
-public interface ImportService {
+public interface ImportStrategy {
 
     /**
      * Imports data from a file.
@@ -19,10 +15,9 @@ public interface ImportService {
      */
     boolean importData(String filePath);
 
-    void setStrategy(ImportStrategy strategy);
-
     /**
      * Gets all available formats for import.
      */
     Collection<Format> getFormats();
+
 }

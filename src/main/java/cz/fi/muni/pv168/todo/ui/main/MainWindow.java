@@ -106,7 +106,7 @@ public class MainWindow {
                 mainWindowCategory.getButtonTabStrategy(),
                 mainWindowTimeUnit.getButtonTabStrategy(),
                 new ImportAction(mainWindowEvent.getTablePanel(),
-                        dependencyProvider.getImportService(),
+                        dependencyProvider,
                         this::refresh
                 ),
                 new ExportAction(

@@ -1,35 +1,30 @@
-package cz.fi.muni.pv168.todo.business.service.export;
+package cz.fi.muni.pv168.todo.ui.action.strategy;
 
 import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
+import cz.fi.muni.pv168.todo.business.service.export.GenericImportService;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchImporter;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchOperationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.business.service.export.format.FormatMapping;
 import cz.fi.muni.pv168.todo.io.DataManipulationException;
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
-
-import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Generic synchronous implementation of the {@link ImportService}.
- */
-public class GenericImportService implements ImportService {
+public class OverwriteImportStrategy implements ImportStrategy {
 
     private final CrudService<Event> eventCrudService;
     private final CrudService<Category> categoryCrudService;
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
     private final FormatMapping<BatchImporter> importers;
-    private ImportStrategy strategy;
 
-    public GenericImportService(CrudService<Event> eventCrudService,
+    public OverwriteImportStrategy(CrudService<Event> eventCrudService,
                                 CrudService<Category> categoryCrudService,
                                 CrudService<Template> templateCrudService,
                                 CrudService<TimeUnit> timeUnitCrudService,
@@ -43,18 +38,47 @@ public class GenericImportService implements ImportService {
 
     @Override
     public boolean importData(String filePath) {
-        return strategy.importData(filePath);
+        var importer = getImporter(filePath);
+        try {
+            var batch = importer.importBatch(filePath);
+
+            eventCrudService.deleteAll();
+            templateCrudService.deleteAll();
+            categoryCrudService.deleteAll();
+            timeUnitCrudService.deleteAll();
+
+            batch.timeUnits().forEach(this::createTimeUnit);
+            batch.categories().forEach(this::createCategory);
+            batch.templates().forEach(this::createTemplate);
+            batch.events().forEach(this::createEvent);
+
+        } catch (DataManipulationException | DataStorageException exception) {
+            Logger.getLogger(GenericImportService.class.getName()).log(Level.SEVERE, "An error occurred during import!", exception);
+            return false;
+        }
+        return true;
     }
 
-    public void setStrategy(ImportStrategy strategy) {
-        this.strategy = strategy;
+    private void createTemplate(Template template) {
+        templateCrudService.create(template)
+                .intoException();
     }
 
-    public ImportStrategy getStrategy() {
-        return strategy;
+    private void createEvent(Event event) {
+        eventCrudService.create(event)
+                .intoException();
     }
 
-    @Override
+    private void createTimeUnit(TimeUnit timeUnit) {
+        timeUnitCrudService.create(timeUnit)
+                .intoException();
+    }
+
+    private void createCategory(Category category) {
+        categoryCrudService.create(category)
+                .intoException();
+    }
+
     public Collection<Format> getFormats() {
         return importers.getFormats();
     }

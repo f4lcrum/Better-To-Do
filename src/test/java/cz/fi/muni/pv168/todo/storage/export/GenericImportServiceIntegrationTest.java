@@ -21,6 +21,7 @@ import cz.fi.muni.pv168.todo.storage.memory.InMemoryEventRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTemplateRepository;
 import cz.fi.muni.pv168.todo.storage.memory.InMemoryTimeUnitRepository;
 
+import cz.fi.muni.pv168.todo.ui.action.strategy.OverwriteImportStrategy;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -73,12 +74,22 @@ public class GenericImportServiceIntegrationTest {
                 timeUnitCrudService,
                 List.of(new JsonImporter())
         );
+
+        genericImportService.setStrategy(
+                new OverwriteImportStrategy(
+                        eventCrudService,
+                        categoryCrudService,
+                        templateCrudService,
+                        timeUnitCrudService,
+                        List.of(new JsonImporter())
+                )
+        );
     }
 
     @Test
     void importNothing() {
         Path importFilePath = TEST_RESOURCES.resolve("empty.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(eventCrudService.findAll())
                 .isEmpty();
@@ -93,7 +104,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void singleCategory() {
         Path importFilePath = TEST_RESOURCES.resolve("single-category.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(categoryCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -109,7 +120,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void multipleCategories() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-categories.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(categoryCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -130,7 +141,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void singleTimeUnit() {
         Path importFilePath = TEST_RESOURCES.resolve("single-timeunit.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(timeUnitCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -148,7 +159,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void multipleTimeUnits() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-timeunit.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(timeUnitCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -180,7 +191,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void singleTemplate() {
         Path importFilePath = TEST_RESOURCES.resolve("single-template.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(templateCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -211,7 +222,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void multipleTemplates() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-templates.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(templateCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -263,7 +274,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void singleEvent() {
         Path importFilePath = TEST_RESOURCES.resolve("single-event.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(eventCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -294,7 +305,7 @@ public class GenericImportServiceIntegrationTest {
     @Test
     void multipleEvents() {
         Path importFilePath = TEST_RESOURCES.resolve("multiple-events.json");
-        genericImportService.importData(importFilePath.toString());
+        genericImportService.getStrategy().importData(importFilePath.toString());
 
         assertThat(eventCrudService.findAll())
                 .usingRecursiveFieldByFieldElementComparator()
@@ -361,7 +372,7 @@ public class GenericImportServiceIntegrationTest {
 
         var stringPath = importFilePath.toString();
         assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> genericImportService.importData(stringPath))
+                .isThrownBy(() -> genericImportService.getStrategy().importData(stringPath))
                 .withMessageContaining("'Category name' length is not between 2 (inclusive) and 150 (inclusive)");
     }
 
@@ -370,7 +381,7 @@ public class GenericImportServiceIntegrationTest {
         Path importFilePath = TEST_RESOURCES.resolve("invalid-color-category.json");
 
         var stringPath = importFilePath.toString();
-        assertFalse(genericImportService.importData(stringPath));
+        assertFalse(genericImportService.getStrategy().importData(stringPath));
     }
 
     @Test
@@ -379,7 +390,7 @@ public class GenericImportServiceIntegrationTest {
 
         var stringPath = importFilePath.toString();
         assertThatExceptionOfType(EntityAlreadyExistsException.class)
-                .isThrownBy(() -> genericImportService.importData(stringPath))
+                .isThrownBy(() -> genericImportService.getStrategy().importData(stringPath))
                 .withMessage("Category with given guid already exists: 120be0a2-16ec-44b4-aad6-5e6826d9e532");
     }
 }

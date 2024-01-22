@@ -7,6 +7,7 @@ import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.ui.workers.AsyncImporter;
 import cz.fi.muni.pv168.todo.util.Filter;
 
+import cz.fi.muni.pv168.todo.wiring.DependencyProvider;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -18,17 +19,19 @@ import java.util.Objects;
 
 public final class ImportAction extends AbstractAction {
 
+    private final DependencyProvider dependencyProvider;
     private final TablePanel<Event> eventTablePanel;
     private final Importer importer;
 
     public ImportAction(
             TablePanel<Event> eventTablePanel,
-            ImportService importService,
+            DependencyProvider dependencyProvider,
             Runnable callback) {
         super("Import", Icons.IMPORT_ICON);
+        this.dependencyProvider = dependencyProvider;
         this.eventTablePanel = Objects.requireNonNull(eventTablePanel);
         this.importer = new AsyncImporter(
-                importService,
+                dependencyProvider.getImportService(),
                 () -> {
                     callback.run();
                     JOptionPane.showMessageDialog(eventTablePanel, "Import was done");
@@ -44,18 +47,12 @@ public final class ImportAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        ImportFileChooser.ImportDialogResult result = ImportFileChooser.showImportDialog(eventTablePanel, dependencyProvider);
+
         importer.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
 
-        int dialogResult = fileChooser.showOpenDialog(eventTablePanel);
-
-        if (dialogResult == JFileChooser.APPROVE_OPTION) {
-            File importFile = fileChooser.getSelectedFile();
-            String filePath = importFile.getAbsolutePath();
-
-            if (!importFile.exists()) {
-                JOptionPane.showMessageDialog(eventTablePanel, "The selected file does not exist!");
-                return;
-            }
+        if (result != null && result.getFile() != null) {
+            String filePath = result.getFile().getAbsolutePath();
 
             if (!importer.acceptsFileFormat(filePath)) {
                 JOptionPane.showMessageDialog(
@@ -65,6 +62,7 @@ public final class ImportAction extends AbstractAction {
                 return;
             }
 
+            importer.setStrategy(result.importStrategy());
             importer.importData(filePath);
         }
     }
