@@ -20,6 +20,7 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
         this.columns = columns;
         this.content = new ArrayList<>(crudService.findAll());
     }
+
     @Override
     public int getRowCount() {
         return content.size();
@@ -55,7 +56,7 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
             crudService.deleteByGuid(entityToBeDeleted.getGuid());
             content.remove(rowIndex);
             fireTableRowsDeleted(rowIndex, rowIndex);
-        } catch(DataStorageException e) {
+        } catch (DataStorageException e) {
             JOptionPane.showMessageDialog(null, "Unable to delete, this item is used elsewhere", "Error", JOptionPane.ERROR_MESSAGE);
 
         }
@@ -80,6 +81,7 @@ public class TableModel<T extends Entity> extends AbstractTableModel implements 
         content.set(rowIndex, item);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
+
     @Override
     public T getEntity(int rowIndex) {
         return content.get(rowIndex);

@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Employee entity {@link Validator}.
+ *
  * @author Vojtech Sassmann
  */
 public class EventValidator implements Validator<Event> {

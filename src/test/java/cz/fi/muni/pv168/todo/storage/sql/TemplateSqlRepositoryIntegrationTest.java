@@ -74,7 +74,8 @@ public final class TemplateSqlRepositoryIntegrationTest {
 
     @Test
     void updateOfInsertedTemplateSucceeds() {
-        final Category newCategory = new Category(UUID.randomUUID(), "TestTemplate", Color.PINK);final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
+        final Category newCategory = new Category(UUID.randomUUID(), "TestTemplate", Color.PINK);
+        final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final Template newTemplate = new Template(UUID.randomUUID(), "Test Template", "Test Task", newCategory, LocalTime.now(), newTimeUnit, 8, "Template for work tasks");
         final Template updateTemplate = new Template(newTemplate.getGuid(), "Updated Template", "Update Task", newCategory, LocalTime.now(), newTimeUnit, 8, "Updated template");
         final Optional<Template> updateResult;
@@ -84,7 +85,7 @@ public final class TemplateSqlRepositoryIntegrationTest {
         templateRepository.create(newTemplate);
 
         assertDoesNotThrow(() -> templateRepository.update(updateTemplate));
-        
+
         updateResult = assertDoesNotThrow(() -> templateRepository.findByGuid(newTemplate.getGuid()));
         assertTrue(updateResult.isPresent());
         assertEquals(updateTemplate, updateResult.get());

@@ -137,6 +137,7 @@ class GenericExportServiceIntegrationTest {
                 .hasSameElementsAs(getFileContents(exportResultFilePath.toString()));
         Files.delete(exportFilePath);
     }
+
     @Test
     void exportingMultipleEvents() throws IOException {
         Category personalCategory = new Category(UUID.fromString("37a00d72-30ba-4a84-81ba-64393163918d"), "Personal", new Color(255, 200, 200));

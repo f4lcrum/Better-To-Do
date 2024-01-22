@@ -6,6 +6,7 @@ import java.io.Serial;
 
 /**
  * Exception that is thrown if there is some problem with data storage
+ *
  * @author Vojtěch Sassmann
  */
 
@@ -19,11 +20,11 @@ public class DataStorageException extends RuntimeApplicationException {
     }
 
     public DataStorageException(String message, Throwable cause) {
-        this("Problem while interacting with database" , message, cause);
+        this("Problem while interacting with database", message, cause);
     }
 
     public DataStorageException(String userMessage, String message, Throwable cause) {
-        super(userMessage, "Storage error: " +  message, cause);
+        super(userMessage, "Storage error: " + message, cause);
     }
 }
 

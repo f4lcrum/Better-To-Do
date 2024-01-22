@@ -26,10 +26,10 @@ public class AppendImportStrategy implements ImportStrategy {
     private final FormatMapping<BatchImporter> importers;
 
     public AppendImportStrategy(CrudService<Event> eventCrudService,
-                                   CrudService<Category> categoryCrudService,
-                                   CrudService<Template> templateCrudService,
-                                   CrudService<TimeUnit> timeUnitCrudService,
-                                   Collection<BatchImporter> importers) {
+                                CrudService<Category> categoryCrudService,
+                                CrudService<Template> templateCrudService,
+                                CrudService<TimeUnit> timeUnitCrudService,
+                                Collection<BatchImporter> importers) {
         this.eventCrudService = eventCrudService;
         this.categoryCrudService = categoryCrudService;
         this.templateCrudService = templateCrudService;

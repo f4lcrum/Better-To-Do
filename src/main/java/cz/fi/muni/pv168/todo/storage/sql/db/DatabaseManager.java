@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 /**
  * The class is responsible for managing H2 database connection and schemas
+ *
  * @author Vojtech Sassmann
  */
 public final class DatabaseManager {

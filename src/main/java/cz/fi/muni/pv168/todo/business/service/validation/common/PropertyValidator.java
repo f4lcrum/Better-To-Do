@@ -9,7 +9,7 @@ import cz.fi.muni.pv168.todo.business.service.validation.Validator;
  * @param <T> entity type
  */
 public abstract class PropertyValidator<T> implements Validator<T> {
-    
+
     public final String name;
 
     protected PropertyValidator(String name) {
@@ -21,6 +21,6 @@ public abstract class PropertyValidator<T> implements Validator<T> {
     }
 
     protected String getName(Object defaultName) {
-        return(name != null) ? getName() : String.valueOf(defaultName);
+        return (name != null) ? getName() : String.valueOf(defaultName);
     }
 }

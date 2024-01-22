@@ -15,8 +15,7 @@ public class EntityNoUUIDException extends RuntimeApplicationException {
     @Serial
     private static final long serialVersionUID = 0L;
 
-    public EntityNoUUIDException(String message)
-    {
+    public EntityNoUUIDException(String message) {
         super(message);
     }
 }

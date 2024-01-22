@@ -150,7 +150,7 @@ public class GenericImportServiceIntegrationTest {
                                 UUID.fromString("25aae21c-74f6-425d-8b52-b00cb6b34efb"),
                                 true,
                                 "Hours",
-                                 1,
+                                1,
                                 0
                         )
                 );
@@ -353,6 +353,7 @@ public class GenericImportServiceIntegrationTest {
 
                 );
     }
+
     @Test
     void invalidFormatFails() {
         Path importFilePath = TEST_RESOURCES.resolve("invalid.format");

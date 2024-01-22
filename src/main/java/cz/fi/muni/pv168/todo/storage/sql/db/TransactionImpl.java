@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * Transaction handler
+ *
  * @author Peter Stanko
  */
 public class TransactionImpl implements Transaction {
@@ -18,6 +19,7 @@ public class TransactionImpl implements Transaction {
 
     /**
      * Creates new transaction over given connection
+     *
      * @param connection database connection
      */
     public TransactionImpl(Connection connection) throws SQLException {

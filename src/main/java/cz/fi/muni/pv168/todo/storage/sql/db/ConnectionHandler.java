@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 /**
  * Handler useful for greater control over {@link Connection}
+ *
  * @author Vojtěch Sassmann
  */
 public interface ConnectionHandler extends Closeable {

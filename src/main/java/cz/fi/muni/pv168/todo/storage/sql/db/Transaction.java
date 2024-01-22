@@ -4,6 +4,7 @@ import java.io.Closeable;
 
 /**
  * Transaction Handling
+ *
  * @author Vojtěch Sassmann
  */
 public interface Transaction extends Closeable {

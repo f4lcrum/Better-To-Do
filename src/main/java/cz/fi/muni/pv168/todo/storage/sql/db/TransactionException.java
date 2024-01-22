@@ -4,6 +4,7 @@ import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
 /**
  * Thrown if some transaction operation fails.
+ *
  * @author Vojtěch Sassmann
  */
 public class TransactionException extends DataStorageException {

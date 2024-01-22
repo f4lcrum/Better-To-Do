@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * Connection handler which is aware of active transaction on managed connection
+ *
  * @author Vojtech Sassmann
  */
 class ConnectionHandlerImpl implements ConnectionHandler {
@@ -17,6 +18,7 @@ class ConnectionHandlerImpl implements ConnectionHandler {
 
     /**
      * Creates new handler over given connection
+     *
      * @param connection database connection
      */
     ConnectionHandlerImpl(Connection connection) {

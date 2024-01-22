@@ -15,8 +15,7 @@ public class EntityAlreadyExistsException extends RuntimeApplicationException {
     @Serial
     private static final long serialVersionUID = 0L;
 
-    public EntityAlreadyExistsException(String message)
-    {
+    public EntityAlreadyExistsException(String message) {
         super(message);
     }
 }

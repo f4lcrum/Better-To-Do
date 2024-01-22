@@ -2,6 +2,7 @@ package cz.fi.muni.pv168.todo.storage.sql.db;
 
 /**
  * Manages transactions
+ *
  * @author Vojtěch Sassmann
  */
 public interface TransactionManager {

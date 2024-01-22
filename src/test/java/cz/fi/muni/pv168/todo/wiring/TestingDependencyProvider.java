@@ -72,6 +72,7 @@ public final class TestingDependencyProvider {
     public TimeUnitRepository getTimeUnitRepository() {
         return timeUnits;
     }
+
     public CategoryRepository getCategoryRepository() {
         return categories;
     }

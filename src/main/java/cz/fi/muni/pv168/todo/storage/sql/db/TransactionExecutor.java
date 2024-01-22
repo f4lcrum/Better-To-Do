@@ -8,6 +8,7 @@ package cz.fi.muni.pv168.todo.storage.sql.db;
  * <br>
  * transactionExecutor.executeInTransaction(() -> atomicAction());
  * </p>
+ *
  * @author Vojtech Sassmann
  */
 public interface TransactionExecutor {
