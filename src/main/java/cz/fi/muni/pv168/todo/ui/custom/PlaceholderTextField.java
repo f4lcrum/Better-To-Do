@@ -15,7 +15,7 @@ public class PlaceholderTextField extends JTextField {
         super();
         setLayout(new BorderLayout());
         addFocusListener(new PlaceholderFocusListener());
-        getDocument().addDocumentListener(new PlaceholderDocumentListnener());
+        getDocument().addDocumentListener(new PlaceholderDocumentListener());
     }
 
     public void setPlaceholder(PlaceholderLabel label) {
@@ -40,7 +40,7 @@ public class PlaceholderTextField extends JTextField {
         }
     }
 
-    private class PlaceholderDocumentListnener implements DocumentListener {
+    private class PlaceholderDocumentListener implements DocumentListener {
 
         @Override
         public void insertUpdate(DocumentEvent e) {

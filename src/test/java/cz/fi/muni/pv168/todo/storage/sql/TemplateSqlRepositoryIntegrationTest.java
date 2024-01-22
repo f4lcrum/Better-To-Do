@@ -76,7 +76,7 @@ public final class TemplateSqlRepositoryIntegrationTest {
     void updateOfInsertedTemplateSucceeds() {
         final Category newCategory = new Category(UUID.randomUUID(), "TestTemplate", Color.PINK);final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final Template newTemplate = new Template(UUID.randomUUID(), "Test Template", "Test Task", newCategory, LocalTime.now(), newTimeUnit, 8, "Template for work tasks");
-        final Template updateTemplate = new Template(newTemplate.getGuid(), "Updated Template", "Update Task", newCategory, LocalTime.now(), newTimeUnit, 8, "Upfated template");
+        final Template updateTemplate = new Template(newTemplate.getGuid(), "Updated Template", "Update Task", newCategory, LocalTime.now(), newTimeUnit, 8, "Updated template");
         final Optional<Template> updateResult;
 
         categoryRepository.create(newCategory);

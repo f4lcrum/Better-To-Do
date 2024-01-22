@@ -77,7 +77,7 @@ public final class EventSqlRepositoryIntegrationTest {
         final Category newCategory = new Category(UUID.randomUUID(), "TestEvent", Color.PINK);
         final TimeUnit newTimeUnit = new TimeUnit(UUID.randomUUID(), false, "TestTU", 10, 120);
         final Event newEvent = new Event(UUID.randomUUID(), "Test Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Event for work tasks");
-        final Event updateEvent = new Event(newEvent.getGuid(), "Updated Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Upfated event");
+        final Event updateEvent = new Event(newEvent.getGuid(), "Updated Event", newCategory, LocalDate.now(), LocalTime.now(), newTimeUnit, 8, "Updated event");
         final Optional<Event> updateResult;
 
         categoryRepository.create(newCategory);

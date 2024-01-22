@@ -50,7 +50,7 @@ public final class ImportAction extends AbstractAction {
 
         importer.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
 
-        if (result != null && result.getFile() != null) {
+        if (result.getFile() != null) {
             String filePath = result.getFile().getAbsolutePath();
 
             if (!importer.acceptsFileFormat(filePath)) {
