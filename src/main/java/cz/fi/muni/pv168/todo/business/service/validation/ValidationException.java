@@ -2,7 +2,6 @@ package cz.fi.muni.pv168.todo.business.service.validation;
 
 import cz.fi.muni.pv168.todo.business.error.RuntimeApplicationException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

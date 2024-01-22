@@ -48,7 +48,6 @@ import java.util.List;
  */
 public class CommonDependencyProvider implements DependencyProvider {
 
-    private final DatabaseManager databaseManager;
     private final TransactionExecutor transactionExecutor;
     private final Repository<Event> eventRepository;
     private final Repository<TimeUnit> timeUnitRepository;
@@ -66,7 +65,6 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final Validator<Template> templateValidator;
 
     public CommonDependencyProvider(DatabaseManager databaseManager) {
-        this.databaseManager = databaseManager;
         var transactionManager = new TransactionManagerImpl(databaseManager);
         this.transactionExecutor = new TransactionExecutorImpl(transactionManager::beginTransaction);
         var transactionConnectionSupplier = new TransactionConnectionSupplier(transactionManager, databaseManager);
