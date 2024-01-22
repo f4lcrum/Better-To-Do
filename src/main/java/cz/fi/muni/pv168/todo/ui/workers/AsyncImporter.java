@@ -19,7 +19,6 @@ public class AsyncImporter implements Importer {
 
     private final ImportService importService;
     private final Runnable onFinish;
-    private ImportStrategy strategy;
 
     public AsyncImporter(ImportService importService, Runnable onFinish) {
         this.importService = Objects.requireNonNull(importService);
@@ -51,7 +50,6 @@ public class AsyncImporter implements Importer {
 
     @Override
     public void setStrategy(ImportStrategy strategy) {
-        this.strategy = strategy;
         importService.setStrategy(strategy);
     }
 
