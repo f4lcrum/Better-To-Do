@@ -4,14 +4,11 @@ import cz.fi.muni.pv168.todo.business.entity.Category;
 import cz.fi.muni.pv168.todo.business.entity.Event;
 import cz.fi.muni.pv168.todo.business.entity.Template;
 import cz.fi.muni.pv168.todo.business.entity.TimeUnit;
-import cz.fi.muni.pv168.todo.business.repository.Repository;
 import cz.fi.muni.pv168.todo.business.service.crud.CategoryCrudService;
 import cz.fi.muni.pv168.todo.business.service.crud.CrudService;
 import cz.fi.muni.pv168.todo.business.service.export.ExportService;
 import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.business.service.validation.Validator;
-import cz.fi.muni.pv168.todo.storage.sql.db.DatabaseManager;
-import cz.fi.muni.pv168.todo.storage.sql.db.TransactionExecutor;
 
 public interface DependencyProvider {
 

@@ -9,13 +9,9 @@ import cz.fi.muni.pv168.todo.business.service.export.batch.BatchImporter;
 import cz.fi.muni.pv168.todo.business.service.export.batch.BatchOperationException;
 import cz.fi.muni.pv168.todo.business.service.export.format.Format;
 import cz.fi.muni.pv168.todo.business.service.export.format.FormatMapping;
-import cz.fi.muni.pv168.todo.io.DataManipulationException;
-import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
 import cz.fi.muni.pv168.todo.ui.action.strategy.ImportStrategy;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Generic synchronous implementation of the {@link ImportService}.

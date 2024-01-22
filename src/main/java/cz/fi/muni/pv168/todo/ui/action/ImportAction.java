@@ -1,7 +1,6 @@
 package cz.fi.muni.pv168.todo.ui.action;
 
 import cz.fi.muni.pv168.todo.business.entity.Event;
-import cz.fi.muni.pv168.todo.business.service.export.ImportService;
 import cz.fi.muni.pv168.todo.ui.panels.TablePanel;
 import cz.fi.muni.pv168.todo.ui.resources.Icons;
 import cz.fi.muni.pv168.todo.ui.workers.AsyncImporter;
