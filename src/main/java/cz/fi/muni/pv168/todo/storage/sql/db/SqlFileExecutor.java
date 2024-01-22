@@ -1,12 +1,5 @@
 package cz.fi.muni.pv168.todo.storage.sql.db;
 
-/**
- * Execute the SQL files
- *
- * @author Peter Stanko
- */
-
-
 import cz.fi.muni.pv168.todo.storage.sql.dao.DataStorageException;
 
 import java.io.IOException;
@@ -22,6 +15,12 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
+
+/**
+ * Execute the SQL files
+ *
+ * @author Peter Stanko
+ */
 
 final class SqlFileExecutor {
 
